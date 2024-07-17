@@ -12,7 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/mysql": "^2.15.26",
+    "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
     "mysql2": "^3.10.2",
     "nodemon": "^3.1.4",
