@@ -15,13 +15,13 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
+      duration: {
+        type: Sequelize.STRING
+      },
       country: {
         type: Sequelize.STRING
       },
       genre: {
-        type: Sequelize.STRING
-      },
-      duration: {
         type: Sequelize.STRING
       },
       releaseDate: {

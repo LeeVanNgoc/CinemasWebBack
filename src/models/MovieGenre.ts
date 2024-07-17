@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import ScreenTime from './ScreenTime'
+import ScreenTime from './PlanScreenMovie'
 
 class MovieGenre extends Model {
   public movieGenreId!: number;

@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import ScreenTime from './ScreenTime'
 import Genres from './Genres';
 
 class Movie extends Model {
@@ -52,18 +51,12 @@ Movie.init({
   sTimeid: {
     type: DataTypes.STRING,
     allowNull: false,
-    references: {
-      model: ScreenTime,
-      key: 'id',
-    },
   },
 }, {
   sequelize,
   modelName: 'Movie',
 });
 
-Movie.belongsTo(ScreenTime, { foreignKey:'sTimeid' });
 Movie.belongsTo(Genres, { foreignKey:'genreId' });
-
 
 export default Movie;

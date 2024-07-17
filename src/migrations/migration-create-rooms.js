@@ -9,17 +9,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      movieId: {
-        type: Sequelize.STRING
-      },
       theaterId: {
         type: Sequelize.STRING
       },
-      status: {
-        type: Sequelize.TEXT
-      },
       type: {
         type: Sequelize.STRING
+      },
+      numberSeats: {
+        type: Sequelize.INTEGER
       },
     });
   },

@@ -10,9 +10,11 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       userId: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
-      
+      link: {
+        type: Sequelize.TEXT
+      },
     });
   },
   async down(queryInterface, Sequelize) {
