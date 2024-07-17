@@ -6,6 +6,8 @@ class User extends Model {
   public username!: string;
   public email!: string;
   public password!: string;
+  public birthYear!: number;
+  public role!: string;
 }
 
 User.init({
@@ -27,7 +29,7 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  age: {
+  birthYear: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },

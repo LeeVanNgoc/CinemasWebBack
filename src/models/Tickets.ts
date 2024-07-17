@@ -5,17 +5,15 @@ import Theater from './Theater';
 import Seat from './Seat';
 import Room from './Room';
 import Movie from './Movie';
-import Payment from './Payment';
+import Payment from './Prices';
 
 class Tickets extends Model {
   public ticketId!: number;
-  public userId!: string;
-  public showtimeId!: string;
-  public seatId!: string;
-  public roomId!: string;
-  public movieId!: string;
-  public paymentId!: string;
-  public price!: string;
+  public userId!: number;
+  public psmId!: number;
+  public stId!: number;
+  public bank!: string;
+  public price!: number;
   public TicketsDate!: Date;
 }
 
@@ -26,30 +24,30 @@ Tickets.init({
     primaryKey: true,
   },
   userId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: User,
       key: 'id',
     },
   },
-  theaterId: {
-    type: DataTypes.STRING,
+  psmId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Theater,
       key: 'id',
     },
   },
-  seatId: {
-    type: DataTypes.STRING,
+  stId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Seat,
       key: 'id',
     },
   },
-  roomId: {
+  bank: {
     type: DataTypes.STRING,
     allowNull: false,
     references: {
@@ -57,19 +55,7 @@ Tickets.init({
       key: 'id',
     },
   },
-  movieId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: Movie,
-      key: 'id',
-    },
-  },
   price: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  paymentId: {
     type: DataTypes.STRING,
     allowNull: false,
     references: {
@@ -77,7 +63,7 @@ Tickets.init({
       key: 'id',
     },
   },
-  TicketsDate: {
+  ticketsDate: {
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,

@@ -23,6 +23,10 @@ Trailer.init({
       key: 'id',
     },
   },
+  link: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
 }, {
   sequelize,
   modelName: 'Trailer',
