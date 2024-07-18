@@ -2,6 +2,7 @@ import express, { Application, Request, Response, NextFunction } from 'express';
 
 import dotenv from 'dotenv';
 import { Next } from 'mysql2/typings/mysql/lib/parsers/typeCast';
+
 import userRoutes from './routes/userRoutes';
 import movieRoutes from './routes/movieRoutes';
 import genreRoutes from './routes/genreRoutes';
@@ -12,7 +13,7 @@ import errorHandler from './middleware/errorHandler';
 
 dotenv.config();
 
-const app = express();
+const app: Application = express();
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5050;
 
 app.use(function (req: Request, res: Response, next: Next) {
@@ -35,6 +36,7 @@ app.use(function (req: Request, res: Response, next: Next) {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
 userRoutes(app);
 movieRoutes(app);
 genreRoutes(app);

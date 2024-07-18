@@ -1,45 +1,47 @@
 import { Request, Response } from 'express';
-import * as movieService from '../services/movieService';
+import { createMovie, deleteMovie, editMovie, getAllMovies, getMovieById } from '../services/movieService';
 
 const handleCreateMovie = async (req: Request, res: Response) => {
-  const movieData = req.body;
+  const data = req.body;
   try {
-    const newMovie = await movieService.createMovie(movieData);
+    const newMovie = await createMovie(data);
     res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
   } catch (error) {
-    console.error('Error creating movie:', error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Something went wrong in creating movie' });
   }
 };
 
 const handleDeleteMovie = async (req: Request, res: Response) => {
   const movieId = parseInt(req.params.id);
   try {
-    await movieService.deleteMovie(movieId);
-    res.status(200).json({ message: 'Movie deleted successfully' });
+    const result: any = await deleteMovie(movieId);
+    if (result.errorCode) {
+      return res.status(404).json({ error: result.errorMessage });
+    }
+    res.status(200).json({ message: result.errorMessage });
   } catch (error) {
-    console.error('Error deleting movie:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 const handleEditMovie = async (req: Request, res: Response) => {
-  const movieData = req.body;
+  const data = req.body;
   try {
-    const updatedMovie = await movieService.editMovie(movieData);
-    res.status(200).json({ message: 'Movie updated successfully', movie: updatedMovie });
+    const result: any = await editMovie(data);
+    if (result.error) {
+      return res.status(404).json({ error: result.error });
+    }
+    res.status(200).json({ message: result.message, movie: result.movie });
   } catch (error) {
-    console.error('Error updating movie:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
 
 const handleGetAllMovies = async (req: Request, res: Response) => {
   try {
-    const movies = await movieService.getAllMovies();
-    res.status(200).json({ movies });
+    const data = await getAllMovies();
+    res.status(200).json({ data });
   } catch (error) {
-    console.error('Error fetching movies:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -47,14 +49,9 @@ const handleGetAllMovies = async (req: Request, res: Response) => {
 const handleGetMovieById = async (req: Request, res: Response) => {
   const movieId = parseInt(req.params.id);
   try {
-    const movie = await movieService.getMovieById(movieId);
-    if (!movie) {
-      res.status(404).json({ error: 'Movie not found' });
-    } else {
-      res.status(200).json({ movie });
-    }
+    const data = await getMovieById(movieId);
+    res.status(200).json({ data });
   } catch (error) {
-    console.error('Error fetching movie by ID:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -64,5 +61,5 @@ export default {
   handleDeleteMovie,
   handleEditMovie,
   handleGetAllMovies,
-  handleGetMovieById,
+  handleGetMovieById
 };
