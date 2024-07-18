@@ -1,14 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
-class New extends Model {
+class News extends Model {
   public postId!: number;
   public title!: string;
   public content!: string;
   public readonly postDate!: Date;
 }
 
-New.init({
+News.init({
   postId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -24,7 +24,7 @@ New.init({
   },
 }, {
   sequelize,
-  modelName: 'New',
+  modelName: 'News',
 });
 
-export default New;
+export default News;
