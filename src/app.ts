@@ -1,12 +1,19 @@
-import express, { Request, Response } from 'express';
+import express, { Application, Request, Response, NextFunction } from 'express';
 
 import dotenv from 'dotenv';
 import { Next } from 'mysql2/typings/mysql/lib/parsers/typeCast';
 import userRoutes from './routes/userRoutes';
+import movieRoutes from './routes/movieRoutes';
+import genreRoutes from './routes/genreRoutes';
+import newsRoutes from './routes/newsRoutes';
+
+import errorHandler from './middleware/errorHandler';
+
+
 dotenv.config();
 
 const app = express();
-const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
+const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 5050;
 
 app.use(function (req: Request, res: Response, next: Next) {
   // Website you wish to allow to connect   
@@ -25,9 +32,15 @@ app.use(function (req: Request, res: Response, next: Next) {
   // Pass to next layer of middleware
   next();
 });
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 userRoutes(app);
+movieRoutes(app);
+genreRoutes(app);
+newsRoutes(app);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
