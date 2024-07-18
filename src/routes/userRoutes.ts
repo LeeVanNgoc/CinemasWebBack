@@ -12,7 +12,7 @@ const userRoutes = (app: Application) => {
 	router.post('/login-user', userController.handleLoginUser);
 
 
-  return app.use('/api', router);
+  return app.use('/api/user', router);
 };
 
 export default userRoutes;

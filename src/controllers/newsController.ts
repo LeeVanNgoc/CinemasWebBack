@@ -42,9 +42,11 @@ const handleGetAllNews = async (req: Request, res: Response) => {
     const data = await getAllNews();
     res.status(200).json({ data });
   } catch (error) {
+    console.error('Error fetching all news:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 const handleGetNewsById = async (req: Request, res: Response) => {
   const newsId = parseInt(req.params.id);

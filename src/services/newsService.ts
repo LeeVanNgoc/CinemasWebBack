@@ -1,9 +1,14 @@
 import News from '../models/News';
 
+
 export const createNews = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const newNews = await News.create(data);
+      const newNews = await News.create({
+        title: data.title,
+        content: data.content,
+        postDate: new Date(),
+      });
       resolve(newNews);
     } catch (error) {
       reject(error);
@@ -14,7 +19,8 @@ export const createNews = async (data: any) => {
 export const deleteNews = async (newsId: number) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const news = await News.findOne({ where: { id: newsId } });
+      const news = await News.findOne({ where: { postId: newsId } });
+
       if (!news) {
         resolve({ errorCode: 1, errorMessage: "Not found news" });
       } else {
@@ -35,11 +41,13 @@ export const editNews = async (data: any) => {
         return resolve({ error: 'Missing required parameters!' });
       }
 
-      const news = await News.findOne({ where: { id } });
+      const news = await News.findOne({ where: { postId: id } });
+
       if (!news) {
         return resolve({ error: 'News not found!' });
       } else {
-        Object.assign(news, data);
+        news.title = data.title || news.title;
+        news.content = data.content || news.content;
         await news.save();
       }
 
@@ -53,7 +61,10 @@ export const editNews = async (data: any) => {
 export const getAllNews = async () => {
   return new Promise(async (resolve, reject) => {
     try {
-      const news = await News.findAll();
+      const news = await News.findAll({
+        attributes: ['postId', 'title', 'content', 'postDate'],
+        raw: true,
+      });
       resolve(news);
     } catch (error) {
       reject(error);
@@ -64,7 +75,11 @@ export const getAllNews = async () => {
 export const getNewsById = async (newsId: number) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const news = await News.findOne({ where: { id: newsId } });
+      const news = await News.findOne({
+        where: { postId: newsId },
+        attributes: ['postId', 'title', 'content', 'postDate'],
+        raw: true,
+      });
       resolve(news);
     } catch (error) {
       reject(error);
