@@ -1,31 +1,73 @@
 import Movie from '../models/Movie';
 
-export const createMovie = async (movieData: any) => {
-  const movie = await Movie.create(movieData);
-  return movie;
+export const createMovie = async (data: any) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const newMovie = await Movie.create(data);
+      resolve(newMovie);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 export const deleteMovie = async (movieId: number) => {
-  const result = await Movie.destroy({ where: { id: movieId } });
-  return result;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const movie = await Movie.findOne({ where: { id: movieId } });
+      if (!movie) {
+        resolve({ errorCode: 1, errorMessage: "Not found movie" });
+      } else {
+        await movie.destroy();
+        resolve({ errorCode: 0, errorMessage: "Movie deleted successfully" });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
-export const editMovie = async (movieData: any) => {
-  const { id, ...updatedData } = movieData;
-  await Movie.update(updatedData, { where: { id } });
-  const updatedMovie = await Movie.findByPk(id);
-  return updatedMovie;
+export const editMovie = async (data: any) => {
+  return new Promise(async (resolve, reject) => {
+    const id = data.id;
+    try {
+      if (!id) {
+        return resolve({ error: 'Missing required parameters!' });
+      }
+
+      const movie = await Movie.findOne({ where: { id } });
+      if (!movie) {
+        return resolve({ error: 'Movie not found!' });
+      } else {
+        Object.assign(movie, data);
+        await movie.save();
+      }
+
+      resolve({ message: 'Update the movie succeeds!', movie });
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 export const getAllMovies = async () => {
-  const movies = await Movie.findAll();
-  return movies;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const movies = await Movie.findAll();
+      resolve(movies);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };
 
 export const getMovieById = async (movieId: number) => {
-  const movie = await Movie.findByPk(movieId);
-  if (!movie) {
-    throw new Error('Movie not found');
-  }
-  return movie;
+  return new Promise(async (resolve, reject) => {
+    try {
+      const movie = await Movie.findOne({ where: { id: movieId } });
+      resolve(movie);
+    } catch (error) {
+      reject(error);
+    }
+  });
 };

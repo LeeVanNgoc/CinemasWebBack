@@ -6,9 +6,10 @@ const router = express.Router();
 
 const genreRoutes = (app: Application) => {
   router.post('/create-new-genre', genreController.handleCreateGenre);
+  router.delete('/delete-genre/:id', genreController.handleDeleteGenre);
+  router.put('/edit-genre/:id', genreController.handleEditGenre);
   router.get('/get-all-genres', genreController.handleGetAllGenres);
   router.get('/get-genre-by-id/:id', genreController.handleGetGenreById);
-  router.delete('/delete-genre/:id', genreController.handleDeleteGenre);
 
   return app.use('/api/genres', router);
 };
