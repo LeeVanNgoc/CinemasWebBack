@@ -1,12 +1,17 @@
-import { Application } from 'express';
-import * as movieController from '../controllers/movieController';
+import express from 'express';
+import movieController from '../controllers/movieController';
+import { Application } from 'express-serve-static-core';
+
+const router = express.Router();
 
 const movieRoutes = (app: Application) => {
-  app.post('/movies', movieController.createMovie);
-  app.delete('/movies/:id', movieController.deleteMovie);
-  app.put('/movies', movieController.editMovie);
-  app.get('/movies', movieController.getAllMovies);
-  app.get('/movies/:id', movieController.getMovieById);
+  router.post('/create-new-movie', movieController.handleCreateMovie);
+  router.delete('/delete-movie/:id', movieController.handleDeleteMovie);
+  router.put('/edit-movie', movieController.handleEditMovie);
+  router.get('/get-all-movies', movieController.handleGetAllMovies);
+  router.get('/get-movie-by-id/:id', movieController.handleGetMovieById);
+
+  return app.use('/api', router);
 };
 
 export default movieRoutes;

@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 
 import dotenv from 'dotenv';
 import { Next } from 'mysql2/typings/mysql/lib/parsers/typeCast';
-import userRoutes from './routes/userRouter';
+import userRoutes from './routes/userRoutes';
 dotenv.config();
 
 const app = express();
