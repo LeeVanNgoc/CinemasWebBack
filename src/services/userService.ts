@@ -188,6 +188,3 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
     }
   });
 };
-
-
-
