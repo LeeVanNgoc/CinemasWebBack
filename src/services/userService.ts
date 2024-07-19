@@ -39,6 +39,7 @@ export const createUser = async (data: any) => {
           email: data.email,
           firstName: data.firstName,
           lastName: data.lastName,
+          userName: data.userName,
           birthYear: data.birthYear,
           password: hashPassword,
           role: role,
