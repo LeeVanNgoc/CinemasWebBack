@@ -21,11 +21,19 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
 app.use((req: Request, res: Response, next: NextFunction) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5050');
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:6060');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
+});
+
+app.options('*', (req: Request, res: Response) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:6060');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.sendStatus(200);
 });
 
 // Routes
