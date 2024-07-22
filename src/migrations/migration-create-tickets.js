@@ -19,12 +19,13 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       price: {
-        type: Sequelize.STRING
+        type: Sequelize.INTEGER
       },
       bank: {
         type: Sequelize.STRING
       },
       ticketsDate: {
+        allowNull: false,
         type: Sequelize.DATE
       },
     });

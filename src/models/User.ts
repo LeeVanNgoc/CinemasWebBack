@@ -23,6 +23,10 @@ User.init({
     allowNull: false,
     unique: true,
   },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
   firstName: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -35,7 +39,7 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  password: {
+  phonenumber: {
     type: DataTypes.STRING,
     allowNull: false,
   },
