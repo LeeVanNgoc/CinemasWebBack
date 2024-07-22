@@ -4,8 +4,8 @@ import Tickets from './Tickets';
 import Seat from './Seat';
 class SeatTickets extends Model {
 	public stId!: number;
-  	public seatId!: number;
-  	public ticketId!: number;
+  public seatId!: number;
+  public ticketId!: number;
 }
 
 SeatTickets.init({
@@ -15,27 +15,28 @@ SeatTickets.init({
     primaryKey: true,
   },
   seatId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
-	references: {
-		model: Seat,
-		key: 'id',
-	  },
+    references: {
+      model: Seat,
+      key: 'id',
+    },
   },
   ticketId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Tickets,
-      key: 'id',
+      key: 'ticketId',
     },
   },
 }, {
   sequelize,
-  modelName: 'Seat',
+  modelName: 'SeatTickets',
+  timestamps: false,
 });
 
-Seat.belongsTo(Seat, { foreignKey:'seatId' });
-Tickets.belongsTo(Tickets, { foreignKey:'ticketId' });
+SeatTickets.belongsTo(Seat, { foreignKey:'seatId' });
+// SeatTickets.belongsTo(Tickets, { foreignKey:'ticketId' });
 
 export default SeatTickets;

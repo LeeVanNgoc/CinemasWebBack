@@ -4,6 +4,7 @@ import {createUser, deleteUser, editUser, getAllUsersById, loginAPI} from '../se
 
 const handleCreateUser = async (req: Request, res: Response) => {
 	const data = req.query;
+	console.log(data);
 	try {
 	  const newUser = await createUser(data);
 	  res.status(201).json({ message: 'User created successfully', user: newUser });
