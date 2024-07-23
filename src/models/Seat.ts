@@ -1,14 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Room from './Room';
-import SeatType from './SeatType';
 
 class Seat extends Model {
   public id!: string;
   public roomId!: string;
-  public seatTypeId!: number;
-  public row!: string;
-  public number!: number;
+  public type!: string;
+  public row!: number;
+  public column!: number;
 }
 
 Seat.init({
@@ -24,19 +23,15 @@ Seat.init({
       key: 'id',
     },
   },
-  seatTypeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: SeatType,
-      key: 'id',
-    },
-  },
-  row: {
+  type: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  number: {
+  row: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  column: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
@@ -48,8 +43,6 @@ Seat.init({
 });
 
 Seat.belongsTo(Room, { foreignKey: 'roomId' });
-Seat.belongsTo(SeatType, { foreignKey: 'seatTypeId' });
 Room.hasMany(Seat, { foreignKey: 'roomId' });
-SeatType.hasMany(Seat, { foreignKey: 'seatTypeId' });
 
 export default Seat;

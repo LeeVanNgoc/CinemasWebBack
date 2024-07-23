@@ -2,15 +2,14 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class Theater extends Model {
-  public theaterid!: number;
+  public id!: string;
   public name!: string;
   public address!: string;
 }
 
 Theater.init({
-  theaterId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+  id: {
+    type: DataTypes.STRING,
     primaryKey: true,
   },
   name: {
@@ -18,12 +17,14 @@ Theater.init({
     allowNull: false,
   },
   address: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'Theater',
+  tableName: 'Theaters',
+  timestamps: true,
 });
 
 export default Theater;
