@@ -1,46 +1,36 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import Genres from './Genres';
 
 class Movie extends Model {
-  public movieid!: number;
+  public id!: string;
   public title!: string;
   public description!: string;
   public duration!: number;
   public country!: string;
-  public genre!: string;
   public releaseDate!: Date;
-  public sTimeId!: string;
-
+  public screenTime!: string;
+  public image!: string;
+  public status!: string;
 }
 
 Movie.init({
-  movieid: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
+  id: {
+    type: DataTypes.STRING,
     primaryKey: true,
   },
   title: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  country: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  genre: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: Genres,
-      key: 'id',
-    }
-  },
   duration: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  country: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -48,15 +38,23 @@ Movie.init({
     type: DataTypes.DATE,
     allowNull: false,
   },
-  sTimeid: {
+  screenTime: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  status: {
+    type: DataTypes.ENUM('showing', 'coming soon', 'ended'),
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'Movie',
+  tableName: 'Movies',
+  timestamps: true,
 });
-
-Movie.belongsTo(Genres, { foreignKey:'genreId' });
 
 export default Movie;

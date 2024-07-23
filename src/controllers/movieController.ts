@@ -7,6 +7,7 @@ const handleCreateMovie = async (req: Request, res: Response) => {
     const newMovie = await createMovie(data);
     res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
   } catch (error) {
+    console.error('Error in handleCreateMovie:', error); // Logging for debugging
     res.status(500).json({ error: 'Something went wrong in creating movie' });
   }
 };
@@ -20,6 +21,7 @@ const handleDeleteMovie = async (req: Request, res: Response) => {
     }
     res.status(200).json({ message: result.errorMessage });
   } catch (error) {
+    console.error('Error in handleDeleteMovie:', error); // Logging for debugging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -33,6 +35,7 @@ const handleEditMovie = async (req: Request, res: Response) => {
     }
     res.status(200).json({ message: result.message, movie: result.movie });
   } catch (error) {
+    console.error('Error in handleEditMovie:', error); // Logging for debugging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -42,6 +45,7 @@ const handleGetAllMovies = async (req: Request, res: Response) => {
     const data = await getAllMovies();
     res.status(200).json({ data });
   } catch (error) {
+    console.error('Error in handleGetAllMovies:', error); // Logging for debugging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
@@ -52,6 +56,7 @@ const handleGetMovieById = async (req: Request, res: Response) => {
     const data = await getMovieById(movieId);
     res.status(200).json({ data });
   } catch (error) {
+    console.error('Error in handleGetMovieById:', error); // Logging for debugging
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };

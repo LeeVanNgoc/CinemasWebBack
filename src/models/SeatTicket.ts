@@ -1,9 +1,9 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import Tickets from './Tickets';
+import Tickets from './Ticket';
 import Seat from './Seat';
 class SeatTickets extends Model {
-  public stId!: number;
+	public stId!: number;
   public seatId!: number;
   public ticketId!: number;
 }
@@ -36,7 +36,7 @@ SeatTickets.init({
   timestamps: false,
 });
 
-SeatTickets.belongsTo(Seat, { foreignKey: 'seatId' });
+SeatTickets.belongsTo(Seat, { foreignKey:'seatId' });
 // SeatTickets.belongsTo(Tickets, { foreignKey:'ticketId' });
 
 export default SeatTickets;
