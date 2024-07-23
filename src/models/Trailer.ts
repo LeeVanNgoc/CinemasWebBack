@@ -1,7 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import User from './User';
-import Seat from './Seat';
+import User from './Admin';
+import Seat from './Movie';
 
 class Trailer extends Model {
   public trailerId!: number;
