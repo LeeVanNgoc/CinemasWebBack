@@ -37,10 +37,12 @@ export const createUser = async (data: any) => {
         const role = await setDecentralization(data.role);
         const newUser = await User.create({
           email: data.email,
+          password: hashPassword,
           firstName: data.firstName,
           lastName: data.lastName,
+          userName: data.userName,
           birthYear: data.birthYear,
-          password: hashPassword,
+          phonenumber: hashPassword,
           role: role,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -110,17 +112,19 @@ export const getAllUsersById = (userId: string | number) => {
     try {
       if (userId === 'ALL') {
         users = await User.findAll({
-          attributes: ['email', 'firstName', 'lastName', 'address'],
-          raw: true});
+          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
+        raw: true,
+       });
       } else if (userId && userId !== 'ALL') {
         users = await User.findOne({
           where: {
             id: userId,
           },
-          attributes: ['email', 'firstName', 'lastName', 'address'],
+          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
           raw: true,
         });
       }
+      console.log(users);
       resolve(users);
     } catch (error) {
       reject(error);
