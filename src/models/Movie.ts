@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class Movie extends Model {
-  public id!: string;
+  public id!: number;
   public title!: string;
   public description!: string;
   public duration!: number;
@@ -15,7 +15,8 @@ class Movie extends Model {
 
 Movie.init({
   id: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   title: {
@@ -47,7 +48,7 @@ Movie.init({
     allowNull: false,
   },
   status: {
-    type: DataTypes.ENUM('showing', 'coming soon', 'ended'),
+    type: DataTypes.ENUM('coming soon', 'now showing', 'ended'),
     allowNull: false,
   },
 }, {
