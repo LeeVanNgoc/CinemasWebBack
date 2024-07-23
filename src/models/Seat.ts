@@ -1,25 +1,20 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Room from './Room';
+import SeatType from './SeatType';
 
 class Seat extends Model {
-  public seatId!: number;
-  public type!: string;
+  public id!: string;
   public roomId!: string;
-  public row!: number;
-  public col!: number;
-  public isAvailable!: boolean;
+  public seatTypeId!: number;
+  public row!: string;
+  public number!: number;
 }
 
 Seat.init({
-  seatId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  type: {
+  id: {
     type: DataTypes.STRING,
-    allowNull: false,
+    primaryKey: true,
   },
   roomId: {
     type: DataTypes.STRING,
@@ -29,24 +24,32 @@ Seat.init({
       key: 'id',
     },
   },
+  seatTypeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: {
+      model: SeatType,
+      key: 'id',
+    },
+  },
   row: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  col: {
+  number: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  isAvailable: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-  
 }, {
   sequelize,
   modelName: 'Seat',
+  tableName: 'Seats',
+  timestamps: true,
 });
 
-Room.belongsTo(Room, { foreignKey:'roomId' });
+Seat.belongsTo(Room, { foreignKey: 'roomId' });
+Seat.belongsTo(SeatType, { foreignKey: 'seatTypeId' });
+Room.hasMany(Seat, { foreignKey: 'roomId' });
+SeatType.hasMany(Seat, { foreignKey: 'seatTypeId' });
 
 export default Seat;

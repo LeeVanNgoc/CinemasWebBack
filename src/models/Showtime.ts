@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-class PlanScreenMovie extends Model {
+class Showtime extends Model {
   public psmId!: number;
   public roomId!: number;
   public movieId!: number;
@@ -9,7 +9,7 @@ class PlanScreenMovie extends Model {
   public space!: string;
 }
 
-PlanScreenMovie.init({
+Showtime.init({
   psmId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -38,8 +38,8 @@ PlanScreenMovie.init({
   
 }, {
   sequelize,
-  modelName: 'PlanScreenMovie',
+  modelName: 'Showtime',
 });
 
 
-export default PlanScreenMovie;
+export default Showtime;

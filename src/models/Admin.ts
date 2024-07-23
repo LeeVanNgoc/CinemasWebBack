@@ -1,17 +1,14 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
-class User extends Model {
+class Admin extends Model {
   public id!: number;
   public username!: string;
   public email!: string;
   public password!: string;
-  public role!: string;
-  public name!: string;
-  public birthDate!: Date;
 }
 
-User.init({
+Admin.init({
   id: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
@@ -31,24 +28,11 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  role: {
-    type: DataTypes.ENUM('user', 'admin'),
-    allowNull: false,
-    defaultValue: 'user',
-  },
-  name: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  birthDate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-  },
 }, {
   sequelize,
-  modelName: 'User',
-  tableName: 'Users',
+  modelName: 'Admin',
+  tableName: 'Admins',
   timestamps: true,
 });
 
-export default User;
+export default Admin;

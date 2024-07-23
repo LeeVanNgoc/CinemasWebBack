@@ -1,4 +1,4 @@
-import Tickets from "../models/Tickets";
+import Tickets from "../models/Ticket";
 
 export const createTickets = async (data: any) => {
   try {
