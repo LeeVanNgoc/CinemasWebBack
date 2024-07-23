@@ -32,7 +32,7 @@ Trailer.init({
   modelName: 'Trailer',
 });
 
-Trailer.belongsTo(User,  { foreignKey:'userId' });
-Trailer.belongsTo(Seat,  { foreignKey:'seatId' });
+Trailer.belongsTo(User, { foreignKey: 'userId' });
+Trailer.belongsTo(Seat, { foreignKey: 'seatId' });
 
 export default Trailer;
