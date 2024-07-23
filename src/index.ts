@@ -4,10 +4,10 @@ import dotenv from 'dotenv';
 
 import { connectDB } from './config/connectDB';
 
-import userRoutes from './routes/userRoutes';
-import movieRoutes from './routes/movieRoutes';
-import genreRoutes from './routes/genreRoutes';
-import newsRoutes from './routes/newsRoutes';
+import userRoutes from './routes/userRouter';
+import movieRoutes from './routes/movieRouter';
+import genreRoutes from './routes/genreRouter';
+import newsRoutes from './routes/newsRouter';
 import ticketRoutes from './routes/ticketsRouter';
 
 import errorHandler from './middleware/errorHandler';

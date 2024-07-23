@@ -68,9 +68,9 @@ Tickets.init({
   timestamps: false,
 });
 
-Tickets.belongsTo(User, { foreignKey:'userId' });
-Tickets.belongsTo(SeatTickets, { foreignKey:'stId' });
-Tickets.belongsTo(PlanScreenMovie, { foreignKey:'psmId' });
-Tickets.belongsTo(Prices, { foreignKey:'price' });
+Tickets.belongsTo(User, { foreignKey: 'userId' });
+Tickets.belongsTo(SeatTickets, { foreignKey: 'stId' });
+Tickets.belongsTo(PlanScreenMovie, { foreignKey: 'psmId' });
+Tickets.belongsTo(Prices, { foreignKey: 'price' });
 
 export default Tickets;
