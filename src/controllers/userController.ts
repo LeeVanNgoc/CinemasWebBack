@@ -7,7 +7,11 @@ const handleCreateUser = async (req: Request, res: Response) => {
 	console.log(data);
 	try {
 	  const newUser = await createUser(data);
-	  res.status(201).json({ message: 'User created successfully', user: newUser });
+	  if (newUser.errCode === 0) {
+		res.status(201).json({ message: newUser.message });
+	  } else {
+		res.status(400).json({message: newUser.message})
+	  }
 	} catch (error) {
 	  res.status(500).json({ error: 'Something was wrong in creating' });
 	}
@@ -15,12 +19,23 @@ const handleCreateUser = async (req: Request, res: Response) => {
 
 const handleDeleteUser = async (req: Request, res: Response) => {
 	const userId = parseInt(req.query.id as string);
-	try {
-	  await deleteUser(userId);
-	  res.status(201).json({ message: 'User deleted successfully'});
+	if (isNaN(userId)) {
+    	return res.status(400).json({ message: 'Invalid ticket ID' }); // Xử lý khi ID không hợp lệ
+  	}	try {
+	  const result = await deleteUser(userId);
+	  if (result.errCode === 0) {
+	  	res.status(201).json({ 
+			errCode: result.errCode,
+			message: result.message
+		});
+	  } else {
+		res.status(201).json({ 
+			errCode: result.errCode,			
+			message: result.message
+		});
+	  }
 	} catch (error) {
-	  console.error('Error handling delete user request:', error);
-	  res.status(500).json({ error: 'Internal Server Error' });
+	  res.status(500).json({ error: `Something went wrong deleted ${error}`});
 	}
 }
 
