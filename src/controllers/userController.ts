@@ -1,5 +1,5 @@
-import { Request, Response } from 'express';
-import {createUser, deleteUser, editUser, getAllUsersById, loginAPI} from '../services/userService';
+import e, { Request, Response } from 'express';
+import {createUser, deleteUser, editUser, getUserById, getAllUsers, loginAPI} from '../services/userService';
 
 
 const handleCreateUser = async (req: Request, res: Response) => {
@@ -40,52 +40,98 @@ const handleDeleteUser = async (req: Request, res: Response) => {
 }
 
 const handleEditUser = async (req: Request, res: Response) => {
-	const data = req.body  ;
+	const data = req.query  ;
 	try {
 	  const result: any = await editUser(data);
-	  if (result.error) {
-		return res.status(404).json({ error: result.error });
+	  if (result.errCode === 0) {
+		return res.status(200).json({ 
+			errCode: result.errCode,
+			message: result.message,
+			user: result.user,
+		});
+	  }else {
+		res.status(400).json({ 
+			errCode: result.errCode,            
+			message: result.message,
+			user: result.user });
 	  }
-	  res.status(200).json({ message: result.message, user: result.user });
+	  
 	} catch (error) {
-	  console.error('Error handling edit user request:', error);
-	  res.status(500).json({ error: 'Internal Server Error' });
+	  res.status(500).json({ error: `Error update user: ${error}` });
 	}
 }
 
 
-const handleGetAllUsersById = async (req: Request, res: Response) => {
+const handleGetUserById = async (req: Request, res: Response) => {
+	const userId = Number(req.query.userId);
+
 	try {
-	  const userId = req.query.id as string | number;
-	  const data = await getAllUsersById(userId);
-	  res.status(200).json({ data });
+	  if (isNaN(userId)){
+		res.status(400).json({error: 'Pleate complete user id'})
+	  }
+	  const user = await getUserById(userId);
+	  if (user.errCode === 0) {
+        res.status(200).json({ 
+			errCode: user.errCode,
+			message: user.message,
+			user: user.users });
+      } else {
+        res.status(404).json({ 
+			errCode: user.errCode,
+			message: user.message,
+		    user: user });
+      }
 	} catch (error) {
-	  console.error('Error:', error);
-	  res.status(500).json({ error: 'Internal Server Error' });
+	  res.status(500).json({ error: `Error went get all user ${error} `});
 	}
   };
+
+const handleGetAllUsers = async (req: Request, res: Response) => {
+	try {
+		const data = await getAllUsers();
+		if (data.errCode === 0) {
+			res.status(200).json({ 
+				errCode: data.errCode,
+                message: data.message,
+                users: data.users
+			 });
+		}
+	} catch (error) {
+		console.error('Error:', error);
+		res.status(500).json({ error: 'Internal Server Error' });
+	}
+};
 
   const handleLoginUser = async (req: Request, res: Response) => {
 	try {
 	  const userEmail = req.body.email as string;
-	  const userPassword = req.body.password as string;
+	  const userPassword = req.body.password as string
   
 	  // Kiểm tra email và password có tồn tại không
-	  if (!userEmail || !userPassword) {
-		return res.status(400).json({ error: 'Email and password are required' });
+	  if (!userEmail) {
+		res.status(400).json({ error: 'Email are required' });
+	  }
+
+	  if (!userPassword) {
+		res.status(400).json({ error: 'Password are required' });
 	  }
   
 	  // Gọi API đăng nhập và xử lý kết quả
-	  const result: any = await loginAPI(userEmail, userPassword);
+	  const result= await loginAPI(userEmail, userPassword);
   
-	  if (result.success) {
-		res.status(200).json({ success: true, user: result.user });
+	  if (result.errCode === 0) {
+		res.status(200).json({ 
+			errCode: result.errCode,
+			message: result.message
+		 });
 	  } else {
-		res.status(401).json({ success: false, message: result.message });
+		res.status(401).json({ 
+			errCode: result.errCode,
+			message: result.message 
+		});
 	  }
 	} catch (error) {
-	  console.error('Error:', error);
-	  res.status(500).json({ error: 'Internal Server Error' });
+	  res.status(500).json({ error: `Error went login ${error}` });
 	}
   };
 
@@ -93,6 +139,7 @@ export default {
 	handleCreateUser,
 	handleDeleteUser,
 	handleEditUser,
-	handleGetAllUsersById,
+	handleGetUserById,
+	handleGetAllUsers,
 	handleLoginUser
 }
