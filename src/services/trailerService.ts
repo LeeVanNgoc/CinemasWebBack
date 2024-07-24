@@ -1,4 +1,3 @@
-import { error } from "console";
 import Trailer from "../models/Trailer";
 
 export const createTrailer = async(data : any) => {

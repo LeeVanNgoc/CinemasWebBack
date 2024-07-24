@@ -10,6 +10,7 @@ class User extends Model {
   public password!: string;
   public birthYear!: number;
   public role!: string;
+  public phonenumber!: string;
 }
 
 User.init({

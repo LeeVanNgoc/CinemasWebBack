@@ -42,7 +42,7 @@ export const createUser = async (data: any) => {
           lastName: data.lastName,
           userName: data.userName,
           birthYear: data.birthYear,
-          phonenumber: hashPassword,
+          phonenumber: data.phonenumber,
           role: role,
           createdAt: new Date(),
           updatedAt: new Date(),
@@ -95,54 +95,82 @@ export const deleteUser = async(userId : number) => {
 };
 
 export const editUser = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    const id = data.id;
+    const userId = data.userId;
     try {
-      if (!id) {
-        return resolve({ error: 'Missing required parameters!' });
+      if (!userId) {
+        return({ 
+          errCode: 4,
+          message: 'Missing required parameters!' });
       }
 
-      const user = await User.findOne({ where: { id } });
+      const user = await User.findOne({ where: { userId : userId } });
 
       if (!user) {
-        return resolve({ error: 'User not found!' });
-      } else {
-        user.email = data.firstName || user.email;
-        await user.save();
+        return({
+          errorCode: 1,
+           message: 'User not found!' 
+          });
       }
-
-      resolve({ message: 'Update the user succeeds!', user });
+      user.firstName = data.firstName || user.firstName;
+      user.lastName = data.lastName || user.lastName;
+      user.userName = data.userName || user.userName;
+      user.phonenumber = data.phonenumber || user.phonenumber;
+      user.birthYear = data.birthYear || user.birthYear;
+      await user.save();
+      return ({ 
+        errorCode: 0,
+        message: 'Update user successfully',
+        user: user
+      });
     } catch (error) {
-      console.error('Error updating user:', error);
-      reject(error);
+      return{
+        errCode: 2,
+        message: `Error updating user: ${error}`,
+        user: null,
+      };
     }
-  });
 };
 
-export const getAllUsersById = (userId: string | number) => {
-  return new Promise(async (resolve, reject) => {
+export const getUserById = async(userId: number) => {
     let users: any = '';
     try {
-      if (userId === 'ALL') {
-        users = await User.findAll({
-          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
-        raw: true,
-       });
-      } else if (userId && userId !== 'ALL') {
         users = await User.findOne({
           where: {
-            id: userId,
+            userId: userId,
           },
           attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
           raw: true,
         });
-      }
-      console.log(users);
-      resolve(users);
+      return{
+        errCode: 0,
+        message: 'Get user success',
+        users: users
+      };
     } catch (error) {
-      reject(error);
+      return{
+        errCode: 1,
+        message: `Error went get user ${error}`
+      };
     }
-  });
+};
+
+export const getAllUsers = async() => {
+    try {
+        const users = await User.findAll({
+          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
+        raw: true,
+    });
+      return{
+        errCode: 0,
+        message: 'Get all users success',
+        users: users
+      };
+    } catch (error) {
+      return{
+        errCode: 1,
+        message: `Error went get user ${error}`
+      };
+    }
 };
 
 const checkUserEmail = async (userEmail: string): Promise<boolean> => {
@@ -158,7 +186,6 @@ const checkUserEmail = async (userEmail: string): Promise<boolean> => {
 
 // Hàm đăng nhập
 export const loginAPI = async (userEmail: string, userPassword: string) => {
-  return new Promise(async (resolve, reject) => {
     try {
       const userData: any = {};
       const isExists = await checkUserEmail(userEmail);
@@ -177,30 +204,33 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
             // Xóa password để tránh bảo mật thông tin
             delete userData.password;
             userData.user = user;
-            resolve({
-              success: true,
+            return({
+              errCode: 0,
               user: userData.user,
             });
           } else {
-            resolve({
-              success: false,
+            return({
+              // role: user.role,
+              errCode: 4,
               message: 'Password is incorrect',
             });
           }
         } else {
-          resolve({
-            success: false,
+          return({
+            errCode: 1,
             message: 'User not found', 
           });
         }
       } else {
-        resolve({
-          success: false,
+        return({
+          errCode: 2,
           message: 'Your email does not exist in the system. Please try another email',
         });
       }
     } catch (error) {
-      reject(error); 
+      return{
+        errCode: 3,
+        message: `Error login: ${error}`,
+      }; 
     }
-  });
 };
