@@ -25,13 +25,13 @@ const setDecentralization = async (role: string) => {
 }
 
 export const createUser = async (data: any) => {
-  return new Promise (async (resolve, reject) => {
     try {
-      console.log('Received data:', data);
       const existingUser = await User.findOne({ where: { email: data.email } });
 
       if (existingUser) {
-        resolve('Email already exists');
+        return{ 
+          errCode: 2,
+          message: 'Email already exists'};
       } else {
         const hashPassword = await hashUserPassword(data.password);
         const role = await setDecentralization(data.role);
@@ -47,38 +47,51 @@ export const createUser = async (data: any) => {
           createdAt: new Date(),
           updatedAt: new Date(),
         });
-        return newUser;
+        if(newUser) {
+          return {
+            errCode: 0,
+            message: 'User created successfully'
+          };
+        }else {
+          return {
+            errCode: 3,
+            message: 'Failed to create user'
+          };
+        }
       }
     } catch (error) {
-      reject(error);
+      return{
+        errCode: 3,
+        message: `Error creating user ${error}`
+      };
     }
-})
 };
 
-export const deleteUser = (userId : number) => {
-  return new Promise (async (resolve, reject) => {
+export const deleteUser = async(userId : number) => {
     try {
       const user = await User.findOne({
-      where: {id : userId}
+      where: {userId : userId}
     });
   
       if (!user) {
-        resolve({
+        return({
           errorCode: 1,
           errorMessage: "Not found user"
         })
       } else {
         await user.destroy();
   
-        resolve({
+        return({
           errorCode: 0,
           errorMessage: "User deleted successfully"
         })
       }
     } catch (error) {
-      reject(error)
+      return{
+        errCode: 3,
+        message: `Error delete user: ${error}`
+      }
     }
-  })
 };
 
 export const editUser = async (data: any) => {

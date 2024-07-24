@@ -9,8 +9,7 @@ import movieRoutes from './routes/movieRoutes';
 import genreRoutes from './routes/genreRoutes';
 import newsRoutes from './routes/newsRoutes';
 import ticketRoutes from './routes/ticketsRouter';
-
-import errorHandler from './middleware/errorHandler';
+import errorHandler from './middlewares/errorHandler';
 import trailerRoutes from './routes/trailerRouter';
 
 dotenv.config();
