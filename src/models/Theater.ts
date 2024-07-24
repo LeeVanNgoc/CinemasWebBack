@@ -2,13 +2,13 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class Theater extends Model {
-  public id!: number;
+  public theaterid!: number;
   public name!: string;
   public address!: string;
 }
 
 Theater.init({
-  id: {
+  theaterId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -18,14 +18,12 @@ Theater.init({
     allowNull: false,
   },
   address: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'Theater',
-  tableName: 'Theaters',
-  timestamps: true,
 });
 
 export default Theater;

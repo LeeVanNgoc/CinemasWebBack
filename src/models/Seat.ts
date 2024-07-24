@@ -3,17 +3,23 @@ import sequelize from '../config/connectDB';
 import Room from './Room';
 
 class Seat extends Model {
-  public id!: string;
-  public roomId!: string;
+  public seatId!: number;
   public type!: string;
+  public roomId!: string;
   public row!: number;
-  public column!: number;
+  public col!: number;
+  public isAvailable!: boolean;
 }
 
 Seat.init({
-  id: {
-    type: DataTypes.STRING,
+  seatId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
+  },
+  type: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   roomId: {
     type: DataTypes.STRING,
@@ -23,26 +29,24 @@ Seat.init({
       key: 'id',
     },
   },
-  type: {
+  row: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  row: {
+  col: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  column: {
-    type: DataTypes.INTEGER,
+  isAvailable: {
+    type: DataTypes.BOOLEAN,
     allowNull: false,
   },
+  
 }, {
   sequelize,
   modelName: 'Seat',
-  tableName: 'Seats',
-  timestamps: true,
 });
 
-Seat.belongsTo(Room, { foreignKey: 'roomId' });
-Room.hasMany(Seat, { foreignKey: 'roomId' });
+Room.belongsTo(Room, { foreignKey:'roomId' });
 
 export default Seat;

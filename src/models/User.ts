@@ -2,25 +2,21 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class User extends Model {
-  public id!: number;
-  public username!: string;
+  public userId!: number;
+  public firstName!: string;
+  public lastName!: string;
+  public userName!: string;
   public email!: string;
   public password!: string;
+  public birthYear!: number;
   public role!: string;
-  public name!: string;
-  public birthDate!: Date;
 }
 
 User.init({
-  id: {
+  userId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
-  },
-  username: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true,
   },
   email: {
     type: DataTypes.STRING,
@@ -31,24 +27,35 @@ User.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  role: {
-    type: DataTypes.ENUM('user', 'admin'),
-    allowNull: false,
-    defaultValue: 'user',
-  },
-  name: {
+  firstName: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  birthDate: {
-    type: DataTypes.DATE,
+  lastName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  userName: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  phonenumber: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  birthYear: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  role: {
+    type: DataTypes.STRING,
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'User',
   tableName: 'Users',
-  timestamps: true,
+  timestamps: false,
 });
 
 export default User;

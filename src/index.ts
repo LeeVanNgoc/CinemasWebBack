@@ -4,13 +4,14 @@ import dotenv from 'dotenv';
 
 import { connectDB } from './config/connectDB';
 
-import userRoutes from './routes/userRouter';
-import movieRoutes from './routes/movieRouter';
-import genreRoutes from './routes/genreRouter';
-import newsRoutes from './routes/newsRouter';
+import userRoutes from './routes/userRoutes';
+import movieRoutes from './routes/movieRoutes';
+import genreRoutes from './routes/genreRoutes';
+import newsRoutes from './routes/newsRoutes';
 import ticketRoutes from './routes/ticketsRouter';
 
 import errorHandler from './middleware/errorHandler';
+import trailerRoutes from './routes/trailerRouter';
 
 dotenv.config();
 
@@ -40,10 +41,11 @@ app.options('*', (req: Request, res: Response) => {
 
 // Routes
 userRoutes(app);
-app.use('/api/movies', movieRoutes);
+movieRoutes(app);
 app.use('/api/genres', genreRoutes);
 app.use('/api/news', newsRoutes);
 ticketRoutes(app);
+trailerRoutes(app);
 
 // Error handling middleware
 app.use(errorHandler);

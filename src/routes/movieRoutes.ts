@@ -4,7 +4,7 @@ import { Application } from 'express-serve-static-core';
 
 const router = express.Router();
 
-const movieRouter = (app: Application) => {
+const movieRoutes = (app: Application) => {
   router.post('/create-new-movie', movieController.handleCreateMovie);
   router.delete('/delete-movie/:id', movieController.handleDeleteMovie);
   router.put('/edit-movie/:id', movieController.handleEditMovie);
@@ -14,4 +14,4 @@ const movieRouter = (app: Application) => {
   return app.use('/api/movies', router);
 };
 
-export default movieRouter;
+export default movieRoutes;

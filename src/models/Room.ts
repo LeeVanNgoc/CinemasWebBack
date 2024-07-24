@@ -1,43 +1,39 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Theater from './Theater';
-
 class Room extends Model {
-  public id!: string;
-  public theaterId!: string;
-  public name!: string;
-  public totalSeats!: number;
+  public roomId!: number;
+  public ticketId!: number;
+  public numberSeats!: number;
+  public type!: string;
 }
 
 Room.init({
-  id: {
-    type: DataTypes.STRING,
+  roomId: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
     primaryKey: true,
   },
   theaterId: {
-    type: DataTypes.STRING,
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Theater,
       key: 'id',
     },
   },
-  name: {
+  type: {
     type: DataTypes.STRING,
     allowNull: false,
   },
-  totalSeats: {
+  numberSeats: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'Room',
-  tableName: 'Rooms',
-  timestamps: true,
 });
 
-Room.belongsTo(Theater, { foreignKey: 'theaterId' });
-Theater.hasMany(Room, { foreignKey: 'theaterId' });
-
+Room.belongsTo(Theater, { foreignKey:'theaterId' });
 export default Room;

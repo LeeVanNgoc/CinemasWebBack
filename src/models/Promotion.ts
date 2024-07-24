@@ -1,10 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import Admin from './Admin';
-
 
 class Promotion extends Model {
-  public id!: number;
+  public promoId!: number;
   public description!: string;
   public discount!: string;
   public startDate!: Date;
@@ -12,7 +10,7 @@ class Promotion extends Model {
 }
 
 Promotion.init({
-  id: {
+  promoId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -22,34 +20,23 @@ Promotion.init({
     allowNull: false,
   },
   discount  : {
-    type: DataTypes.DECIMAL,
+    type: DataTypes.STRING,
     allowNull: false,
     unique: true,
   },
-  start_date: {
+  startDate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  end_date: {
+  endDate: {
     type: DataTypes.DATE,
     allowNull: false,
   },
-  admin_id: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Admin,
-      key: 'id',
-    }
-  }
 }, {
   sequelize,
   modelName: 'Promotion',
   tableName: 'Promotions',
   timestamps: false,
 });
-
-Promotion.belongsTo(Admin, { foreignKey: 'admin_id' });
-Admin.hasMany(Promotion, { foreignKey: 'admin_id' });
 
 export default Promotion;

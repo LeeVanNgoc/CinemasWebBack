@@ -21,8 +21,8 @@ module.exports = {
       country: {
         type: Sequelize.STRING
       },
-      genre: {
-        type: Sequelize.STRING
+      genreId: {
+        type: Sequelize.INTEGER
       },
       releaseDate: {
         type: Sequelize.DATE

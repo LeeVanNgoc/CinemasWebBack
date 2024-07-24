@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      userId: {
+      movieId: {
         type: Sequelize.INTEGER
       },
       link: {
