@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import User from './User';
+import Movie from './Movie';
 import Seat from './Seat';
 
 class Trailer extends Model {
@@ -15,11 +15,11 @@ Trailer.init({
     autoIncrement: true,
     primaryKey: true,
   },
-  userId: {
+  movieId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
-      model: User,
+      model: Movie,
       key: 'id',
     },
   },
@@ -30,9 +30,10 @@ Trailer.init({
 }, {
   sequelize,
   modelName: 'Trailer',
+  timestamps: false
 });
 
-Trailer.belongsTo(User,  { foreignKey:'userId' });
+Trailer.belongsTo(Movie,  { foreignKey:'movieId' });
 Trailer.belongsTo(Seat,  { foreignKey:'seatId' });
 
 export default Trailer;

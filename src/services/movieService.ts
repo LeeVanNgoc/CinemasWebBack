@@ -3,7 +3,15 @@ import Movie from '../models/Movie';
 export const createMovie = async (data: any) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const newMovie = await Movie.create(data);
+      const newMovie = await Movie.create({
+        title: data.title,
+        description: data.description,
+        genreId: data.genreId,
+        duration: data.duration,
+        country: data.country,
+        sTimeid: data.sTimeid,
+        releaseDate: new Date(),
+      });
       resolve(newMovie);
     } catch (error) {
       reject(error);

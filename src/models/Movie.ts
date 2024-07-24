@@ -8,7 +8,7 @@ class Movie extends Model {
   public description!: string;
   public duration!: number;
   public country!: string;
-  public genre!: string;
+  public genreId!: number;
   public releaseDate!: Date;
   public sTimeId!: string;
 
@@ -32,8 +32,8 @@ Movie.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  genre: {
-    type: DataTypes.STRING,
+  genreId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Genres,

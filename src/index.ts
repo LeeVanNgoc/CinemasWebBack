@@ -11,6 +11,7 @@ import newsRoutes from './routes/newsRoutes';
 import ticketRoutes from './routes/ticketsRouter';
 
 import errorHandler from './middleware/errorHandler';
+import trailerRoutes from './routes/trailerRouter';
 
 dotenv.config();
 
@@ -40,10 +41,11 @@ app.options('*', (req: Request, res: Response) => {
 
 // Routes
 userRoutes(app);
-app.use('/api/movies', movieRoutes);
+movieRoutes(app);
 app.use('/api/genres', genreRoutes);
 app.use('/api/news', newsRoutes);
 ticketRoutes(app);
+trailerRoutes(app);
 
 // Error handling middleware
 app.use(errorHandler);

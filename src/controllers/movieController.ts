@@ -7,7 +7,7 @@ const handleCreateMovie = async (req: Request, res: Response) => {
     const newMovie = await createMovie(data);
     res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong in creating movie' });
+    res.status(500).json({ error: 'Something was wrong in creating movie' });
   }
 };
 
