@@ -19,6 +19,7 @@ Genres.init({
 }, {
   sequelize,
   modelName: 'Genres',
+  timestamps: false
 });
 
 export default Genres;

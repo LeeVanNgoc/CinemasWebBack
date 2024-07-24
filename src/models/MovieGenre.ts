@@ -20,6 +20,7 @@ MovieGenre.init({
 }, {
   sequelize,
   modelName: 'MovieGenre',
+  timestamps: false
 });
 
 MovieGenre.belongsTo(ScreenTime, { foreignKey:'sTimeId' });

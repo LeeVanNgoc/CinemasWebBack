@@ -25,6 +25,7 @@ News.init({
 }, {
   sequelize,
   modelName: 'News',
+  timestamps: false
 });
 
 export default News;
