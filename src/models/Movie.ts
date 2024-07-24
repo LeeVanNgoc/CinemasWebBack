@@ -55,6 +55,7 @@ Movie.init({
 }, {
   sequelize,
   modelName: 'Movie',
+  timestamps: false
 });
 
 Movie.belongsTo(Genres, { foreignKey:'genreId' });

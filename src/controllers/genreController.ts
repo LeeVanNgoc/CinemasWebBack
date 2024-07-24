@@ -7,7 +7,7 @@ const handleCreateGenre = async (req: Request, res: Response) => {
     const newGenre = await createGenre(data);
     res.status(201).json({ message: 'Genre created successfully', genre: newGenre });
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong in creating genre' });
+		res.status(500).json({ error: `Something went wrong in creating genres: ${error}` });
   }
 };
 
@@ -20,7 +20,7 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
     }
     res.status(200).json({ message: result.errorMessage });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+		res.status(500).json({ error: `Something went wrong in deleting genres: ${error}` });
   }
 };
 
@@ -33,7 +33,7 @@ const handleEditGenre = async (req: Request, res: Response) => {
     }
     res.status(200).json({ message: result.message, genre: result.genre });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+		res.status(500).json({ error: `Something went wrong in editting genres: ${error}` });
   }
 };
 
@@ -42,7 +42,7 @@ const handleGetAllGenres = async (req: Request, res: Response) => {
     const data = await getAllGenres();
     res.status(200).json({ data });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+		res.status(500).json({ error: `Something went wrong in getting genres: ${error}` });
   }
 };
 
@@ -52,7 +52,7 @@ const handleGetGenreById = async (req: Request, res: Response) => {
     const data = await getGenreById(genreId);
     res.status(200).json({ data });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+		res.status(500).json({ error: `Something went wrong in getting genres: ${error}` });
   }
 };
 
