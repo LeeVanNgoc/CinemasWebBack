@@ -1,49 +1,62 @@
 import Movie from '../models/Movie';
 
 export const createMovie = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const newMovie = await Movie.create({
-        title: data.title,
-        description: data.description,
-        genreId: data.genreId,
-        duration: data.duration,
-        country: data.country,
-        sTimeid: data.sTimeid,
-        releaseDate: new Date(),
-      });
-      resolve(newMovie);
-    } catch (error) {
-      reject(error);
+  try {
+    // Find all existing movieids
+    const existingIds = await Movie.findAll({
+      attributes: ['movieid'],
+      order: [['movieid', 'ASC']]
+    });
+
+    // Convert to an array of numbers
+    const ids = existingIds.map(movie => movie.movieid);
+
+    // Find the smallest available id
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
     }
-  });
+
+    const newMovie = await Movie.create({
+      movieid: newId,
+      title: data.title,
+      description: data.description,
+      genreId: data.genreId,
+      duration: data.duration,
+      country: data.country,
+      sTimeid: data.sTimeid,
+      releaseDate: new Date(),
+    });
+
+    return newMovie;
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const deleteMovie = async (movieId: number) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const movie = await Movie.findOne({ where: { id: movieId } });
-      if (!movie) {
-        resolve({ errorCode: 1, errorMessage: "Not found movie" });
-      } else {
-        await movie.destroy();
-        resolve({ errorCode: 0, errorMessage: "Movie deleted successfully" });
-      }
-    } catch (error) {
-      reject(error);
+  try {
+    const movie = await Movie.findOne({ where: { movieid: movieId } });
+    if (!movie) {
+      return { errorCode: 1, errorMessage: "Not found movie" };
+    } else {
+      await movie.destroy();
+      return { errorCode: 0, errorMessage: "Movie deleted successfully" };
     }
-  });
+  } catch (error) {
+    throw error;
+  }
 };
 
 export const editMovie = async (data: any) => {
   return new Promise(async (resolve, reject) => {
-    const id = data.id;
+    const movieid = data.movieid;
     try {
-      if (!id) {
+      if (!movieid) {
         return resolve({ error: 'Missing required parameters!' });
       }
 
-      const movie = await Movie.findOne({ where: { id } });
+      const movie = await Movie.findOne({ where: { movieid } });
       if (!movie) {
         return resolve({ error: 'Movie not found!' });
       } else {
@@ -72,10 +85,10 @@ export const getAllMovies = async () => {
 export const getMovieById = async (movieId: number) => {
   return new Promise(async (resolve, reject) => {
     try {
-      const movie = await Movie.findOne({ where: { id: movieId } });
-      resolve(movie);
+      const movie = await Movie.findOne({ where: { movieid: movieId } });
+      return movie;
     } catch (error) {
-      reject(error);
+      throw error;
     }
   });
 };
