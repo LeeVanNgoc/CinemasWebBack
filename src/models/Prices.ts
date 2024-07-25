@@ -29,6 +29,7 @@ Prices.init({
 }, {
   sequelize,
   modelName: 'Prices',
+  timestamps: false,
 });
 
 export default Prices;

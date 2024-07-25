@@ -24,7 +24,7 @@ export const createTickets = async (data: any) => {
     }
   } catch (error) {
     return {
-      errCode: 2,
+      errCode: 3,
       message: `Error creating ticket: ${error}`,
     };
   }
@@ -51,7 +51,7 @@ export const deleteTicket = async (ticketId : number) => {
       }
     } catch (error) {
       return {
-        errCode : 2,
+        errCode : 3,
         message : `Delete false by error: ${error}`,
       }
     }
@@ -83,7 +83,7 @@ export const editTicket = async (data: any) => {
     }
   } catch (error) {
     return {
-      errCode : 2,
+      errCode : 3,
       message : `Edit false by error: ${error}`,
     }
   }
@@ -108,7 +108,10 @@ export const getListTicket = async() => {
       message: "List ticket fetched successfully",
     };
   } catch (error) {
-    return(error)
+    return{
+      errCode: 3,
+      message : `Get false by error: ${error}`,
+    }
   }
     
 }
@@ -139,6 +142,7 @@ export const getTicketById = async (ticketId : number) => {
     };
   } catch (error) {
     return {
+      errCode: 3,
       message : `Get false by error: ${error}`,
     }
   }

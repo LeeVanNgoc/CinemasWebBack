@@ -15,6 +15,9 @@ module.exports = {
       address: {
         type: Sequelize.TEXT
       },
+      city: {
+        type: Sequelize.STRING
+      }
     });
   },
   async down(queryInterface, Sequelize) {

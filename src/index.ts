@@ -11,6 +11,10 @@ import newsRoutes from './routes/newsRoutes';
 import ticketRoutes from './routes/ticketsRouter';
 import errorHandler from './middlewares/errorHandler';
 import trailerRoutes from './routes/trailerRouter';
+import theaterRoutes from './routes/theaterRouter';
+import seatRouter from './routes/seatsRouter';
+import seatTicketRouter from './routes/seatTicketRouter';
+import priceRouter from './routes/priceRouter';
 
 dotenv.config();
 
@@ -41,12 +45,14 @@ app.options('*', (req: Request, res: Response) => {
 // Routes
 userRoutes(app);
 movieRoutes(app);
-newsRoutes(app)
 genreRoutes(app);
-// app.use('/api/genres', genreRoutes);
-// app.use('/api/news', newsRoutes);
+newsRoutes(app);
 ticketRoutes(app);
 trailerRoutes(app);
+theaterRoutes(app);
+seatRouter(app);
+seatTicketRouter(app);
+priceRouter(app);
 
 // Error handling middleware
 app.use(errorHandler);

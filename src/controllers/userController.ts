@@ -79,7 +79,7 @@ const handleGetUserById = async (req: Request, res: Response) => {
         res.status(404).json({ 
 			errCode: user.errCode,
 			message: user.message,
-		    user: user });
+		    user: user.users });
       }
 	} catch (error) {
 	  res.status(500).json({ error: `Error went get all user ${error} `});

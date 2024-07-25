@@ -45,6 +45,7 @@ Seat.init({
 }, {
   sequelize,
   modelName: 'Seat',
+  timestamps: true,
 });
 
 Room.belongsTo(Room, { foreignKey:'roomId' });
