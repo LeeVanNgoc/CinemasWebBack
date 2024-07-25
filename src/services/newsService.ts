@@ -23,9 +23,16 @@ export const createNews = async (data: any) => {
       postDate: new Date(),
     });
 
-    return newNews;
+    return {
+      errCode: 0,
+      message: 'News created successfully',
+      news: newNews
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error creating news: ${error}`
+    };
   }
 };
 
@@ -33,13 +40,16 @@ export const deleteNews = async (newsId: number) => {
   try {
     const news = await News.findOne({ where: { postId: newsId } });
     if (!news) {
-      return { errorCode: 1, errorMessage: "Not found news" };
+      return { errCode: 1, message: "News not found" };
     } else {
       await news.destroy();
-      return { errorCode: 0, errorMessage: "News deleted successfully" };
+      return { errCode: 0, message: "News deleted successfully" };
     }
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error deleting news: ${error}`
+    };
   }
 };
 
@@ -47,12 +57,12 @@ export const editNews = async (data: any) => {
   try {
     const { id, title, content } = data;
     if (!id) {
-      throw new Error('Missing required parameters: id');
+      return { errCode: 4, message: 'Missing required parameters: id' };
     }
 
     const news = await News.findOne({ where: { postId: id } });
     if (!news) {
-      throw new Error('News not found!');
+      return { errCode: 1, message: 'News not found!' };
     }
 
     if (title) {
@@ -64,12 +74,18 @@ export const editNews = async (data: any) => {
 
     await news.save();
 
-    return { message: 'Update the news succeeds!', news };
+    return {
+      errCode: 0,
+      message: 'Update the news succeeds!',
+      news
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 2,
+      message: `Error updating news: ${error}`
+    };
   }
 };
-
 
 export const getAllNews = async () => {
   try {
@@ -77,9 +93,16 @@ export const getAllNews = async () => {
       attributes: ['postId', 'title', 'content', 'postDate'],
       raw: true,
     });
-    return news;
+    return {
+      errCode: 0,
+      message: 'Get all news success',
+      news: news
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 1,
+      message: `Error getting news: ${error}`
+    };
   }
 };
 
@@ -91,10 +114,20 @@ export const getNewsById = async (newsId: number) => {
       raw: true,
     });
     if (!news) {
-      throw new Error('News not found');
+      return {
+        errCode: 1,
+        message: 'News not found'
+      };
     }
-    return news;
+    return {
+      errCode: 0,
+      message: 'Get news success',
+      news: news
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error getting news: ${error}`
+    };
   }
 };
