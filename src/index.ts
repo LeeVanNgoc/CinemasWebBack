@@ -41,8 +41,10 @@ app.options('*', (req: Request, res: Response) => {
 // Routes
 userRoutes(app);
 movieRoutes(app);
-app.use('/api/genres', genreRoutes);
-app.use('/api/news', newsRoutes);
+newsRoutes(app)
+genreRoutes(app);
+// app.use('/api/genres', genreRoutes);
+// app.use('/api/news', newsRoutes);
 ticketRoutes(app);
 trailerRoutes(app);
 

@@ -11,7 +11,7 @@ class News extends Model {
 News.init({
   postId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
+    allowNull: false,
     primaryKey: true,
   },
   title: {
@@ -21,6 +21,11 @@ News.init({
   content: {
     type: DataTypes.TEXT,
     allowNull: false,
+  },
+  postDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW,
   },
 }, {
   sequelize,
