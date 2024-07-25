@@ -17,7 +17,6 @@ class Movie extends Model {
 Movie.init({
   movieid: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
   },
   title: {

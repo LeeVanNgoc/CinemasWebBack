@@ -6,10 +6,10 @@ const router = express.Router();
 
 const movieRoutes = (app: Application) => {
   router.post('/create-new-movie', movieController.handleCreateMovie);
-  router.delete('/delete-movie/:id', movieController.handleDeleteMovie);
-  router.put('/edit-movie/:id', movieController.handleEditMovie);
+  router.delete('/delete-movie/:movieid', movieController.handleDeleteMovie);
+  router.put('/edit-movie/:movieid', movieController.handleEditMovie);
   router.get('/get-all-movies', movieController.handleGetAllMovies);
-  router.get('/get-movie-by-id/:id', movieController.handleGetMovieById);
+  router.get('/get-movie-by-id/:movieid', movieController.handleGetMovieById);
 
   return app.use('/api/movies', router);
 };
