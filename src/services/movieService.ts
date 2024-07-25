@@ -83,12 +83,13 @@ export const getAllMovies = async () => {
 };
 
 export const getMovieById = async (movieId: number) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const movie = await Movie.findOne({ where: { movieid: movieId } });
-      return movie;
-    } catch (error) {
-      throw error;
+  try {
+    const movie = await Movie.findOne({ where: { movieid: movieId } });
+    if (!movie) {
+      throw new Error('Movie not found');
     }
-  });
+    return movie;
+  } catch (error) {
+    throw error;
+  }
 };
