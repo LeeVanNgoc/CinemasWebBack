@@ -1,23 +1,16 @@
 'use strict';
 /** @type {import('sequelize-cli').Migration} */
+
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('News', {
-      postId: {
-        allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
-        type: Sequelize.INTEGER
-      },
-      title: {
-        type: Sequelize.TEXT
-      },
-      content: {
-        type: Sequelize.TEXT
-      },
+  up: async (queryInterface, Sequelize) => {
+    await queryInterface.addColumn('News', 'postDate', {
+      type: Sequelize.DATE,
+      allowNull: false,
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
     });
   },
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('News');
+
+  down: async (queryInterface, Sequelize) => {
+    await queryInterface.removeColumn('News', 'postDate');
   }
 };
