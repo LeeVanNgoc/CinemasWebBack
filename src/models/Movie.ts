@@ -17,7 +17,6 @@ class Movie extends Model {
 Movie.init({
   movieid: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
     primaryKey: true,
   },
   title: {
@@ -55,6 +54,7 @@ Movie.init({
 }, {
   sequelize,
   modelName: 'Movie',
+  timestamps: false
 });
 
 Movie.belongsTo(Genres, { foreignKey:'genreId' });

@@ -12,6 +12,9 @@ import ticketRoutes from './routes/ticketsRouter';
 import errorHandler from './middlewares/errorHandler';
 import trailerRoutes from './routes/trailerRouter';
 import theaterRoutes from './routes/theaterRouter';
+import seatRouter from './routes/seatsRouter';
+import seatTicketRouter from './routes/seatTicketRouter';
+import priceRouter from './routes/priceRouter';
 
 dotenv.config();
 
@@ -47,6 +50,9 @@ newsRoutes(app);
 ticketRoutes(app);
 trailerRoutes(app);
 theaterRoutes(app);
+seatRouter(app);
+seatTicketRouter(app);
+priceRouter(app);
 
 // Error handling middleware
 app.use(errorHandler);
