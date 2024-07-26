@@ -3,7 +3,7 @@ import {createUser, deleteUser, editUser, getUserById, getAllUsers, loginAPI} fr
 
 
 const handleCreateUser = async (req: Request, res: Response) => {
-	const data = req.query;
+	const data = req.body;
 	console.log(data);
 	try {
 	  const newUser = await createUser(data);
