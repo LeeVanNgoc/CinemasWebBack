@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import MovieGenre from './MovieGenre';
 
 class Movie extends Model {
   public movieid!: number;
@@ -8,35 +7,30 @@ class Movie extends Model {
   public description!: string;
   public duration!: number;
   public country!: string;
-  public genreId!: number;
   public releaseDate!: Date;
-  public sTimeId!: string;
-
+  public screenTime!: string;
+  public image!: string;
 }
 
 Movie.init({
   movieid: {
     type: DataTypes.INTEGER,
-    allowNull: false,
     primaryKey: true,
+    autoIncrement: true,
   },
   title: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
     type: DataTypes.TEXT,
     allowNull: false,
   },
-  country: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  genreId: {
+  duration: {
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  duration: {
+  country: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -44,14 +38,18 @@ Movie.init({
     type: DataTypes.DATE,
     allowNull: false,
   },
-  sTimeid: {
+  screenTime: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  image: {
     type: DataTypes.STRING,
     allowNull: false,
   },
 }, {
   sequelize,
   modelName: 'Movie',
-  timestamps: false
+  timestamps: false,
 });
 
 export default Movie;

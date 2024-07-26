@@ -10,6 +10,7 @@ import newsRoutes from './routes/newsRoutes';
 import promotionRoutes from './routes/promotionRoutes';
 import roomRoutes from './routes/roomRoutes';
 import planScreenMovieRoutes from './routes/planScreenMovieRoutes';
+import movieGenreRoutes from './routes/movieGenreRoutes';
 
 
 import userRoutes from './routes/userRoutes';
@@ -49,6 +50,7 @@ newsRoutes(app);
 promotionRoutes(app);
 roomRoutes(app);
 planScreenMovieRoutes(app);
+movieGenreRoutes(app);
 
 userRoutes(app);
 ticketRoutes(app);

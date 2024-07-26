@@ -20,13 +20,13 @@ module.exports = {
       country: {
         type: Sequelize.STRING
       },
-      genreId: {
-        type: Sequelize.INTEGER
-      },
       releaseDate: {
         type: Sequelize.DATE
       },
-      sTimeid: {
+      screenTime: {
+        type: Sequelize.STRING
+      },
+      image: {
         type: Sequelize.STRING
       },
     });
