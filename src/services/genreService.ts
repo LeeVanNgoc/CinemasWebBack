@@ -18,9 +18,9 @@ export const createGenre = async (data: any) => {
 
 export const deleteGenre = async (genreId: number) => {
   try {
-    const genre = await Genre.findOne({ where: { id: genreId } });
+    const genre = await Genre.findOne({ where: { genreId } });
     if (!genre) {
-      return { errCode: 1, message: "Not found genre" };
+      return { errCode: 1, message: "Genre not found" };
     } else {
       await genre.destroy();
       return { errCode: 0, message: "Genre deleted successfully" };
@@ -34,13 +34,13 @@ export const deleteGenre = async (genreId: number) => {
 };
 
 export const editGenre = async (data: any) => {
-  const id = data.id;
+  const genreId = data.genreId;
   try {
-    if (!id) {
-      return { errCode: 2, message: 'Missing required parameters!' };
+    if (!genreId) {
+      return { errCode: 4, message: 'Missing required parameters!' };
     }
 
-    const genre = await Genre.findOne({ where: { id } });
+    const genre = await Genre.findOne({ where: { genreId } });
     if (!genre) {
       return { errCode: 1, message: 'Genre not found!' };
     }
@@ -55,7 +55,7 @@ export const editGenre = async (data: any) => {
     };
   } catch (error) {
     return {
-      errCode: 3,
+      errCode: 2,
       message: `Error updating genre: ${error}`
     };
   }
@@ -79,7 +79,7 @@ export const getAllGenres = async () => {
 
 export const getGenreById = async (genreId: number) => {
   try {
-    const genre = await Genre.findOne({ where: { id: genreId } });
+    const genre = await Genre.findOne({ where: { genreId } });
     if (!genre) {
       return {
         errCode: 1,
