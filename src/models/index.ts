@@ -15,20 +15,17 @@ const sequelize = config.url
   ? new Sequelize(config.url, config)
   : new Sequelize(config.database, config.username, config.password, config);
 
-Movie.hasOne(MovieGenre, { foreignKey: 'movieid' });
-MovieGenre.belongsTo(Movie, { foreignKey: 'movieid' });
+Movie.belongsToMany(Genres, { through: MovieGenre, foreignKey: 'movieId' });
+Genres.belongsToMany(Movie, { through: MovieGenre, foreignKey: 'genreId' });
 
-Genres.hasMany(MovieGenre, { foreignKey: 'genreId' });
-MovieGenre.belongsTo(Genres, { foreignKey: 'genreId' });
+Theater.hasMany(Room, { foreignKey: 'theaterId' });
+Room.belongsTo(Theater, { foreignKey: 'theaterId' });
 
-Theater.hasMany(Room, { foreignKey:'theaterId' });
-Room.belongsTo(Theater, { foreignKey:'theaterId' });
+Room.hasMany(Seat, { foreignKey: 'theaterId' });
+Seat.hasMany(Room, { foreignKey: 'theaterId' });
 
-Room.hasMany(Seat, { foreignKey:'theaterId' });
-Seat.hasMany(Room, { foreignKey:'theaterId' });
-
-Room.hasMany(PlanScreenMovie, { foreignKey:'theaterId' });
-PlanScreenMovie.belongsTo(Room, { foreignKey:'theaterId' });
+Room.hasMany(PlanScreenMovie, { foreignKey: 'theaterId' });
+PlanScreenMovie.belongsTo(Room, { foreignKey: 'theaterId' });
 
 
 export { Sequelize, sequelize };
