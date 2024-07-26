@@ -3,17 +3,21 @@ import {createUser, deleteUser, editUser, getUserById, getAllUsers, loginAPI} fr
 
 
 const handleCreateUser = async (req: Request, res: Response) => {
-	const data = req.body;
+	const data = req.query;
 	console.log(data);
 	try {
 	  const newUser = await createUser(data);
 	  if (newUser.errCode === 0) {
-		res.status(201).json({ message: newUser.message });
+		res.status(201).json({ 
+			errCode: newUser.errCode,
+			message: newUser.message });
 	  } else {
-		res.status(400).json({message: newUser.message})
+		res.status(400).json({
+			errCode: newUser.errCode,
+			message: newUser.message})
 	  }
 	} catch (error) {
-	  res.status(500).json({ error: 'Something was wrong in creating' });
+	  res.status(500).json({ error: `Something was wrong in creating new user ${error}` });
 	}
 }
 
