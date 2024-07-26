@@ -54,7 +54,4 @@ Movie.init({
   timestamps: false
 });
 
-// Movie.hasMany(MovieGenre, { foreignKey:'movieGenreId' });
-// MovieGenre.belongsTo(Movie, { foreignKey:'movieGenreId' });
-
 export default Movie;
