@@ -30,7 +30,7 @@ export const createUser = async (data: any) => {
 
       if (existingUser) {
         return{ 
-          errCode: 2,
+          errCode: 4,
           message: 'Email already exists'};
       } else {
         const hashPassword = await hashUserPassword(data.password);
@@ -49,12 +49,13 @@ export const createUser = async (data: any) => {
         });
         if(newUser) {
           return {
+            user: newUser,
             errCode: 0,
             message: 'User created successfully'
           };
         }else {
           return {
-            errCode: 3,
+            errCode: 2,
             message: 'Failed to create user'
           };
         }
@@ -192,7 +193,7 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
       
       if (isExists) {
         const user = await User.findOne({
-          attributes: ['email', 'password'],
+          attributes: ['email', 'password', 'role', 'userId'],
           where: { email: userEmail },
           raw: true,
         });
@@ -205,12 +206,13 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
             delete userData.password;
             userData.user = user;
             return({
+              userId: user.userId,
+              role: user.role,
               errCode: 0,
-              user: userData.user,
+              message: 'Login success',
             });
           } else {
             return({
-              // role: user.role,
               errCode: 4,
               message: 'Password is incorrect',
             });

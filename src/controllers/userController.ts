@@ -104,8 +104,8 @@ const handleGetAllUsers = async (req: Request, res: Response) => {
 
   const handleLoginUser = async (req: Request, res: Response) => {
 	try {
-	  const userEmail = req.body.email as string;
-	  const userPassword = req.body.password as string
+	  const userEmail = req.query.email as string;
+	  const userPassword = req.query.password as string
   
 	  // Kiểm tra email và password có tồn tại không
 	  if (!userEmail) {
@@ -121,6 +121,8 @@ const handleGetAllUsers = async (req: Request, res: Response) => {
   
 	  if (result.errCode === 0) {
 		res.status(200).json({ 
+			userId: result.userId,
+			role: result.role,	
 			errCode: result.errCode,
 			message: result.message
 		 });
