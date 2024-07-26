@@ -1,27 +1,34 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import ScreenTime from './PlanScreenMovie'
+import Genres from './Genres';
+import Movie from './Movie';
 
 class MovieGenre extends Model {
   public movieGenreId!: number;
-  public genreId!: string;
+  public genreId!: number;
 }
 
 MovieGenre.init({
   movieGenreId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
+    primaryKey: false,
+    references: {
+      model: Movie,
+      key: 'movieid',
+    },
   },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
+  genreId: {
+    type: DataTypes.INTEGER,
+    primaryKey: false,
+    references: {
+      model: Genres,
+      key: 'genreId',
+    },
   },
 }, {
   sequelize,
   modelName: 'MovieGenre',
+  timestamps: false,
 });
-
-MovieGenre.belongsTo(ScreenTime, { foreignKey:'sTimeId' });
 
 export default MovieGenre;

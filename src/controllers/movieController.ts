@@ -4,55 +4,74 @@ import { createMovie, deleteMovie, editMovie, getAllMovies, getMovieById } from 
 const handleCreateMovie = async (req: Request, res: Response) => {
   const data = req.body;
   try {
-    const newMovie = await createMovie(data);
-    res.status(201).json({ message: 'Movie created successfully', movie: newMovie });
+    const result = await createMovie(data);
+    if (result.errCode !== 0) {
+      return res.status(400).json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(201).json({ errCode: result.errCode, message: result.message, movie: result.movie });
   } catch (error) {
-    res.status(500).json({ error: 'Something was wrong in creating movie' });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in creating movies: ${error}` });
   }
 };
 
 const handleDeleteMovie = async (req: Request, res: Response) => {
-  const movieId = parseInt(req.params.id);
+  const movieId = Number(req.params.movieid);
+  if (isNaN(movieId)) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
+  }
   try {
-    const result: any = await deleteMovie(movieId);
-    if (result.errorCode) {
-      return res.status(404).json({ error: result.errorMessage });
+    const result = await deleteMovie(movieId);
+    if (result.errCode !== 0) {
+      return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
-    res.status(200).json({ message: result.errorMessage });
+    res.status(200).json({ errCode: result.errCode, message: result.message });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in deleting movies: ${error}` });
   }
 };
 
 const handleEditMovie = async (req: Request, res: Response) => {
-  const data = req.body;
+  const movieId = Number(req.params.movieid);
+  if (isNaN(movieId)) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
+  }
+  const data = { ...req.body, movieid: movieId };
   try {
-    const result: any = await editMovie(data);
-    if (result.error) {
-      return res.status(404).json({ error: result.error });
+    const result = await editMovie(data);
+    if (result.errCode !== 0) {
+      return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
-    res.status(200).json({ message: result.message, movie: result.movie });
+    res.status(200).json({ errCode: result.errCode, message: result.message, movie: result.movie });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in editing movies: ${error}` });
   }
 };
 
 const handleGetAllMovies = async (req: Request, res: Response) => {
   try {
-    const data = await getAllMovies();
-    res.status(200).json({ data });
+    const result = await getAllMovies();
+    if (result.errCode !== 0) {
+      return res.status(400).json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({ errCode: result.errCode, message: result.message, movies: result.movies });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in getting movies: ${error}` });
   }
 };
 
 const handleGetMovieById = async (req: Request, res: Response) => {
-  const movieId = parseInt(req.params.id);
+  const movieId = Number(req.params.movieid);
+  if (isNaN(movieId)) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
+  }
   try {
-    const data = await getMovieById(movieId);
-    res.status(200).json({ data });
+    const result = await getMovieById(movieId);
+    if (result.errCode !== 0) {
+      return res.status(404).json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({ errCode: result.errCode, message: result.message, movie: result.movie });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in getting movie: ${error}` });
   }
 };
 

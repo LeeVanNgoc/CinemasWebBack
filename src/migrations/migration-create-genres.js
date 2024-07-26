@@ -5,12 +5,14 @@ module.exports = {
     await queryInterface.createTable('Genres', {
       genreId: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
       name: {
         type: Sequelize.STRING
+      },
+      description: {
+        type: Sequelize.TEXT,
       },
     });
   },

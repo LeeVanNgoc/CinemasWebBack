@@ -5,6 +5,7 @@ class Theater extends Model {
   public theaterid!: number;
   public name!: string;
   public address!: string;
+  public city!: string;
 }
 
 Theater.init({
@@ -21,9 +22,15 @@ Theater.init({
     type: DataTypes.TEXT,
     allowNull: false,
   },
+  city: {
+    type: DataTypes.TEXT,
+    allowNull: false,
+  },
+
 }, {
   sequelize,
   modelName: 'Theater',
+  timestamps: true,
 });
 
 export default Theater;

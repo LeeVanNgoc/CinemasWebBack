@@ -4,55 +4,58 @@ import { createGenre, deleteGenre, editGenre, getAllGenres, getGenreById } from 
 const handleCreateGenre = async (req: Request, res: Response) => {
   const data = req.body;
   try {
-    const newGenre = await createGenre(data);
-    res.status(201).json({ message: 'Genre created successfully', genre: newGenre });
+    const result = await createGenre(data);
+    res.status(201).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Something went wrong in creating genre' });
+    res.status(500).json({ errCode: 3, message: `Something went wrong in creating genres: ${error}` });
   }
 };
 
 const handleDeleteGenre = async (req: Request, res: Response) => {
   const genreId = parseInt(req.params.id);
   try {
-    const result: any = await deleteGenre(genreId);
-    if (result.errorCode) {
-      return res.status(404).json({ error: result.errorMessage });
+    const result = await deleteGenre(genreId);
+    if (result.errCode) {
+      return res.status(404).json(result);
     }
-    res.status(200).json({ message: result.errorMessage });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, message: `Something went wrong in deleting genres: ${error}` });
   }
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
   const data = req.body;
   try {
-    const result: any = await editGenre(data);
-    if (result.error) {
-      return res.status(404).json({ error: result.error });
+    const result = await editGenre(data);
+    if (result.errCode) {
+      return res.status(404).json(result);
     }
-    res.status(200).json({ message: result.message, genre: result.genre });
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, message: `Something went wrong in editing genres: ${error}` });
   }
 };
 
 const handleGetAllGenres = async (req: Request, res: Response) => {
   try {
-    const data = await getAllGenres();
-    res.status(200).json({ data });
+    const result = await getAllGenres();
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, message: `Something went wrong in getting genres: ${error}` });
   }
 };
 
 const handleGetGenreById = async (req: Request, res: Response) => {
   const genreId = parseInt(req.params.id);
   try {
-    const data = await getGenreById(genreId);
-    res.status(200).json({ data });
+    const result = await getGenreById(genreId);
+    if (result.errCode) {
+      return res.status(404).json(result);
+    }
+    res.status(200).json(result);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ errCode: 3, message: `Something went wrong in getting genres: ${error}` });
   }
 };
 
