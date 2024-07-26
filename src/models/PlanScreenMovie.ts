@@ -45,6 +45,7 @@ PlanScreenMovie.init({
 }, {
   sequelize,
   modelName: 'PlanScreenMovie',
+  tableName: 'planscreenmovie',
   timestamps: false,
 });
 
