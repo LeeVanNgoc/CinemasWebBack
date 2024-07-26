@@ -1,8 +1,26 @@
 import Genre from '../models/Genres';
+import { Op } from 'sequelize';
 
 export const createGenre = async (data: any) => {
   try {
-    const newGenre = await Genre.create(data);
+    const existingIds = await Genre.findAll({
+      attributes: ['genreId'],
+      order: [['genreId', 'ASC']]
+    });
+
+    const ids = existingIds.map(genre => genre.genreId);
+
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
+    }
+
+    const newGenre = await Genre.create({
+      genreId: newId,
+      name: data.name,
+      description: data.description,
+    });
+
     return {
       errCode: 0,
       message: 'Genre created successfully',
