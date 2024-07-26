@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import Genres from './Genres';
+import MovieGenre from './MovieGenre';
 
 class Movie extends Model {
   public movieid!: number;
@@ -17,6 +17,7 @@ class Movie extends Model {
 Movie.init({
   movieid: {
     type: DataTypes.INTEGER,
+    allowNull: false,
     primaryKey: true,
   },
   title: {
@@ -34,10 +35,6 @@ Movie.init({
   genreId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    references: {
-      model: Genres,
-      key: 'id',
-    }
   },
   duration: {
     type: DataTypes.STRING,
@@ -57,6 +54,7 @@ Movie.init({
   timestamps: false
 });
 
-Movie.belongsTo(Genres, { foreignKey:'genreId' });
+// Movie.hasMany(MovieGenre, { foreignKey:'movieGenreId' });
+// MovieGenre.belongsTo(Movie, { foreignKey:'movieGenreId' });
 
 export default Movie;

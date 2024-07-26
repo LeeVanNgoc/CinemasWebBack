@@ -5,13 +5,16 @@ module.exports = {
     await queryInterface.createTable('MovieGenres', {
       movieGenreId: {
         allowNull: false,
-        autoIncrement: true,
-        primaryKey: true,
+        autoIncrement: false,
+        primaryKey: false,
         type: Sequelize.INTEGER
       },
-      title: {
-        type: Sequelize.STRING
-      }
+      genreId: {
+        allowNull: false,
+        autoIncrement: false,
+        primaryKey: false,
+        type: Sequelize.INTEGER
+      },
     });
   },
   async down(queryInterface, Sequelize) {
