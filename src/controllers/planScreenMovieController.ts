@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createPlanScreenMovie, deletePlanScreenMovie, editPlanScreenMovie, getAllPlanScreenMovies, getPlanScreenMovieById } from '../services/planScreenMovieService';
+import { createPlanScreenMovie, deletePlanScreenMovie, editPlanScreenMovie, getAllPlanScreenMovies, getPlanScreenMovieById } from '../services/PlanScreenMovieService';
 
 const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   const data = req.body;
