@@ -41,11 +41,10 @@ Seat.init({
     type: DataTypes.BOOLEAN,
     allowNull: false,
   },
-  
 }, {
   sequelize,
   modelName: 'Seat',
-  timestamps: true,
+  timestamps: false,
 });
 
 Room.belongsTo(Room, { foreignKey:'roomId' });

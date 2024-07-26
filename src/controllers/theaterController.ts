@@ -39,9 +39,9 @@ const handleGetAllTheaters = async (req: Request, res: Response) => {
 }
 
 const handleDeleteTheater = async(req: Request, res: Response) => {
-	const theaterID = Number(req.query.theaterID);
+	const theaterId = Number(req.query.theaterId);
 	try {
-		const result = await deleteTheater(theaterID);
+		const result = await deleteTheater(theaterId);
 		if (result.errCode === 0) {
 			res.status(200).json({ 
 				errCode : result.errCode,
@@ -57,7 +57,7 @@ const handleDeleteTheater = async(req: Request, res: Response) => {
 }
 
 const handleGetTheaterById = async (req: Request, res: Response) => {
-	const theaterId = Number(req.query.theaterID);
+	const theaterId = Number(req.query.theaterId);
 	try {
 		const result = await getTheaterById(theaterId);
 		if (result.errCode === 0) {

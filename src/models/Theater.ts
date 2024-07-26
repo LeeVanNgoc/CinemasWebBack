@@ -30,7 +30,7 @@ Theater.init({
 }, {
   sequelize,
   modelName: 'Theater',
-  timestamps: true,
+  timestamps: false,
 });
 
 export default Theater;
