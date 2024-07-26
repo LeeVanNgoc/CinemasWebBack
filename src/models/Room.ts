@@ -13,13 +13,14 @@ Room.init({
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
+    allowNull: false,
   },
   theaterId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Theater,
-      key: 'id',
+      key: 'theaterId',
     },
   },
   type: {
@@ -33,7 +34,7 @@ Room.init({
 }, {
   sequelize,
   modelName: 'Room',
+  timestamps: false,
 });
 
-Room.belongsTo(Theater, { foreignKey:'theaterId' });
 export default Room;
