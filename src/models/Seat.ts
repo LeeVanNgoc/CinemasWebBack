@@ -26,7 +26,7 @@ Seat.init({
     allowNull: false,
     references: {
       model: Room,
-      key: 'id',
+      key: 'roomId',
     },
   },
   row: {
@@ -46,7 +46,5 @@ Seat.init({
   modelName: 'Seat',
   timestamps: false,
 });
-
-Room.belongsTo(Room, { foreignKey:'roomId' });
 
 export default Seat;
