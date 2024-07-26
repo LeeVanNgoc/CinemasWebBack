@@ -22,7 +22,7 @@ const handleCreateUser = async (req: Request, res: Response) => {
 }
 
 const handleDeleteUser = async (req: Request, res: Response) => {
-	const userId = parseInt(req.query.id as string);
+	const userId = Number(req.query.id);
 	if (isNaN(userId)) {
     	return res.status(400).json({ message: 'Invalid ticket ID' }); // Xử lý khi ID không hợp lệ
   	}	try {
