@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
+import MovieGenre from './MovieGenre'
 
 class Genres extends Model {
   public genreId!: number;
@@ -26,5 +27,8 @@ Genres.init({
   modelName: 'Genres',
   timestamps: false
 });
+
+Genres.hasOne(MovieGenre, { foreignKey:'movieGenreId' });
+MovieGenre.belongsTo(Genres, { foreignKey:'movieGenreId' });
 
 export default Genres;

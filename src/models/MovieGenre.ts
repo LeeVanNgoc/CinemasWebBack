@@ -1,6 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import ScreenTime from './PlanScreenMovie'
+import Genres from './Genres'
 
 class MovieGenre extends Model {
   public movieGenreId!: number;
@@ -23,6 +23,7 @@ MovieGenre.init({
   timestamps: false
 });
 
-MovieGenre.belongsTo(ScreenTime, { foreignKey:'sTimeId' });
+MovieGenre.belongsTo(Genres, { foreignKey:'movieGenreId' });
+Genres.hasOne(MovieGenre, { foreignKey:'movieGenreId' });
 
 export default MovieGenre;
