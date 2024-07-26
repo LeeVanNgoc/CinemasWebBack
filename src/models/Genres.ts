@@ -10,16 +10,17 @@ class Genres extends Model {
 Genres.init({
   genreId: {
     type: DataTypes.INTEGER,
-    primaryKey: true,    
+    primaryKey: true,
+    allowNull: false,
   },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
   },
   description: {
-    type: DataTypes.TEXT,
+    type: DataTypes.STRING,
     allowNull: true,
-  }
+  },
 }, {
   sequelize,
   modelName: 'Genres',
