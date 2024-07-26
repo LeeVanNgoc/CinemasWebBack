@@ -139,7 +139,15 @@ export const getUserById = async(userId: number) => {
           where: {
             userId: userId,
           },
-          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
+           attributes: [
+            "userId",
+            "email",
+            "firstName",
+            "lastName",
+            "birthYear",
+            "userName",
+            "phonenumber",
+          ],
           raw: true,
         });
       return{
@@ -158,7 +166,15 @@ export const getUserById = async(userId: number) => {
 export const getAllUsers = async() => {
     try {
         const users = await User.findAll({
-          attributes: ['email', 'firstName', 'lastName', 'phonenumber'],
+           attributes: [
+            "userId",
+            "email",
+            "firstName",
+            "lastName",
+            "birthYear",
+            "userName",
+            "phonenumber",
+          ],
         raw: true,
     });
       return{
