@@ -2,16 +2,13 @@ import Movie from '../models/Movie';
 
 export const createMovie = async (data: any) => {
   try {
-    // Find all existing movieids
     const existingIds = await Movie.findAll({
       attributes: ['movieid'],
       order: [['movieid', 'ASC']]
     });
 
-    // Convert to an array of numbers
     const ids = existingIds.map(movie => movie.movieid);
 
-    // Find the smallest available id
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
@@ -28,9 +25,16 @@ export const createMovie = async (data: any) => {
       releaseDate: new Date(),
     });
 
-    return newMovie;
+    return {
+      errCode: 0,
+      message: 'Movie created successfully',
+      movie: newMovie
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error creating movie: ${error}`
+    };
   }
 };
 
@@ -38,58 +42,81 @@ export const deleteMovie = async (movieId: number) => {
   try {
     const movie = await Movie.findOne({ where: { movieid: movieId } });
     if (!movie) {
-      return { errorCode: 1, errorMessage: "Not found movie" };
+      return { errCode: 1, message: "Movie not found" };
     } else {
       await movie.destroy();
-      return { errorCode: 0, errorMessage: "Movie deleted successfully" };
+      return { errCode: 0, message: "Movie deleted successfully" };
     }
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error deleting movie: ${error}`
+    };
   }
 };
 
 export const editMovie = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    const movieid = data.movieid;
-    try {
-      if (!movieid) {
-        return resolve({ error: 'Missing required parameters!' });
-      }
-
-      const movie = await Movie.findOne({ where: { movieid } });
-      if (!movie) {
-        return resolve({ error: 'Movie not found!' });
-      } else {
-        Object.assign(movie, data);
-        await movie.save();
-      }
-
-      resolve({ message: 'Update the movie succeeds!', movie });
-    } catch (error) {
-      reject(error);
+  const movieid = data.movieid;
+  try {
+    if (!movieid) {
+      return { errCode: 4, message: 'Missing required parameters!' };
     }
-  });
+
+    const movie = await Movie.findOne({ where: { movieid } });
+    if (!movie) {
+      return { errCode: 1, message: 'Movie not found!' };
+    }
+
+    Object.assign(movie, data);
+    await movie.save();
+
+    return { 
+      errCode: 0,
+      message: 'Update the movie succeeds!',
+      movie
+    };
+  } catch (error) {
+    return {
+      errCode: 2,
+      message: `Error updating movie: ${error}`
+    };
+  }
 };
 
 export const getAllMovies = async () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const movies = await Movie.findAll();
-      resolve(movies);
-    } catch (error) {
-      reject(error);
-    }
-  });
+  try {
+    const movies = await Movie.findAll();
+    return {
+      errCode: 0,
+      message: 'Get all movies success',
+      movies
+    };
+  } catch (error) {
+    return {
+      errCode: 1,
+      message: `Error getting movies: ${error}`
+    };
+  }
 };
 
 export const getMovieById = async (movieId: number) => {
   try {
     const movie = await Movie.findOne({ where: { movieid: movieId } });
     if (!movie) {
-      throw new Error('Movie not found');
+      return {
+        errCode: 1,
+        message: 'Movie not found'
+      };
     }
-    return movie;
+    return {
+      errCode: 0,
+      message: 'Get movie success',
+      movie
+    };
   } catch (error) {
-    throw error;
+    return {
+      errCode: 3,
+      message: `Error getting movie: ${error}`
+    };
   }
 };

@@ -1,73 +1,118 @@
 import Genre from '../models/Genres';
+import { Op } from 'sequelize';
 
 export const createGenre = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const newGenre = await Genre.create(data);
-      resolve(newGenre);
-    } catch (error) {
-      reject(error);
+  try {
+    const existingIds = await Genre.findAll({
+      attributes: ['genreId'],
+      order: [['genreId', 'ASC']]
+    });
+
+    const ids = existingIds.map(genre => genre.genreId);
+
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
     }
-  });
+
+    const newGenre = await Genre.create({
+      genreId: newId,
+      name: data.name,
+      description: data.description,
+    });
+
+    return {
+      errCode: 0,
+      message: 'Genre created successfully',
+      genre: newGenre
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error creating genre: ${error}`
+    };
+  }
 };
 
 export const deleteGenre = async (genreId: number) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const genre = await Genre.findOne({ where: { id: genreId } });
-      if (!genre) {
-        resolve({ errorCode: 1, errorMessage: "Not found genre" });
-      } else {
-        await genre.destroy();
-        resolve({ errorCode: 0, errorMessage: "Genre deleted successfully" });
-      }
-    } catch (error) {
-      reject(error);
+  try {
+    const genre = await Genre.findOne({ where: { genreId } });
+    if (!genre) {
+      return { errCode: 1, message: "Genre not found" };
+    } else {
+      await genre.destroy();
+      return { errCode: 0, message: "Genre deleted successfully" };
     }
-  });
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error deleting genre: ${error}`
+    };
+  }
 };
 
 export const editGenre = async (data: any) => {
-  return new Promise(async (resolve, reject) => {
-    const id = data.id;
-    try {
-      if (!id) {
-        return resolve({ error: 'Missing required parameters!' });
-      }
-
-      const genre = await Genre.findOne({ where: { id } });
-      if (!genre) {
-        return resolve({ error: 'Genre not found!' });
-      } else {
-        Object.assign(genre, data);
-        await genre.save();
-      }
-
-      resolve({ message: 'Update the genre succeeds!', genre });
-    } catch (error) {
-      reject(error);
+  const genreId = data.genreId;
+  try {
+    if (!genreId) {
+      return { errCode: 4, message: 'Missing required parameters!' };
     }
-  });
+
+    const genre = await Genre.findOne({ where: { genreId } });
+    if (!genre) {
+      return { errCode: 1, message: 'Genre not found!' };
+    }
+
+    Object.assign(genre, data);
+    await genre.save();
+
+    return { 
+      errCode: 0,
+      message: 'Update the genre succeeds!',
+      genre
+    };
+  } catch (error) {
+    return {
+      errCode: 2,
+      message: `Error updating genre: ${error}`
+    };
+  }
 };
 
 export const getAllGenres = async () => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const genres = await Genre.findAll();
-      resolve(genres);
-    } catch (error) {
-      reject(error);
-    }
-  });
+  try {
+    const genres = await Genre.findAll();
+    return {
+      errCode: 0,
+      message: 'Get all genres success',
+      genres
+    };
+  } catch (error) {
+    return {
+      errCode: 1,
+      message: `Error getting genres: ${error}`
+    };
+  }
 };
 
 export const getGenreById = async (genreId: number) => {
-  return new Promise(async (resolve, reject) => {
-    try {
-      const genre = await Genre.findOne({ where: { id: genreId } });
-      resolve(genre);
-    } catch (error) {
-      reject(error);
+  try {
+    const genre = await Genre.findOne({ where: { genreId } });
+    if (!genre) {
+      return {
+        errCode: 1,
+        message: 'Genre not found'
+      };
     }
-  });
+    return {
+      errCode: 0,
+      message: 'Get genre success',
+      genre
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting genre: ${error}`
+    };
+  }
 };

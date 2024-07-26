@@ -12,7 +12,8 @@ class Promotion extends Model {
 Promotion.init({
   promoId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
+    autoIncrement: false,
+    allowNull: false,
     primaryKey: true,
   },
   description: {

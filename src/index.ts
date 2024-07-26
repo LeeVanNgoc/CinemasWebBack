@@ -4,17 +4,20 @@ import dotenv from 'dotenv';
 
 import { connectDB } from './config/connectDB';
 
-import userRoutes from './routes/userRoutes';
 import movieRoutes from './routes/movieRoutes';
 import genreRoutes from './routes/genreRoutes';
 import newsRoutes from './routes/newsRoutes';
+import promotionRoutes from './routes/promotionRoutes';
+
+import userRoutes from './routes/userRoutes';
 import ticketRoutes from './routes/ticketsRouter';
-import errorHandler from './middlewares/errorHandler';
 import trailerRoutes from './routes/trailerRouter';
 import theaterRoutes from './routes/theaterRouter';
 import seatRouter from './routes/seatsRouter';
 import seatTicketRouter from './routes/seatTicketRouter';
 import priceRouter from './routes/priceRouter';
+
+import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -47,6 +50,9 @@ userRoutes(app);
 movieRoutes(app);
 genreRoutes(app);
 newsRoutes(app);
+promotionRoutes(app);
+
+userRoutes(app);
 ticketRoutes(app);
 trailerRoutes(app);
 theaterRoutes(app);
