@@ -1,8 +1,40 @@
 import Seat from "../models/Seat";
 
+//Check row exist
+export const checkSeat = async(data : any) => {
+    try {
+        const seats = await Seat.findAll({ where: { row: data.row, col: data.col, roomId: data.roomId } });
+        if (!seats) {
+            return {
+                errCode: 1,
+                message: 'No seats created',
+            };
+        } else {
+            return {
+                errCode: 0,
+                message: 'Seat is exist',
+            };
+        }
+    } catch (error) {
+        return {
+            errCode: 3,
+            message: `Get seats in row failed ${error}`,
+        };
+    }
+}
+
+
 // Create new Seat 
 export const createSeat = async (data: any) => {
+    
 	try {
+        const seat = await Seat.findOne({ where: { row: data.row, col: data.col, roomId: data.roomId } });
+        if (seat) {
+            return {
+                errCode: 1,
+                message: 'Seat already exist',
+            };
+        }
 		const newSeat = await Seat.create({
 			row : data.row,
 			col : data.col,
@@ -78,7 +110,7 @@ export const updateSeat = async (data: any) => {
                 message: 'Seat not found',
             };
         }
-		seat.isAvailable = data.status || seat.isAvailable;
+		seat.isAvailable = data.isAvailable || seat.isAvailable;
         await seat.save();
         return {
             seat,

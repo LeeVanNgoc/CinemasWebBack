@@ -88,7 +88,7 @@ export const getTheatersByCity = async (city: string) => {
 export const updateTheater = async (data: any) => {
   try {
     const theater = await Theater.findOne({
-      where: { theaterID: data.theaterID }
+      where: { theaterId: data.theaterId }
     });
     if (!theater) {
       return {
