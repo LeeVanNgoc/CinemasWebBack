@@ -6,11 +6,11 @@ const router = express.Router();
 
 const priceRouter = (app : Application) => {
 	router.post('/create-price', priceController.handleCreatePrice);
-    router.delete('/delete-price/:id', priceController.handleDeletePrice);
-    router.put('/edit-price/:id', priceController.handleUpdatePrice);
-    router.get('/get-price-by-id/:id', priceController.handleGetPriceById);
+    router.delete('/delete-price', priceController.handleDeletePrice);
+    router.put('/edit-price', priceController.handleUpdatePrice);
+    router.get('/get-price-by-id', priceController.handleGetPriceById);
     router.get('/get-all-prices', priceController.handleGetAllPrices);
-    app.use('/prices', router);
+    app.use('/api/prices', router);
 }
 
 export default priceRouter;

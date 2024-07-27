@@ -24,8 +24,9 @@ const handleCreateUser = async (req: Request, res: Response) => {
 const handleDeleteUser = async (req: Request, res: Response) => {
 	const userId = Number(req.query.id);
 	if (isNaN(userId)) {
-    	return res.status(400).json({ message: 'Invalid ticket ID' }); // Xử lý khi ID không hợp lệ
-  	}	try {
+    	return res.status(400).json({ message: 'Invalid user ID' }); // Xử lý khi ID không hợp lệ
+  	}	
+	try {
 	  const result = await deleteUser(userId);
 	  if (result.errCode === 0) {
 	  	res.status(201).json({ 

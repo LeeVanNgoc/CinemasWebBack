@@ -1,0 +1,90 @@
+genreRoutes
+	router.post('/create-new-genre');
+	router.delete('/delete-genre/:id');
+	router.put('/edit-genre/:id');
+	router.get('/get-all-genres');
+	router.get('/get-genre-by-id/:id');
+	app.use('/api/genres', router);
+
+movieRoutes
+	router.post('/create-new-movie);
+	router.delete('/delete-movie/:movieid);
+	router.put('/edit-movie/:movieid);
+	router.get('/get-all-movies);
+	router.get('/get-movie-by-id/:movieid);
+	app.use('/api/movies', router);
+
+newsRoutes
+	router.post('/create-new-news);
+	router.delete('/delete-news/:id);
+	router.put('/edit-news/:id);
+	router.get('/get-all-news);
+	router.get('/get-news-by-id/:id);
+	app.use('/api/news', router);
+
+priceRouter 
+	router.post('/create-price');
+    router.delete('/delete-price');
+    router.put('/edit-price');
+    router.get('/get-price-by-id');
+    router.get('/get-all-prices');
+    app.use('/api/prices', router);
+
+promotionRoutes
+	router.post('/create-new-promotion);
+	router.delete('/delete-promotion/:promoId);
+	router.put('/edit-promotion/:promoId);
+	router.get('/get-all-promotions);
+	router.get('/get-promotion-by-id/:promoId);
+	app.use('/api/promotions', router);
+
+seatRouter
+	router.post('/create-seat);
+    router.delete('/delete-seat);
+    router.put('/edit-seat);
+    router.get('/get-seats);
+    router.get('/get-seat-by-id);
+    app.use('/api/seats', router);
+
+seatTicketRouter
+	router.post('/create-seat-ticket);
+    router.get('/get-all-seat-ticket);
+    router.get('/get-seats-ticket-by-id);
+    router.delete('/delete-seats-ticket);
+    router.put('/edit-seat-ticket);
+    app.use('/api/seattickets', router);
+
+theaterRoutes
+	router.post("/create-theater);
+	router.get("/get-theater);
+	router.put("/edit-theater);
+	router.delete("/delete-theater);
+	router.get("/get-theaters-by-id);
+	router.get("/get-theaters-by-city);
+	app.use("/api/theater", router);
+
+ticketRoutes
+	router.post('/create-ticket);
+	router.delete('/delete-ticket);
+	router.put('/edit-ticket);
+	router.get('/get-tickets);
+	router.get('/get-list-tickets);
+	app.use('/api/ticket', router);
+
+trailerRoutes
+	router.post('/create-trailer);
+	router.delete('/delete-trailer);
+	router.put('/edit-trailer);
+	router.get('/get-all-trailers);
+	router.get('/get-trailer-by-id);
+	router.get('/get-trailer-by-movie-id);
+	app.use('/api/trailer', router);
+
+userRoutes
+	router.post('/create-new-user);
+	router.delete('/delete-user);
+	router.put('/edit-user);
+	router.get('/get-user-by-id);
+	router.get('/get-all-users);
+	router.post('/login-user);
+	app.use('/api/user', router);	

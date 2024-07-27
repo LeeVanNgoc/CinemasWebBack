@@ -6,7 +6,7 @@ export const createPrice = async (data: any) => {
     const newPrice = await Prices.create({
       cost: data.cost,
       type: data.type,
-      isweekend: data.isweekend,
+      isWeekend: data.isWeekend,
     });
 	if (!newPrice) {
 		return {
