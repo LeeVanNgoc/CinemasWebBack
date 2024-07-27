@@ -28,8 +28,8 @@ export const checkSeat = async(data : any) => {
 export const createSeat = async (data: any) => {
     
 	try {
-        const seat = await Seat.findOne({ where: { row: data.row, col: data.col, roomId: data.roomId } });
-        if (seat) {
+        const seat = await checkSeat(data);
+        if (seat.errCode === 0) {
             return {
                 errCode: 1,
                 message: 'Seat already exist',

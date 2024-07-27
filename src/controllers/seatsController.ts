@@ -39,6 +39,9 @@ const handleGetAllSeats = async (req: Request, res: Response) => {
 
 const handleGetSeatById = async (req: Request, res: Response) => {
 	const seatId = Number(req.query.seatId);
+    if (isNaN(seatId)) {
+    	return res.status(400).json({ message: 'Invalid user ID' }); // Xử lý khi ID không hợp lệ
+  	}
     try {
         const seat = await getSeatById(seatId);
         if (seat.errCode === 0) {

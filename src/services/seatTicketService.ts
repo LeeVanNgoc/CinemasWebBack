@@ -1,9 +1,45 @@
 import SeatTickets from "../models/SeatTicket";
 
+
+// Check ticket exist
+export const checkTicketExist = async (ticketId: number) => {
+    try {
+        const seatTicket = await SeatTickets.findOne({
+            where: { ticketId : ticketId }
+        });
+        if (!seatTicket) {
+            return {
+                errCode: 1,
+                message: 'No ticket created',
+            };
+        } else {
+            return {
+                errCode: 0,
+                message: 'Ticket is exist',
+            };
+        }
+    } catch (error) {
+        return {
+            errCode: 3,
+            message: `Get ticket failed ${error}`,
+        };
+    }
+};
+
 // Create Seat ticket 
 export const createSeatTicket = async (data: any) => {
 	try {
-		const newSeatTicket = await SeatTickets.create(data);
+        const checkTicket = await checkTicketExist(data.ticketId);
+        if (checkTicket.errCode === 0) {
+            return {
+                errCode: 2,
+                message: 'Ticket is exist, please put other ticket id',
+            };
+        }
+		const newSeatTicket = await SeatTickets.create({
+            seatId: data.seatId,
+            ticketId: data.ticketId,
+        });
 		return {
 			newSeatTicket,
 			errCode : 0,
@@ -18,10 +54,10 @@ export const createSeatTicket = async (data: any) => {
 };
 
 // Get Seat ticket by id
-export const getSeatTicketById = async (seatTicketId: number) => {
+export const getSeatTicketById = async (stId: number) => {
     try {
         const seatTicket = await SeatTickets.findOne({
-			where: {seatTicketId : seatTicketId}
+			where: {stId : stId}
 		});
         if (!seatTicket) {
             return {
@@ -62,16 +98,16 @@ export const getAllSeatTickets = async () => {
 
 // Update Seat ticket by id
 export const updateSeatTicket = async (data: any) => {
-    const seatTicketId = data.seatTicketId
+    const stId = data.stId
     try {
-        if (!seatTicketId) {
+        if (!stId) {
             return {
                 errCode: 2,
                 message: 'Seat ticket id is required',
             };
         }
         const seatTicket = await SeatTickets.findOne({
-			where: { seatTicketId: seatTicketId },
+			where: { stId: stId },
 		});
         if (!seatTicket) {
             return {
@@ -96,9 +132,9 @@ export const updateSeatTicket = async (data: any) => {
 };
 
 // Delete Seat ticket by id
-export const deleteSeatTicket = async (seatTicketId: number) => {
+export const deleteSeatTicket = async (stId: number) => {
     try {
-        const seatTicket = await SeatTickets.findByPk(seatTicketId);
+        const seatTicket = await SeatTickets.findByPk(stId);
         if (!seatTicket) {
             return {
                 errCode: 1,

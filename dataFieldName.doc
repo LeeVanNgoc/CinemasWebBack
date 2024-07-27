@@ -1,0 +1,82 @@
+Genres:
+	- 	genreId
+	- 	name
+	- 	description
+Movie:
+	-	movieid
+	-	title
+	-	description
+	-	country
+	-	genreId
+	-	duration
+	-	releaseDate
+	-	sTimeid
+MovieGenre:
+	- 	movieGenreId
+	-	genreId
+New:
+	-	postId
+	-	title
+	-	content
+	-	postDate
+PlanScreenMovie:
+	-	psmId : planScreenMovieId
+	-	roomId
+	-	movieId
+	-	startTime
+	-	endTime
+	-	space
+Prices:
+	-	pricesId
+	-	cost : 'Standard', 'Vip', SweetBox'
+	-	type : '
+	-	isWeekend : 'True : 0', 'False : 1'
+Promotion:
+	-	promoId : PromotionId
+	-	description
+	-	discount
+	-	startDate
+	-	endDate
+Room:
+	-	roomId
+	-	theaterId
+	-	type : '3D', '2D'
+	-	numberSeats : '1A', '2A', '3A', '4A', ....
+Seat:
+	-	seatId
+	-	type
+	-	roomId
+	-	row : 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'
+	-	col : 1, 2, 3, 4, 5, 6, 7, 8
+	-	isAvailable : 'True : 0', 'False : 1'
+SeatTicket:
+	-	stId : SeatTicketId
+	-	seatId
+	-	ticketId
+Theater:
+	-	theaterId
+	-	name 
+	-	address
+	-	city
+Ticket:
+	-	ticketId
+	-	userId
+	-	psmId : planScreenMovieId
+	-	stId : SeatTicketId
+	-	bank : 'cash' // 'bank'
+	-	price
+	-	ticketsDate
+Trailer:
+	-	trailerId
+	-	movieId
+	-	link
+User:
+	-	userId
+	-	email
+	-	password
+	-	firstName
+	-	lastName
+	-	userName
+	-	phonenumber
+	-	birthYear
+	-	role : 'Admin' // 'User'
