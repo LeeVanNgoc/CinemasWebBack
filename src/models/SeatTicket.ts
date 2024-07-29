@@ -3,13 +3,13 @@ import sequelize from '../config/connectDB';
 import Tickets from './Tickets';
 import Seat from './Seat';
 class SeatTickets extends Model {
-	public stId!: number;
+	public seatTicketId!: number;
   public seatId!: number;
   public ticketId!: number;
 }
 
 SeatTickets.init({
-  stId: {
+  seatTicketId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,

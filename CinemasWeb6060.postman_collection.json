@@ -10,12 +10,12 @@
 			"name": "Ticket",
 			"item": [
 				{
-					"name": "http://localhost:6060/api/ticket/create-ticket?userId=1&psmId=1&stId=1&bank=bank&price=100000",
+					"name": "http://localhost:6060/api/ticket/create-ticket?userId=1&planScreenMovieId=1&seatTicketId=1&bank=bank&price=100000",
 					"request": {
 						"method": "POST",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6060/api/ticket/create-ticket?ticketId=4&userId=2&psmId=3&stId=3&bank=bank&price=120000",
+							"raw": "http://localhost:6060/api/ticket/create-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -36,11 +36,11 @@
 									"value": "2"
 								},
 								{
-									"key": "psmId",
+									"key": "planScreenMovieId",
 									"value": "3"
 								},
 								{
-									"key": "stId",
+									"key": "seatTicketId",
 									"value": "3"
 								},
 								{
@@ -111,12 +111,12 @@
 					"response": []
 				},
 				{
-					"name": "http://localhost:6060/api/ticket/edit-ticket?ticketId=4&userId=2&psmId=3&stId=3&bank=bank&price=120000",
+					"name": "http://localhost:6060/api/ticket/edit-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
 					"request": {
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6060/api/ticket/edit-ticket?ticketId=7&userId=2&psmId=3&stId=3&bank=bank&price=120000",
+							"raw": "http://localhost:6060/api/ticket/edit-ticket?ticketId=7&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -137,11 +137,11 @@
 									"value": "2"
 								},
 								{
-									"key": "psmId",
+									"key": "planScreenMovieId",
 									"value": "3"
 								},
 								{
-									"key": "stId",
+									"key": "seatTicketId",
 									"value": "3"
 								},
 								{
@@ -867,7 +867,7 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6060/api/seattickets/delete-seats-ticket?stId=1",
+							"raw": "http://localhost:6060/api/seattickets/delete-seats-ticket?seatTicketId=1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -880,7 +880,7 @@
 							],
 							"query": [
 								{
-									"key": "stId",
+									"key": "seatTicketId",
 									"value": "1"
 								}
 							]
@@ -894,7 +894,7 @@
 						"method": "PUT",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6060/api/seattickets/edit-seat-ticket?stId=2&seatId=3&ticketId=6",
+							"raw": "http://localhost:6060/api/seattickets/edit-seat-ticket?seatTicketId=2&seatId=3&ticketId=6",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -907,7 +907,7 @@
 							],
 							"query": [
 								{
-									"key": "stId",
+									"key": "seatTicketId",
 									"value": "2"
 								},
 								{
@@ -929,7 +929,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id?stId=2",
+							"raw": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id?seatTicketId=2",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -942,7 +942,7 @@
 							],
 							"query": [
 								{
-									"key": "stId",
+									"key": "seatTicketId",
 									"value": "2"
 								}
 							]

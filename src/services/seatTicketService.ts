@@ -54,10 +54,10 @@ export const createSeatTicket = async (data: any) => {
 };
 
 // Get Seat ticket by id
-export const getSeatTicketById = async (stId: number) => {
+export const getSeatTicketById = async (seatTicketId: number) => {
     try {
         const seatTicket = await SeatTickets.findOne({
-			where: {stId : stId}
+			where: {seatTicketId : seatTicketId}
 		});
         if (!seatTicket) {
             return {
@@ -98,16 +98,16 @@ export const getAllSeatTickets = async () => {
 
 // Update Seat ticket by id
 export const updateSeatTicket = async (data: any) => {
-    const stId = data.stId
+    const seatTicketId = data.seatTicketId
     try {
-        if (!stId) {
+        if (!seatTicketId) {
             return {
                 errCode: 2,
                 message: 'Seat ticket id is required',
             };
         }
         const seatTicket = await SeatTickets.findOne({
-			where: { stId: stId },
+			where: { seatTicketId: seatTicketId },
 		});
         if (!seatTicket) {
             return {
@@ -132,9 +132,9 @@ export const updateSeatTicket = async (data: any) => {
 };
 
 // Delete Seat ticket by id
-export const deleteSeatTicket = async (stId: number) => {
+export const deleteSeatTicket = async (seatTicketId: number) => {
     try {
-        const seatTicket = await SeatTickets.findByPk(stId);
+        const seatTicket = await SeatTickets.findByPk(seatTicketId);
         if (!seatTicket) {
             return {
                 errCode: 1,

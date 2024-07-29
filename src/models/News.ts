@@ -2,14 +2,14 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class News extends Model {
-  public postId!: number;
+  public poseatTicketId!: number;
   public title!: string;
   public content!: string;
   public readonly postDate!: Date;
 }
 
 News.init({
-  postId: {
+  poseatTicketId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
