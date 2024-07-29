@@ -124,6 +124,32 @@ Below are some main API endpoints along with examples of requests and responses:
     ```
     GET /api/movies/get-movie-by-id/:movieid
     ```
+### Movie Genre Routes
+
+- Create a new movie genre:
+
+    ```
+    POST /api/movies/create-new-movie-genre
+    ```
+
+- Delete a movie genre:
+
+    ```
+    DELETE /api/movies/delete-movie-genre/:movieGenreId
+    ```
+
+- Get all movies genre:
+
+    ```
+    GET /api/movies/get-all-movies-genres
+    ```
+
+- Get movie genre by ID:
+
+    ```
+    GET /api/movies/get-movie-genre-by-id/:movieGenreId
+    ```
+
 
 ### News Routes
 
@@ -155,6 +181,37 @@ Below are some main API endpoints along with examples of requests and responses:
 
     ```
     GET /api/news/get-news-by-id/:id
+    ```
+### Plan Screen Movie Routes
+
+- Create a new PSM:
+
+    ```
+    POST /api/news/create-new-plan-screen-movie
+    ```
+
+- Delete a PSM:
+
+    ```
+    DELETE /api/news/delete-plan-screen-movie/:planScreenMovieId
+    ```
+
+- Edit a PSM:
+
+    ```
+    PUT /api/news/edit-plan-screen-movie/:planScreenMovieId
+    ```
+
+- Get all PSM:
+
+    ```
+    GET /api/news/get-all-plan-screen-movies
+    ```
+
+- Get PSM by ID:
+
+    ```
+    GET /api/news/get-plan-screen-movie-by-id/:planScreenMovieId
     ```
 
 ### Price Routes
@@ -219,6 +276,37 @@ Below are some main API endpoints along with examples of requests and responses:
 
     ```
     GET /api/promotions/get-promotion-by-id/:promoId
+    ```
+### Room Routes
+
+- Create a new room:
+
+    ```
+    POST /api/promotions/create-new-room
+    ```
+
+- Delete a room:
+
+    ```
+    DELETE /api/promotions/delete-room/:roomId
+    ```
+
+- Edit a room:
+
+    ```
+    PUT /api/promotions/edit-room/:roomId
+    ```
+
+- Get all room:
+
+    ```
+    GET /api/promotions/get-all-rooms
+    ```
+
+- Get room by ID:
+
+    ```
+    GET /api/promotions/get-room-by-id/:roomId
     ```
 
 ### Seat Routes
