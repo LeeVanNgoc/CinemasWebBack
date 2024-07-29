@@ -37,7 +37,7 @@ const handleGetAllPrices = async (req: Request, res: Response) => {
 }
 
 const handleGetPriceById = async (req: Request, res: Response) => {
-	const priceId = parseInt(req.params.id);
+	const priceId = Number(req.query.pricesId);
     try {
         const result = await getPriceById(priceId);
         if (result.errCode === 0) {
