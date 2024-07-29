@@ -3,11 +3,11 @@ import PlanScreenMovie from '../models/PlanScreenMovie';
 export const createPlanScreenMovie = async (data: any) => {
   try {
     const existingIds = await PlanScreenMovie.findAll({
-      attributes: ['psmId'],
-      order: [['psmId', 'ASC']]
+      attributes: ['planScreenMovieId'],
+      order: [['planScreenMovieId', 'ASC']]
     });
 
-    const ids = existingIds.map(psm => psm.psmId);
+    const ids = existingIds.map(psm => psm.planScreenMovieId);
 
     let newId = 1;
     while (ids.includes(newId)) {
@@ -15,7 +15,7 @@ export const createPlanScreenMovie = async (data: any) => {
     }
 
     const newPlanScreenMovie = await PlanScreenMovie.create({
-      psmId: newId,
+      planScreenMovieId: newId,
       roomId: data.roomId,
       movieId: data.movieId,
       startTime: data.startTime,
@@ -36,9 +36,9 @@ export const createPlanScreenMovie = async (data: any) => {
   }
 };
 
-export const deletePlanScreenMovie = async (psmId: number) => {
+export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
   try {
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { psmId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found" };
     } else {
@@ -54,13 +54,13 @@ export const deletePlanScreenMovie = async (psmId: number) => {
 };
 
 export const editPlanScreenMovie = async (data: any) => {
-  const psmId = data.psmId;
+  const planScreenMovieId = data.planScreenMovieId;
   try {
-    if (!psmId) {
+    if (!planScreenMovieId) {
       return { errCode: 4, message: 'Missing required parameters!' };
     }
 
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { psmId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
     if (!planScreenMovie) {
       return { errCode: 1, message: 'PlanScreenMovie not found!' };
     }
@@ -97,9 +97,9 @@ export const getAllPlanScreenMovies = async () => {
   }
 };
 
-export const getPlanScreenMovieById = async (psmId: number) => {
+export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
   try {
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { psmId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
     if (!planScreenMovie) {
       return {
         errCode: 1,

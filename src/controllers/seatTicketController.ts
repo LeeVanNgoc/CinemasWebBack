@@ -40,12 +40,12 @@ const handleGetAllSeatTickets = async (req: Request, res: Response) => {
 }
 
 const handleGetSeatTicketById = async (req: Request, res: Response) => {
-	const stId = Number(req.query.stId);
-    if (isNaN(stId)) {
+	const seatTicketId = Number(req.query.seatTicketId);
+    if (isNaN(seatTicketId)) {
     	return res.status(400).json({ message: 'Invalid seatTicket ID' }); // Xử lý khi ID không hợp lệ
   	}
     try {
-        const result = await getSeatTicketById(stId);
+        const result = await getSeatTicketById(seatTicketId);
         if (result.errCode === 0) {
             res.status(201).json({
                 errCode: result.errCode,
@@ -63,12 +63,12 @@ const handleGetSeatTicketById = async (req: Request, res: Response) => {
 }
 
 const handleDeleteSeatTicket = async (req: Request, res: Response) => {
-	const stId = Number(req.query.stId);
-    if (isNaN(stId)) {
+	const seatTicketId = Number(req.query.seatTicketId);
+    if (isNaN(seatTicketId)) {
         return res.status(400).json({ message: 'Invalid seat ticket ID' });
     }
     try {
-        const result = await deleteSeatTicket(stId);
+        const result = await deleteSeatTicket(seatTicketId);
         if (result.errCode === 0) {
             res.status(204).json({
                 errCode: result.errCode,
@@ -86,8 +86,8 @@ const handleDeleteSeatTicket = async (req: Request, res: Response) => {
 
 const handleUpdateSeatTicket = async (req: Request, res: Response) => {
 	const data = req.query;
-	const stId = Number(req.query.stId);
-    if (isNaN(stId)) {
+	const seatTicketId = Number(req.query.seatTicketId);
+    if (isNaN(seatTicketId)) {
         return res.status(400).json({ message: 'Invalid seat ticket ID' });
     }
     try {

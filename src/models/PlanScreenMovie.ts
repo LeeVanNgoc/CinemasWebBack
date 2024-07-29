@@ -3,7 +3,7 @@ import sequelize from '../config/connectDB';
 import Room from './Room';
 
 class PlanScreenMovie extends Model {
-  public psmId!: number;
+  public planScreenMovieId!: number;
   public roomId!: number;
   public movieId!: number;
   public startTime!: TimeRanges;
@@ -12,7 +12,7 @@ class PlanScreenMovie extends Model {
 }
 
 PlanScreenMovie.init({
-  psmId: {
+  planScreenMovieId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,

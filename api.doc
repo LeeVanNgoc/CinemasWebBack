@@ -156,7 +156,7 @@ seatTicketRouter
 	API lấy trung gian vé-ghế theo id:
     	router.get('/get-seats-ticket-by-id);
 		-	Input : 
-				+ stId : id của bản ghi
+				+ seatTicketId : id của bản ghi
 		-	Output :
 				+ errCode : 0 (Lấy thành công) && (bản ghi của dữ liệu)
 				+ errCode : 1 (Vé ko tồn tại)
@@ -164,7 +164,7 @@ seatTicketRouter
 	API xoá dữ liệu trung gian giữa vé và ghế :
     	router.delete('/delete-seats-ticket);
 		-	Input :
-				+ stId : id của bản ghi
+				+ seatTicketId : id của bản ghi
 		-	Output :
 				+ errCode : 0 (Xoá thành công)
 				+ errCode : 1 (Không tìm thấy vé)
@@ -172,7 +172,7 @@ seatTicketRouter
 	API cập nhật dữ liệu :
     	router.put('/edit-seat-ticket);
 		-	Input :
-				+ stId : id của bản ghi
+				+ seatTicketId : id của bản ghi
 				+ seatId : (number) id của ghế
 				+ ticketId : (string) id của vé
 		-	Output:
@@ -242,8 +242,8 @@ ticketRoutes
 		router.post('/create-ticket);
 		-	Input :
 				+ userId : (number) (Id người dùng)
-				+ psmId : (number) (Id lịch chiếu)
-				+ stId : (number) (Id của trung gian vé và ghế)
+				+ planScreenMovieId : (number) (Id lịch chiếu)
+				+ seatTicketId : (number) (Id của trung gian vé và ghế)
 				+ bank : (string) (cost or bank) 
 				+ price : (number) (Giá vé)
 				+ ticketsDate : (Data) (Ngày tạo vé)
@@ -264,8 +264,8 @@ ticketRoutes
 		-	Input :
 				+ ticketId : (number) (Id của vé)
 				+ userId : (number) (Id người dùng)
-				+ psmId : (number) (Id lịch chiếu)
-				+ stId : (number) (Id của trung gian vé và ghế)
+				+ planScreenMovieId : (number) (Id lịch chiếu)
+				+ seatTicketId : (number) (Id của trung gian vé và ghế)
 				+ bank : (string) (cost or bank) 
 				+ price : (number) (Giá vé)
 				+ ticketsDate : (Data) (Ngày tạo vé)

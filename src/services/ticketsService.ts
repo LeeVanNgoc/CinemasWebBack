@@ -4,8 +4,8 @@ export const createTickets = async (data: any) => {
   try {
     const newTicket = await Tickets.create({
       userId: data.userId,
-      psmId: data.psmId,
-      stId: data.stId,
+      planScreenMovieId: data.planScreenMovieId,
+      seatTicketId: data.seatTicketId,
       bank: data.bank,
       price: data.price,
       ticketsDate: new Date(),
@@ -70,8 +70,8 @@ export const editTicket = async (data: any) => {
     }
 
     ticket.userId = data.userId || ticket.userId;
-    ticket.psmId = data.psmId || ticket.psmId;
-    ticket.stId = data.stId || ticket.stId;
+    ticket.planScreenMovieId = data.planScreenMovieId || ticket.planScreenMovieId;
+    ticket.seatTicketId = data.seatTicketId || ticket.seatTicketId;
     ticket.bank = data.bank || ticket.bank;
     ticket.price = data.price || ticket.price;
     ticket.TicketsDate = new Date();
@@ -92,7 +92,7 @@ export const editTicket = async (data: any) => {
 export const getListTicket = async() => {
   try {
     const tickets = await Tickets.findAll({
-      attributes: ['ticketId', 'userId', 'psmId','stId', 'bank', 'price', 'ticketsDate'],
+      attributes: ['ticketId', 'userId', 'planScreenMovieId','seatTicketId', 'bank', 'price', 'ticketsDate'],
       raw: true,
     });
     if (tickets === null) {
@@ -126,7 +126,7 @@ export const getTicketById = async (ticketId : number) => {
     }
     const ticket = await Tickets.findOne({
       where: {ticketId: ticketId},
-      attributes: ['ticketId', 'userId', 'psmId','stId', 'bank', 'price', 'ticketsDate'],
+      attributes: ['ticketId', 'userId', 'planScreenMovieId','seatTicketId', 'bank', 'price', 'ticketsDate'],
       raw: true,
     });
     if (!ticket) {

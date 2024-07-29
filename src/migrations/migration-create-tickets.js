@@ -12,10 +12,10 @@ module.exports = {
       userId: {
         type: Sequelize.INTEGER
       },
-      psmId: {
+      planScreenMovieId: {
         type: Sequelize.INTEGER
       },
-      stId: {
+      seatTicketId: {
         type: Sequelize.INTEGER
       },
       price: {

@@ -15,12 +15,12 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
 };
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
-  const psmId = Number(req.params.psmId);
-  if (isNaN(psmId)) {
+  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
   try {
-    const result = await deletePlanScreenMovie(psmId);
+    const result = await deletePlanScreenMovie(planScreenMovieId);
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
@@ -31,11 +31,11 @@ const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
 };
 
 const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
-  const psmId = Number(req.params.psmId);
-  if (isNaN(psmId)) {
+  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
-  const data = { ...req.body, psmId: psmId };
+  const data = { ...req.body, planScreenMovieId: planScreenMovieId };
   try {
     const result = await editPlanScreenMovie(data);
     if (result.errCode !== 0) {
@@ -60,12 +60,12 @@ const handleGetAllPlanScreenMovies = async (req: Request, res: Response) => {
 };
 
 const handleGetPlanScreenMovieById = async (req: Request, res: Response) => {
-  const psmId = Number(req.params.psmId);
-  if (isNaN(psmId)) {
+  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
   try {
-    const result = await getPlanScreenMovieById(psmId);
+    const result = await getPlanScreenMovieById(planScreenMovieId);
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }

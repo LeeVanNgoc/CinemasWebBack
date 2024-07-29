@@ -8,8 +8,8 @@ import Prices from './Prices';
 class Tickets extends Model {
   public ticketId!: number;
   public userId!: number;
-  public psmId!: number;
-  public stId!: number;
+  public planScreenMovieId!: number;
+  public seatTicketId!: number;
   public bank!: string;
   public price!: number;
   public TicketsDate!: Date;
@@ -29,7 +29,7 @@ Tickets.init({
       key: 'id',
     },
   },
-  psmId: {
+  planScreenMovieId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -37,7 +37,7 @@ Tickets.init({
       key: 'id',
     },
   },
-  stId: {
+  seatTicketId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
@@ -69,8 +69,8 @@ Tickets.init({
 });
 
 Tickets.belongsTo(User, { foreignKey:'userId' });
-Tickets.belongsTo(SeatTickets, { foreignKey:'stId' });
-Tickets.belongsTo(PlanScreenMovie, { foreignKey:'psmId' });
+Tickets.belongsTo(SeatTickets, { foreignKey:'seatTicketId' });
+Tickets.belongsTo(PlanScreenMovie, { foreignKey:'planScreenMovieId' });
 Tickets.belongsTo(Prices, { foreignKey:'price' });
 
 export default Tickets;
