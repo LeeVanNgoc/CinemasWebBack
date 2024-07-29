@@ -3,14 +3,26 @@
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn('News', 'postDate', {
-      type: Sequelize.DATE,
-      allowNull: false,
-      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
+    await queryInterface.createTable('News', {
+      poseatTicketId: {
+        allowNull: false,
+        autoIncrement: false,
+        primaryKey: false,
+        type: Sequelize.INTEGER
+      },
+      title: {
+        type : Sequelize.TEXT
+      },
+      content: {
+        type : Sequelize.TEXT
+      },
+      postDate: {
+        type : Sequelize.DATE
+      },
     });
   },
 
-  down: async (queryInterface, Sequelize) => {
-    await queryInterface.removeColumn('News', 'postDate');
+  async down(queryInterface, Sequelize) {
+    await queryInterface.dropTable('News');
   }
 };
