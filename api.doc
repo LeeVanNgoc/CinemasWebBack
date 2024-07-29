@@ -1,6 +1,21 @@
+Quy tặc gán errCode:
+	-	errCode : 0 : Action API success
+	-	errCode : 1 : Something not found
+	-	errCode : 2 : Something not exist or action failed
+	-	errCode : 3 : Error action API
+	-	errCode : 4 : 
+	-	errCode : 5 : Something incorrect
+
+
 genreRoutes
-	router.post('/create-new-genre');
-	router.delete('/delete-genre/:id');
+	API tạo mới genre :
+		-	router.post('/create-new-genre');
+		-	Input : 
+		-	Output : 
+	API xoá genre 
+		-	router.delete('/delete-genre/:id');
+		-	Input : 
+		-	Output :
 	router.put('/edit-genre/:id');
 	router.get('/get-all-genres');
 	router.get('/get-genre-by-id/:id');
@@ -23,12 +38,44 @@ newsRoutes
 	app.use('/api/news', router);
 
 priceRouter 
-	router.post('/create-price');
-    router.delete('/delete-price');
-    router.put('/edit-price');
-    router.get('/get-price-by-id');
-    router.get('/get-all-prices');
-    app.use('/api/prices', router);
+	API tạo giá vé :
+		-	router.post('/create-price');
+		-	Input : + cost : giá vé (number) (120000,...)
+					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
+					+ isWeekend : !!!ngày lễ (boolean) (True // False)
+		-	Output: + errCode : 0 (tạo thành công)
+					+ errCode : 1 (tạo thất bại)
+					+ errCode : 3 (có lỗi tạo (truyền dữ liệu // bất đồng bộ ...))
+    API xoá giá vé :
+		-	router.delete('/delete-price');
+		-	Input : + priceId : id (number)
+		-	Output: + errCode : 0 (xoá thành công)
+					+ errCode : 1 (Không tìm thấy vé ứng với id)
+					+ errCode : 3 (Lỗi khi xoá)
+
+	API cập nhật giá vé :
+    	-	router.put('/edit-price');
+		-	Input : + priceId : id bản ghi (number)
+					+ cost : giá vé (number) (120000,...)
+					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
+					+ isWeekend : !!!ngày lễ (boolean) (True // False)
+		-	Output: + errCode : 0 (cập nhật thành công)
+					+ errCode : 1 (Không tìm thấy bản ghi tương ứng id)
+					+ errCode : 3 (Lỗi khi cập nhật)
+	API lấy bản ghi :
+    	-	router.get('/get-price-by-id');
+		-	Input : + priceId : (id giá vé)
+		-	Output: + errCode : 0 (Lấy thành công) && bản ghi tương ứng
+					+ errCode : 1 (Không tìm thấy bản ghi tương ứng)
+					+ errCode : 3 (Lỗi khi lấy bản ghi)
+	API lấy tất cả bản ghi :
+    	-	router.get('/get-all-prices');
+		-	Input : + null
+		-	Output: + errCode : 0 (Lấy thành công) && Tất cả bản ghi
+					+ errCode : 1 (Ko tìm thấy bản ghi nào)
+					+ errCode : 3 (Lỗi khi lấy bản ghi)
+	Liên kết đường dẫn :
+    	-	app.use('/api/prices', router);
 
 promotionRoutes
 	router.post('/create-new-promotion);
@@ -39,52 +86,329 @@ promotionRoutes
 	app.use('/api/promotions', router);
 
 seatRouter
-	router.post('/create-seat);
-    router.delete('/delete-seat);
-    router.put('/edit-seat);
-    router.get('/get-seats);
-    router.get('/get-seat-by-id);
-    app.use('/api/seats', router);
+	API tạo ghế:
+		router.post('/create-seat);
+		-	Input : 
+				+ type (string) ('Standard', 'Vip', 'SweetBox')
+				+ roomId : (number)
+				+ row : (string) ('A', 'B', 'C', 'D', 'E' 'F', 'G', 'H')
+				+ col : (number) (1, 2, 3, 4, 5, 6, 7, 8, 9)
+				+ isAvailable : (boolean) ('True' : 0, 'False' : 1)
+		-	Output: 
+				+ errCode : 0 (tạo thành công)
+				+ errCode : 1 (Ghế đã tồn tại)
+				+ errCode : 3 (Lỗi khi tạo ghế)
+    	router.delete('/delete-seat);
+		-	Input : 
+				+ seatId : (number) (id của ghế)
+		-	Output: 
+				+ errCode : 0 (Xoá thành công)
+				+ errCode : 1 (Ko tìm thấy ghế theo id)
+				+ errCode : 3 (Lỗi khi xoá)
+	API cập nhật ghế:
+    	router.put('/edit-seat);
+		-	Input : 
+				+ seatId : (number) (id của ghế)
+				+ type : (string) ('Standard', 'Vip', 'SweetBox')
+				+ roomId : (number)
+				+ row : (string) ('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H')
+				+ col : (number) (1, 2, 3, 4, 5, 6, 7, 8, 9)
+				+ isAvailable : (boolean) ('True' : 0, 'False' : 1)
+		-	Output:
+				+ errCode : 0 (Cập nhật thành công) && (thông tin mới)
+				+ errCode : 1 (Không tim thấy ghế)
+				+ errCode : 3 (Lỗi khi cập nhật ghế)
+	API lấy tất cả ghế : 
+    	router.get('/get-seats);
+		-	Input :
+				+ null
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && tất cả bản ghi của ghế
+				+ errCode : 3 (Lỗi khi lấy ghế)
+	API lấy ghế theo Id:
+    	router.get('/get-seat-by-id);
+		-	Input :
+				+ seatId : (number) (id của ghế)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (bản ghi của ghế)
+				+ errCode : 1 (Ko tìm thấy ghế theo id)
+				+ errCode : 3 (Lỗi khi lấy ghế)
+	Liên kết đường dẫn : 
+    	app.use('/api/seats', router);
 
 seatTicketRouter
-	router.post('/create-seat-ticket);
-    router.get('/get-all-seat-ticket);
-    router.get('/get-seats-ticket-by-id);
-    router.delete('/delete-seats-ticket);
-    router.put('/edit-seat-ticket);
-    app.use('/api/seattickets', router);
+	API tạo trung gian chiều giữa vé và ghế:
+		router.post('/create-seat-ticket);
+		-	Input :
+				+ seatId : (number) (id của ghế)
+				+ ticketId : (number) (id của vé)
+		-	Output:
+				+ errCode : 0 (Tạo thành công) && (thông tin của ghế)
+				+ errCode : 1 (Vé đã tồn tại)
+				+ errCode : 3 (Lỗi khi tạo vé)
+	API lấy tất cả trung gian vé-ghế :
+    	router.get('/get-all-seat-ticket);
+		-	Input :
+				+ null
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && tất cả bản ghi của
+				+ errCode : 3 (Lỗi khi tạo vé)
+	API lấy trung gian vé-ghế theo id:
+    	router.get('/get-seats-ticket-by-id);
+		-	Input : 
+				+ stId : id của bản ghi
+		-	Output :
+				+ errCode : 0 (Lấy thành công) && (bản ghi của dữ liệu)
+				+ errCode : 1 (Vé ko tồn tại)
+				+ errCode : 3 (Lỗi khi lấy vé)
+	API xoá dữ liệu trung gian giữa vé và ghế :
+    	router.delete('/delete-seats-ticket);
+		-	Input :
+				+ stId : id của bản ghi
+		-	Output :
+				+ errCode : 0 (Xoá thành công)
+				+ errCode : 1 (Không tìm thấy vé)
+				+ errCode : 3 (Lỗi khi xoá vé)
+	API cập nhật dữ liệu :
+    	router.put('/edit-seat-ticket);
+		-	Input :
+				+ stId : id của bản ghi
+				+ seatId : (number) id của ghế
+				+ ticketId : (string) id của vé
+		-	Output:
+				+ errCode : 0 (Cập nhật thành công)
+				+ errCode : 1 (Id không hợp lệ)
+				+ errCode : 2 (Vé ko tồn tại)
+				+ errCode : 3 (Lỗi khi cập nhật vé)
+	Liên kết đường dẫn :
+    	app.use('/api/seattickets', router);
 
 theaterRoutes
-	router.post("/create-theater);
-	router.get("/get-theater);
-	router.put("/edit-theater);
-	router.delete("/delete-theater);
-	router.get("/get-theaters-by-id);
-	router.get("/get-theaters-by-city);
+	API tạo rạp chiếu phim : 
+		router.post("/create-theater);
+		-	Input :
+				+ name : (string) (tên rạp)
+				+ address : (string) (địa chỉ rạp) 
+				+ city : (String) (Tên thành phố chứa rạp)
+		- Output:
+				+ errCode : 0 (Tạo thành công) && (thông tin của rạp)
+				+ errCode : 3 (Lỗi khi tạo rạp)
+	API lấy tất cả rạp chiếu :
+		router.get("/get-theater);
+		-	Input : 
+				+ null
+		- 	Output:
+				+ errCode : 0 (Lấy thành công) && (Tất cả dữ liệu)
+				+ errCode : 3 (Lỗi khi lấy rạp)
+	API cập nhật dữ liệu rạp
+		router.put("/edit-theater);
+		-	Input :
+				+ theaterId : (number) (id của rạp)
+				+ name : (string) (tên rạp)
+				+ address : (string) (địa chỉ)
+				+ city : (string) (tên thành phố)
+		-	Output:
+				+ errCode : 0 (Cập nhật thành công)
+				+ errCode : 1 (Id không hợp lệ)
+				+ errCode : 3 (Lỗi khi cập nhật rạp)
+	API xoá dữ liệu rạp :
+		router.delete("/delete-theater);
+		-	Input :
+				+ theaterId : (number) (id của rạp)
+		-	Output:
+				+ errCode : 0 (xoá thành công)
+				+ errCode : 1 (Không tìm thấy rạp)
+				+ errCode : 3 (Lỗi khi xoá rạp)
+	API lấy rạp theo Id:
+		router.get("/get-theaters-by-id);
+		-	Input :
+				+ theaterId : (number) (id của rạp)
+		-	Output:
+				+ errCode : 0 (lấy thành công) && (bản ghi dữ liệu)
+				+ errCode : 1 (Ko tìm thấy rạp)
+				+ errCode : 3 (Lỗ khi lấy rạp)
+	API lấy rạp theo city:
+		router.get("/get-theaters-by-city);
+		-	Input :
+				+ city : (String) (tên thành phố)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (tất cả bản ghi dữ liệu)
+				+ errCode : 1 (Không tìm thấy rạp)
+				+ errCode : 3 (Lỗi khi lấy rạp)
 	app.use("/api/theater", router);
 
 ticketRoutes
-	router.post('/create-ticket);
-	router.delete('/delete-ticket);
-	router.put('/edit-ticket);
-	router.get('/get-tickets);
-	router.get('/get-list-tickets);
+	API tạo mới vé :
+		router.post('/create-ticket);
+		-	Input :
+				+ userId : (number) (Id người dùng)
+				+ psmId : (number) (Id lịch chiếu)
+				+ stId : (number) (Id của trung gian vé và ghế)
+				+ bank : (string) (cost or bank) 
+				+ price : (number) (Giá vé)
+				+ ticketsDate : (Data) (Ngày tạo vé)
+		-	Output:
+				+ errCode : 0 (Tạo thành công)
+				+ errCode : 1 (Tạo thất bại)
+				+ errCode : 3 (Lỗi khi tạo)
+	API xoá vé :
+		router.delete('/delete-ticket);
+		-	Input :
+				+ ticketId : (number) (Id của vé)
+		-	Output:
+				+ errCode : 0 (Xoá thành công)
+				+ errCode : 1 (Ko tìm thấy vé)
+				+ errCode : 3 (Lỗi khi xoá)
+	API cập nhật vé:
+		router.put('/edit-ticket);
+		-	Input :
+				+ ticketId : (number) (Id của vé)
+				+ userId : (number) (Id người dùng)
+				+ psmId : (number) (Id lịch chiếu)
+				+ stId : (number) (Id của trung gian vé và ghế)
+				+ bank : (string) (cost or bank) 
+				+ price : (number) (Giá vé)
+				+ ticketsDate : (Data) (Ngày tạo vé)
+		-	Output:
+				+ errCode : 0 (Cập nhật thành công)
+				+ errCode : 3 (Lỗi khi cập nhật)
+	API lấy tất cả vé:
+		router.get('/get-tickets);
+		-	Input :
+				+ null
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && tất cả bản ghi
+				+ errCode : 1 (Không tồn tại vé nào)
+				+ errCode : 3 (Lỗi khi lấy vé)
+	API lấy vé theo Id
+		router.get('/get-list-tickets);
+		-	Input :
+				+ ticketId : Id của Vé
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
+				+ errCode : 1 (Không tồn tại vé)
+				+ errCode : 3 (Lỗi khi lấy vé)
 	app.use('/api/ticket', router);
 
 trailerRoutes
-	router.post('/create-trailer);
-	router.delete('/delete-trailer);
-	router.put('/edit-trailer);
-	router.get('/get-all-trailers);
-	router.get('/get-trailer-by-id);
-	router.get('/get-trailer-by-movie-id);
+	- API tạo trailer
+		router.post('/create-trailer);
+		-	Input :
+				+ movieId : (number) (Id film)
+				+ link : (string) (Đường dẫn youtube)
+		-	Output:
+				+ errCode : 0 (Tạo thành công)
+				+ errCode : 3 (Lỗi khi tạo)
+	- API xoá trailer:
+		router.delete('/delete-trailer);
+		-	Input :
+				+ trailerId : (number) (Id trailer)
+		-	Output:
+				+ errCode : 0 (Xoá thành công)
+				+ errCode : 1 (Ko tìm thấy trailer)
+				+ errCode : 3 (Lỗi khi xoá)
+	- API cập nhật trailer:
+		router.put('/edit-trailer);
+		-	Input :
+				+ trailerId : (number) (Id trailer)
+				+ movieId : (number) (Id film)
+				+ link : (string) (Đường dẫn youtube)
+		- 	Output:
+				+ errCode : 0 (Cập nhật thành công)
+				+ errCode : 1 (Không tìm thấy trailer)
+				+ errCode : 2 (Id ko hợp lệ)
+				+ errCode : 3 (Lỗi khi cập nhật)
+	- API lấy tất cả trailer:
+		router.get('/get-all-trailers);
+		-	Input :
+				+ null
+		-	Output:
+				+ errCode : 0 (lấy thành công) && (Tất cả bản ghi)
+				+ errCode : 1 (Không tồn tại trailer)
+				+ errCode : 3 (Lỗi khi lấy trailer)
+	- API lấy trailer theo Id:
+		router.get('/get-trailer-by-id);
+		-	Input :
+				+ trailerId : (number) (Id trailer)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (Bản ghi dữ liệu)
+				+ errCode : 1 (Không tồn tại trailer)
+				+ errCode : 3 (Lỗi khi lấy trailer)
+	- API lấy trailer theo id film
+		router.get('/get-trailer-by-movie-id);
+		-	Input : 
+				+ movieId: (number) (Id film)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (Tất cả bản ghi)
+				+ errCode : 1 (Ko tìm thấy trailer nào)
+				+ errCode : 3 (Lỗi khi lấy trailer)
 	app.use('/api/trailer', router);
 
 userRoutes
-	router.post('/create-new-user);
-	router.delete('/delete-user);
-	router.put('/edit-user);
-	router.get('/get-user-by-id);
-	router.get('/get-all-users);
-	router.post('/login-user);
+	- API tạo user
+		router.post('/create-new-user);
+		-	Input :
+				+ email : (string) (Tên email)
+				+ password : (string) (Mật khẩu)
+				+ firstName : (string) (Họ người dùng)
+				+ lastName : (string) (Tên người dùng)
+				+ username : (string) (Tên đăng nhập)
+				+ birthYear  : (number) (năm sinh người dùng)
+				+ phonenumber : (string) (Số điện thoại người dùng)
+				+ role : (string) ('Admin'//'User')
+		-	Output:
+				+ errCode : 0 (Tạo thành công)
+				+ errCode : 4 (Email đã tồn tại)
+				+ errCode : 2 (Tạo thất bại)
+				+ errCode : 3 (Lỗi khi tạo)
+	- API xoá người dùng:
+		router.delete('/delete-user);
+		-	Input :
+				+ userId : (number) (Id người dùng)
+		-	Output:
+				+ errCode : 0 (Xoá thành công)
+				+ errCode : 1 (Không tồn tại người dùng)
+				+ errCode : 3 (Lỗi khi xoá)
+	- API cập nhật người dùng
+		router.put('/edit-user);
+		-	Input:
+				+ userId : (number) (Id người dùng)
+				+ email : (string) (Tên email)
+				+ password : (string) (Mật khẩu)
+				+ firstName : (string) (Họ người dùng)
+				+ lastName : (string) (Tên người dùng)
+				+ username : (string) (Tên đăng nhập)
+				+ birthYear  : (number) (năm sinh người dùng)
+				+ phonenumber : (string) (Số điện thoại người dùng)
+				+ role : (string) ('Admin'//'User')
+		-	Output:
+				+ errCode : 0 (Cập nhật thành công)	&& (Bản ghi dữ liệu)
+				+ errCode : 1 (Không tìm thấy người dùng)
+				+ errCode : 4 (Id ko hợp lệ)
+				+ errCode : 3 (Lỗi khi cập nhật)
+	- API lấy người dùng theo Id:
+		router.get('/get-user-by-id);
+		-	Input :
+				+ userId: (number) (Id người dùng)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (Bản ghi dữ liệu)
+				+ errCode : 3 (Lỗi khi lấy người dùng)
+	- API lấy tất cả người dùng
+		router.get('/get-all-users);
+		-	Input :
+				+ null
+		- 	Output:
+				+ errCode : 0 (Lấy thành công) && (Tất cả bản ghi dữ liệu)
+				+ errCode : 3 (Lỗi khi lấy)
+	- API đăng nhập
+		router.post('/login-user);
+		-	Input :
+				+ email : (string) (Tên email)
+				+ password : (string) (Mật khẩu)
+		-	Output:
+				+ errCode : 0 (Login success)
+				+ errCode : 1 (Ko tìm thấy người dùng)
+				+ errCode : 2 (Ko tìm thấy imail)
+				+ errCode : 5 (Mật khẩu ko đúng)
+				+ errCode : 3 (Lỗi khi đăng nhập)
 	app.use('/api/user', router);	

@@ -10,14 +10,14 @@ export const createPrice = async (data: any) => {
     });
 	if (!newPrice) {
 		return {
-			errCode: 2,
+			errCode: 1,
             message: 'False to create price record',
 		}
 	}
     return {
       newPrice,
       errCode : 0,
-	  message: 'Price created successfully',
+	    message: 'Price created successfully',
     };
   } catch (error) {
     return {
@@ -86,7 +86,7 @@ export const createPrice = async (data: any) => {
 	})
 	if (!price) {
 		return {
-            errCode: 2,
+            errCode: 1,
             message: 'Price not found',
         }
 	}

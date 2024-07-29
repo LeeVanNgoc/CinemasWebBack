@@ -32,7 +32,7 @@ export const createSeatTicket = async (data: any) => {
         const checkTicket = await checkTicketExist(data.ticketId);
         if (checkTicket.errCode === 0) {
             return {
-                errCode: 2,
+                errCode: 1,
                 message: 'Ticket is exist, please put other ticket id',
             };
         }
@@ -48,7 +48,7 @@ export const createSeatTicket = async (data: any) => {
 	} catch (error) {
 		return {
 			errCode: 3,
-			message: 'Create Seat ticket failed',
+			message: `Create Seat ticket failed ${error}`,
 		};
 	}
 };

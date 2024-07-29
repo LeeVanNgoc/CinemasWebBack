@@ -118,7 +118,7 @@ export const deleteTheater = async (id: number) => {
     const theater = await Theater.findByPk(id);
     if (!theater) {
       return {
-        errCode: 2,
+        errCode: 1,
         message: 'Theater not found',
       };
     }
