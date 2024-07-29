@@ -4,6 +4,9 @@ import dotenv from 'dotenv';
 
 import { connectDB } from './config/connectDB';
 
+import notFoundHandler from './middlewares/notFoundHandler';
+import errorHandler from './middlewares/errorHandler';
+
 import movieRoutes from './routes/movieRoutes';
 import genreRoutes from './routes/genreRoutes';
 import newsRoutes from './routes/newsRoutes';
@@ -20,8 +23,6 @@ import theaterRoutes from './routes/theaterRouter';
 import seatRouter from './routes/seatsRouter';
 import seatTicketRouter from './routes/seatTicketRouter';
 import priceRouter from './routes/priceRouter';
-
-import errorHandler from './middlewares/errorHandler';
 
 dotenv.config();
 
@@ -62,6 +63,7 @@ priceRouter(app);
 
 // Error handling middleware
 app.use(errorHandler);
+app.use(notFoundHandler);
 
 // Connect to database and start server
 connectDB().then(() => {
