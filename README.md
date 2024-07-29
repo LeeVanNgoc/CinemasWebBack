@@ -40,9 +40,9 @@ CINEMASWEB is a web-based cinema management project that allows for managing mov
 3. Configure the database in the `.env` file:
 
     ```plaintext
-    PORT=6060
-    NODE_ENV=development
-    URLREACT=http://localhost:5050
+    PORT=
+    NODE_ENV=
+    URLREACT=
     ```
 
 4. Run migrations to set up the database:
@@ -430,3 +430,4 @@ Below are some main API endpoints along with examples of requests and responses:
     ```
     POST /api/user/login-user
     ```
+- To understand more about our API, read API.doc
