@@ -1,6 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
-import MovieGenre from './MovieGenre';
 
 class Genres extends Model {
   public genreId!: number;
@@ -20,7 +19,7 @@ Genres.init({
   },
   description: {
     type: DataTypes.STRING,
-    allowNull: true,
+    allowNull: false,
   },
 }, {
   sequelize,

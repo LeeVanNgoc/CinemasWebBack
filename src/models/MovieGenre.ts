@@ -11,7 +11,7 @@ class MovieGenre extends Model {
 MovieGenre.init({
   movieGenreId: {
     type: DataTypes.INTEGER,
-    primaryKey: false,
+    primaryKey: true,
     references: {
       model: Movie,
       key: 'movieid',
@@ -19,7 +19,7 @@ MovieGenre.init({
   },
   genreId: {
     type: DataTypes.INTEGER,
-    primaryKey: false,
+    primaryKey: true,
     references: {
       model: Genres,
       key: 'genreId',

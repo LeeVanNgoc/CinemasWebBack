@@ -1,5 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
+import Room from './Room';
+
 class PlanScreenMovie extends Model {
   public psmId!: number;
   public roomId!: number;
@@ -18,6 +20,10 @@ PlanScreenMovie.init({
   roomId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: Room,
+      key: 'roomId',
+    },
   },
   movieId: {
     type: DataTypes.INTEGER,
@@ -39,6 +45,7 @@ PlanScreenMovie.init({
 }, {
   sequelize,
   modelName: 'PlanScreenMovie',
+  tableName: 'planscreenmovie',
   timestamps: false,
 });
 
