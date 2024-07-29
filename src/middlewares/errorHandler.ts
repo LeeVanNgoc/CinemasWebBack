@@ -1,16 +1,14 @@
 import { Request, Response, NextFunction } from 'express';
 
-const errorHandler = (
-  err: Error,
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  console.error('Error caught by error handler middleware:', err);
-  if (res.headersSent) {
-    return next(err);
-  }
-  res.status(500).json({ error: 'Internal Server Error' });
+const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || 'Internal Server Error';
+
+  res.status(statusCode).json({
+    statusCode,
+    message,
+    stack: process.env.NODE_ENV === 'production' ? null : err.stack,
+  });
 };
 
 export default errorHandler;
