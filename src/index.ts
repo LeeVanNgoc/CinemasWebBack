@@ -42,7 +42,6 @@ app.use((req: Request, res: Response, next: Next ) => {
   next();
 });
 
-
 // Routes
 userRoutes(app);
 movieRoutes(app);
