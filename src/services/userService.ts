@@ -125,7 +125,7 @@ export const editUser = async (data: any) => {
       });
     } catch (error) {
       return{
-        errCode: 2,
+        errCode: 3,
         message: `Error updating user: ${error}`,
         user: null,
       };
@@ -157,7 +157,7 @@ export const getUserById = async(userId: number) => {
       };
     } catch (error) {
       return{
-        errCode: 1,
+        errCode: 3,
         message: `Error went get user ${error}`
       };
     }
@@ -184,7 +184,7 @@ export const getAllUsers = async() => {
       };
     } catch (error) {
       return{
-        errCode: 1,
+        errCode: 3,
         message: `Error went get user ${error}`
       };
     }
@@ -229,7 +229,7 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
             });
           } else {
             return({
-              errCode: 4,
+              errCode: 5,
               message: 'Password is incorrect',
             });
           }

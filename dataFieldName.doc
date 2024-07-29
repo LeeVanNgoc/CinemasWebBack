@@ -28,8 +28,8 @@ PlanScreenMovie:
 	-	space
 Prices:
 	-	pricesId
-	-	cost : 'Standard', 'Vip', SweetBox'
-	-	type : '
+	-	cost : 
+	-	type : 'Standard', 'Vip', SweetBox'
 	-	isWeekend : 'True : 0', 'False : 1'
 Promotion:
 	-	promoId : PromotionId
@@ -44,7 +44,7 @@ Room:
 	-	numberSeats : '1A', '2A', '3A', '4A', ....
 Seat:
 	-	seatId
-	-	type
+	-	type : 'Standard', 'VIP', 'SweetBox'
 	-	roomId
 	-	row : 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'
 	-	col : 1, 2, 3, 4, 5, 6, 7, 8
