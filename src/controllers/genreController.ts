@@ -12,7 +12,7 @@ const handleCreateGenre = async (req: Request, res: Response) => {
 };
 
 const handleDeleteGenre = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.params.id);
+  const genreId = parseInt(req.query.id as string);
   try {
     const result = await deleteGenre(genreId);
     if (result.errCode) {
@@ -25,7 +25,7 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
-  const data = req.body;
+  const data = req.query;
   try {
     const result = await editGenre(data);
     if (result.errCode) {
@@ -47,7 +47,7 @@ const handleGetAllGenres = async (req: Request, res: Response) => {
 };
 
 const handleGetGenreById = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.params.id);
+  const genreId = parseInt(req.query.id as string);
   try {
     const result = await getGenreById(genreId);
     if (result.errCode) {

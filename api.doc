@@ -7,7 +7,7 @@ Quy tặc gán errCode:
 	-	errCode : 5 : Something incorrect
 
 
-genreRoutes
+1. genreRoutes
     API tạo mới thể loại:
         - 	router.post('/create-new-genre');
         -	Input : + name (string)
@@ -47,7 +47,7 @@ genreRoutes
     Liên kết đường dẫn:
         - 	app.use('/api/genres', router);
 
-movieGenreRoutes
+2. movieGenreRoutes
     API tạo mới thể loại của phim:
         - 	router.post('/create-new-movie-genre');
         -	Input : + movieGenreId (number)
@@ -79,8 +79,7 @@ movieGenreRoutes
     Liên kết đường dẫn:
         - 	app.use('/api/movie-genres', router);
 
-
-movieRoutes
+3. movieRoutes
     API tạo mới phim:
         - 	router.post('/create-new-movie');
         - 	Input : + title (string)
@@ -124,7 +123,7 @@ movieRoutes
     Liên kết đường dẫn:
         - 	app.use('/api/movies', router);
 
-newsRoutes
+4. newsRoutes
     API tạo mới tin tức:
         - 	router.post('/create-new-news');
         - 	Input : + title (text)
@@ -163,7 +162,7 @@ newsRoutes
     Liên kết đường dẫn:
         - 	app.use('/api/news', router);
 
-planScreenMovieRoutes
+5. planScreenMovieRoutes
     API tạo mới lịch chiếu:
         - 	router.post('/create-plan-screen-movie');
         - 	Input : + roomId: id phòng chiếu (number)
@@ -207,7 +206,7 @@ planScreenMovieRoutes
     Liên kết đường dẫn:
         - 	app.use('/api/plan-screen-movies', router);
 
-priceRouter 
+6. priceRouter 
 	API tạo giá vé :
 		-	router.post('/create-price');
 		-	Input : + cost : giá vé (number) (120000,...)
@@ -247,7 +246,7 @@ priceRouter
 	Liên kết đường dẫn :
     	-	app.use('/api/prices', router);
 
-promotionRoutes
+7. promotionRoutes
 	API tạo khuyến mãi :
 		-	router.post('/create-price');
 		-	Input : + description (text)
@@ -284,8 +283,51 @@ promotionRoutes
 					+ errCode: 1 (Ko tìm thấy bản ghi nào)
 	Liên kết đường dẫn :
     	-	app.use('/api/promotions', router);
+8. roomRoutes
+    API tạo mới phòng:
+        - 	router.post('/create-new-movie');
+        - 	Input : + title (string)
+                 	+ description (text)
+                 	+ genreId (number)
+                 	+ duration (number)
+                 	+ country (string)
+                 	+ cast (array of strings)
+                 	+ sTimeid (string)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 3 (lỗi khi tạo)
 
-seatRouter
+    API xoá phim:
+        - 	router.delete('/delete-movie/:movieid');
+        - 	Input : + movieid: id phim (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API cập nhật phim:
+        - 	router.put('/edit-movie/:movieid');
+        - 	Input : + any (bất kì thuộc tính nào của Movie)
+        - 	Output: + errCode: 0 (cập nhật thành công)
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (thiếu ID phim cần cập nhật)
+
+    API lấy tất cả phim:
+        - 	router.get('/get-all-movies');
+        - 	Input : null
+        - 	Output: + errCode: 0 (lấy thành công) && tất cả bản ghi phim
+                  	+ errCode: 1 (không tìm thấy phim nào)
+
+    API lấy phim theo id:
+        - 	router.get('/get-movie-by-id/:movieid');
+        - 	Input : + movieid (number)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi phim
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/movies', router);
+
+9.  seatRouter
 	API tạo ghế:
 		router.post('/create-seat);
 		-	Input : 
