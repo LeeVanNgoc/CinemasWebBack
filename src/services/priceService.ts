@@ -3,7 +3,19 @@ import Prices from "../models/Prices";
 // Create a new price record
 export const createPrice = async (data: any) => {
 	try {
+      const existingIds = await Prices.findAll({
+        attributes: ['pricesId'],
+        order: [['pricesId', 'ASC']]
+      });
+
+      const ids = existingIds.map(prices => prices.pricesId);
+
+      let newId = 1;
+      while (ids.includes(newId)) {
+        newId++;
+      }
     const newPrice = await Prices.create({
+      priceId: newId,
       cost: data.cost,
       type: data.type,
       isWeekend: data.isWeekend,

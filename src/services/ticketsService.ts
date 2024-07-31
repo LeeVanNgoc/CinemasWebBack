@@ -2,7 +2,19 @@ import Tickets from "../models/Tickets";
 
 export const createTickets = async (data: any) => {
   try {
+    const existingIds = await Tickets.findAll({
+      attributes: ['ticketId'],
+      order: [['ticketId', 'ASC']]
+    });
+
+    const ids = existingIds.map(ticket => ticket.ticketId);
+
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
+    }
     const newTicket = await Tickets.create({
+      ticketId: newId,
       userId: data.userId,
       planScreenMovieId: data.planScreenMovieId,
       seatTicketId: data.seatTicketId,

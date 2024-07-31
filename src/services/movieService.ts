@@ -21,7 +21,8 @@ export const createMovie = async (data: any) => {
       genreId: data.genreId,
       duration: data.duration,
       country: data.country,
-      sTimeid: data.sTimeid,
+      screenTime: data.screenTime,
+      image: data.image,
       releaseDate: new Date(),
     });
 

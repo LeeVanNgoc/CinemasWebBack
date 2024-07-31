@@ -3,7 +3,7 @@ import Seat from "../models/Seat";
 //Check row exist
 export const checkSeat = async(data : any) => {
     try {
-        const seats = await Seat.findAll({ where: { row: data.row, col: data.col, roomId: data.roomId } });
+        const seats = await Seat.findOne({ where: { row: data.row, col: data.col, roomId: data.roomId } });
         if (!seats) {
             return {
                 errCode: 1,
@@ -28,6 +28,17 @@ export const checkSeat = async(data : any) => {
 export const createSeat = async (data: any) => {
     
 	try {
+        const existingIds = await Seat.findAll({
+            attributes: ['seatId'],
+            order: [['seatId', 'ASC']]
+        });
+
+        const ids = existingIds.map(seat => seat.seatId);
+
+        let newId = 1;
+        while (ids.includes(newId)) {
+            newId++;
+        }
         const seat = await checkSeat(data);
         if (seat.errCode === 0) {
             return {
@@ -36,6 +47,7 @@ export const createSeat = async (data: any) => {
             };
         }
 		const newSeat = await Seat.create({
+            seatId: newId,
 			row : data.row,
 			col : data.col,
             type : data.type,
@@ -110,6 +122,7 @@ export const updateSeat = async (data: any) => {
                 message: 'Seat not found',
             };
         }
+        seat.row = data.row || seat.row;
 		seat.isAvailable = data.isAvailable || seat.isAvailable;
         await seat.save();
         return {

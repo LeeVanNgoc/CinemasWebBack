@@ -29,6 +29,17 @@ export const checkTicketExist = async (ticketId: number) => {
 // Create Seat ticket 
 export const createSeatTicket = async (data: any) => {
 	try {
+        const existingIds = await SeatTickets.findAll({
+            attributes: ['seatTicketsId'],
+            order: [['seatTicketsId', 'ASC']]
+        });
+
+        const ids = existingIds.map(seatTickets => seatTickets.seatTicketId);
+
+        let newId = 1;
+        while (ids.includes(newId)) {
+            newId++;
+        }
         const checkTicket = await checkTicketExist(data.ticketId);
         if (checkTicket.errCode === 0) {
             return {
@@ -37,6 +48,7 @@ export const createSeatTicket = async (data: any) => {
             };
         }
 		const newSeatTicket = await SeatTickets.create({
+            seatTicketsId: newId,
             seatId: data.seatId,
             ticketId: data.ticketId,
         });

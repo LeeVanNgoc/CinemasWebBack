@@ -2,8 +2,19 @@ import Trailer from "../models/Trailer";
 
 export const createTrailer = async(data : any) => {
 	try {
+        const existingIds = await Trailer.findAll({
+            attributes: ['trailerId'],
+            order: [['trailerId', 'ASC']]
+        });
+
+        const ids = existingIds.map(Trailer => Trailer.trailerId);
+
+        let newId = 1;
+        while (ids.includes(newId)) {
+            newId++;
+        }
         const newTrailer = await Trailer.create({
-            trailerId: data.trailerId,
+            trailerId: newId,
             movieId: data.movieId,
             link: data.link,
         });
