@@ -3,39 +3,209 @@ Quy tặc gán errCode:
 	-	errCode : 1 : Something not found
 	-	errCode : 2 : Something not exist or action failed
 	-	errCode : 3 : Error action API
-	-	errCode : 4 : 
+	-	errCode : 4 : Missing required parameters
 	-	errCode : 5 : Something incorrect
 
 
 genreRoutes
-	API tạo mới genre :
-		-	router.post('/create-new-genre');
-		-	Input : 
-		-	Output : 
-	API xoá genre 
-		-	router.delete('/delete-genre/:id');
-		-	Input : 
-		-	Output :
-	router.put('/edit-genre/:id');
-	router.get('/get-all-genres');
-	router.get('/get-genre-by-id/:id');
-	app.use('/api/genres', router);
+    API tạo mới thể loại:
+        - 	router.post('/create-new-genre');
+        -	Input : + name (string)
+					+ description (text)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 1 (thể loại đã tồn tại)
+                  	+ errCode: 3 (lỗi khi tạo)
+
+    API xoá thể loại:
+        - 	router.delete('/delete-genre/:id');
+        - 	Input : + id: id thể loại (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy thể loại)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API cập nhật thể loại:
+        - 	router.put('/edit-genre/:id');
+        - 	Input : + any (bất kì thuộc tính nào của Genre)
+        - 	Output: + errCode: 0 (cập nhật thành công)
+                  	+ errCode: 1 (không tìm thấy thể loại)
+                  	+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (thiếu ID thể loại cần cập nhật)
+
+    API lấy tất cả thể loại:
+        - 	router.get('/get-all-genres');
+        - 	Input : null
+        - 	Output: + errCode: 0 (lấy thành công)
+                  	+ errCode: 1 (không tìm thấy thể loại nào)
+
+    API lấy thể loại theo id:
+        - 	router.get('/get-genre-by-id/:id');
+        - 	Input : + id: id thể loại (number)
+        - 	Output: + errCode: 0 (lấy thành công)
+                   	+ errCode: 1 (không tìm thấy thể loại)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/genres', router);
+
+movieGenreRoutes
+    API tạo mới thể loại của phim:
+        - 	router.post('/create-new-movie-genre');
+        -	Input : + movieGenreId (number)
+					+ genreId (number)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 1 (thể loại đã tồn tại)
+                  	+ errCode: 3 (lỗi khi tạo)
+
+    API xoá thể loại của phim:
+        - 	router.delete('/delete-movie-genre/:movieGenreId');
+        - 	Input : + movieGenreId (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy thể loại)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API lấy tất cả thể loại của phim:
+        - 	router.get('/get-all-movie-genres');
+        - 	Input : null
+        - 	Output: + errCode: 0 (lấy thành công)
+                  	+ errCode: 1 (không tìm thấy thể loại nào)
+
+    API lấy thể loại của phim theo id:
+        - 	router.get('/get-movie-genre-by-id/:movieGenreId');
+        - 	Input : + movieGenreId (number)
+        - 	Output: + errCode: 0 (lấy thành công)
+                   	+ errCode: 1 (không tìm thấy thể loại)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/movie-genres', router);
+
 
 movieRoutes
-	router.post('/create-new-movie);
-	router.delete('/delete-movie/:movieid);
-	router.put('/edit-movie/:movieid);
-	router.get('/get-all-movies);
-	router.get('/get-movie-by-id/:movieid);
-	app.use('/api/movies', router);
+    API tạo mới phim:
+        - 	router.post('/create-new-movie');
+        - 	Input : + title (string)
+                 	+ description (text)
+                 	+ genreId (number)
+                 	+ duration (number)
+                 	+ country (string)
+                 	+ cast (array of strings)
+                 	+ sTimeid (string)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 3 (lỗi khi tạo)
+
+    API xoá phim:
+        - 	router.delete('/delete-movie/:movieid');
+        - 	Input : + movieid: id phim (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API cập nhật phim:
+        - 	router.put('/edit-movie/:movieid');
+        - 	Input : + any (bất kì thuộc tính nào của Movie)
+        - 	Output: + errCode: 0 (cập nhật thành công)
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (thiếu ID phim cần cập nhật)
+
+    API lấy tất cả phim:
+        - 	router.get('/get-all-movies');
+        - 	Input : null
+        - 	Output: + errCode: 0 (lấy thành công) && tất cả bản ghi phim
+                  	+ errCode: 1 (không tìm thấy phim nào)
+
+    API lấy phim theo id:
+        - 	router.get('/get-movie-by-id/:movieid');
+        - 	Input : + movieid (number)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi phim
+                  	+ errCode: 1 (không tìm thấy phim)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/movies', router);
 
 newsRoutes
-	router.post('/create-new-news);
-	router.delete('/delete-news/:id);
-	router.put('/edit-news/:id);
-	router.get('/get-all-news);
-	router.get('/get-news-by-id/:id);
-	app.use('/api/news', router);
+    API tạo mới tin tức:
+        - 	router.post('/create-new-news');
+        - 	Input : + title (text)
+                 	+ content (text)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 3 (lỗi khi tạo)
+
+    API xoá tin tức:
+        - 	router.delete('/delete-news/:id');
+        - 	Input : + id (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy tin tức)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API cập nhật tin tức:
+        - 	router.put('/edit-news/:id');
+        - 	Input : + any (bất kì thuộc tính nào của News)
+        - 	Output: + errCode: 0 (cập nhật thành công)
+                  	+ errCode: 1 (không tìm thấy tin tức)
+                  	+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (thiếu ID tin tức cần cập nhật)
+
+    API lấy tất cả tin tức:
+        - 	router.get('/get-all-news');
+        - 	Input: null
+        - 	Output: + errCode: 0 (lấy thành công)
+                  	+ errCode: 1 (không tìm thấy tin tức nào)
+
+    API lấy tin tức theo id:
+        - 	router.get('/get-news-by-id/:id');
+        - 	Input:  + id: id tin tức (number)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi tin tức
+                  	+ errCode: 1 (không tìm thấy tin tức)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/news', router);
+
+planScreenMovieRoutes
+    API tạo mới lịch chiếu:
+        - 	router.post('/create-plan-screen-movie');
+        - 	Input : + roomId: id phòng chiếu (number)
+                 	+ movieId (number)
+				 	+ startTime: thời gian bắt đầu (Time)
+                 	+ endTime: thời gian kết thúc (Time)
+					+ space: phòng chiếu (String)
+        - 	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 1 (không tìm thấy phim hoặc phòng chiếu)
+                  	+ errCode: 3 (lỗi khi tạo)
+
+    API xoá lịch chiếu:
+        - 	router.delete('/delete-plan-screen-movie/:id');
+        - 	Input : + planScreenMovieId (number)
+        - 	Output: + errCode: 0 (xoá thành công)
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi xoá)
+
+    API cập nhật lịch chiếu:
+        - 	router.put('/edit-plan-screen-movie/:id');
+        - 	Input : + any (bất kì thuộc tính nào của lịch chiếu)
+        - 	Output: + errCode: 0 (cập nhật thành công)
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (thiếu ID lịch chiếu cần cập nhật)
+
+    API lấy tất cả lịch chiếu:
+        - 	router.get('/get-all-plan-screen-movies');
+        - 	Input : null
+        - 	Output: + errCode: 0 (lấy thành công)
+                  	+ errCode: 1 (không tìm thấy lịch chiếu nào)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    API lấy lịch chiếu theo id:
+        - 	router.get('/get-plan-screen-movie-by-id/:id');
+        - 	Input : + id: id lịch chiếu (number)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+    Liên kết đường dẫn:
+        - 	app.use('/api/plan-screen-movies', router);
 
 priceRouter 
 	API tạo giá vé :
@@ -43,15 +213,15 @@ priceRouter
 		-	Input : + cost : giá vé (number) (120000,...)
 					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
 					+ isWeekend : !!!ngày lễ (boolean) (True // False)
-		-	Output: + errCode : 0 (tạo thành công)
-					+ errCode : 1 (tạo thất bại)
-					+ errCode : 3 (có lỗi tạo (truyền dữ liệu // bất đồng bộ ...))
+		-	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi cập nhật)
     API xoá giá vé :
 		-	router.delete('/delete-price');
-		-	Input : + priceId : id (number)
-		-	Output: + errCode : 0 (xoá thành công)
-					+ errCode : 1 (Không tìm thấy vé ứng với id)
-					+ errCode : 3 (Lỗi khi xoá)
+		-	Input : + priceId: id (number)
+		-	Output: + errCode: 0 (xoá thành công)
+					+ errCode: 1 (Không tìm thấy vé ứng với id)
+					+ errCode: 3 (lỗi khi xoá)
 
 	API cập nhật giá vé :
     	-	router.put('/edit-price');
@@ -60,8 +230,8 @@ priceRouter
 					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
 					+ isWeekend : !!!ngày lễ (boolean) (True // False)
 		-	Output: + errCode : 0 (cập nhật thành công)
-					+ errCode : 1 (Không tìm thấy bản ghi tương ứng id)
-					+ errCode : 3 (Lỗi khi cập nhật)
+					+ errCode : 1 (không tìm thấy bản ghi tương ứng id)
+					+ errCode : 3 (lỗi khi cập nhật)
 	API lấy bản ghi :
     	-	router.get('/get-price-by-id');
 		-	Input : + priceId : (id giá vé)
@@ -78,12 +248,42 @@ priceRouter
     	-	app.use('/api/prices', router);
 
 promotionRoutes
-	router.post('/create-new-promotion);
-	router.delete('/delete-promotion/:promoId);
-	router.put('/edit-promotion/:promoId);
-	router.get('/get-all-promotions);
-	router.get('/get-promotion-by-id/:promoId);
-	app.use('/api/promotions', router);
+	API tạo khuyến mãi :
+		-	router.post('/create-price');
+		-	Input : + description (text)
+					+ discount (string)
+					+ startDate (Date)
+					+ endDate (Date)
+		-	Output: + errCode: 0 (tạo thành công)
+                  	+ errCode: 3 (lỗi khi tạo)
+    API xoá khuyến mãi :
+		-	router.delete('/delete-promotion/:promoId);
+		-	Input : + promoId: id (number)
+		-	Output: + errCode: 0 (xoá thành công)
+					+ errCode: 1 (Không tìm thấy khuyến mãi ứng với id)
+					+ errCode: 3 (lỗi khi xoá)
+
+	API cập nhật khuyến mãi :
+    	-	router.put('/edit-promotion/:promoId);
+		-	Input : + any (bất kì thuộc tính nào của API)
+		-	Output: + errCode: 0 (cập nhật thành công)
+					+ errCode: 1 (không tìm thấy bản ghi tương ứng id)
+					+ errCode: 3 (lỗi khi cập nhật)
+					+ errCode: 4 (lỗi khi cập nhật)
+
+	API lấy khuyến mãi theo id:
+    	-	router.get('/get-promotion-by-id/:promoId);
+		-	Input : + promoId: (id giá vé)
+		-	Output: + errCode: 0 (Lấy thành công) && bản ghi tương ứng
+					+ errCode: 1 (Không tìm thấy bản ghi tương ứng)
+					+ errCode: 3 (Lỗi khi lấy bản ghi)
+	API lấy tất cả khuyến mãi :
+    	-	router.get('/get-all-promotions);
+		-	Input : + null
+		-	Output: + errCode: 0 (Lấy thành công) && Tất cả bản ghi
+					+ errCode: 1 (Ko tìm thấy bản ghi nào)
+	Liên kết đường dẫn :
+    	-	app.use('/api/promotions', router);
 
 seatRouter
 	API tạo ghế:
