@@ -2,7 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class Theater extends Model {
-  public theaterid!: number;
+  public theaterId!: number;
   public name!: string;
   public address!: string;
   public city!: string;

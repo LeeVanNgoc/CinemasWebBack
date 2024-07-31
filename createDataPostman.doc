@@ -1,0 +1,121 @@
+Theater:
+	-	http://localhost:6060/api/theater/create-theater?name=Hà Nội&address=Cầu Giấy, Hà Nội&city=Hà Nội&theaterId=100
+	-	http://localhost:6060/api/theater/create-theater?theaterId=1&name=Đà Nẵng&address=Thanh Khê, Đà Nẵng&city=Đà Nẵng
+	-	http://localhost:6060/api/theater/create-theater?theaterId=3&name=Hồ Chí Minh&address=Quận 1, Hồ Chí Minh&city=Thành phố Hồ Chí Minh
+Genres:
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=1&name=Action&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=2&name=Adventure&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=3&name=Crime&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=4&name=Comedy&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=5&name=Drama&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=6&name=Historical&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=7&name=Horror&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=8&name=Science Fiction (Sci-Fi)&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=9&name=Fantasy&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=10&name=Romance&description
+	-	http://localhost:6060/api/genres/create-new-genre?genreId=11&name=Thriller&description
+Rooms:
+	Theater: 1
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=1&theaterId=1&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=2&theaterId=1&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=3&theaterId=1&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=4&theaterId=1&type=3D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=5&theaterId=1&type=3D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=6&theaterId=1&type=3D&numberSeats=72
+	Theater: 2
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=7&theaterId=2&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=8&theaterId=2&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=9&theaterId=2&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=10&theaterId=2&type=3D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=11&theaterId=2&type=3D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=12&theaterId=2&type=3D&numberSeats=72
+	Theater: 3
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=13&theaterId=3&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=14&theaterId=3&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=15&theaterId=3&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=16&theaterId=3&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=17&theaterId=3&type=2D&numberSeats=72
+	-	http://localhost:6060/api/rooms/create-new-room?roomId=18&theaterId=3&type=2D&numberSeats=72
+Seats: 
+	Row: A Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=3&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=4&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=5&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=6&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=7&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=A&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: B Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=3&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=4&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=5&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=6&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=7&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=B&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: C Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=3&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=4&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=5&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=6&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=7&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=C&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: D Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=3&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=4&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=5&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=6&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=7&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=D&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: E Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=3&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=4&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=5&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=6&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=7&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=E&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: F Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=3&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=4&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=5&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=6&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=7&type=VIP&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=F&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: G Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=1&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=2&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=3&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=4&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=5&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=6&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=7&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=8&type=Standard&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=G&col=9&type=Standard&roomId=1&isAvailable=true
+	Row: H Room : 1
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=1&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=2&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=3&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=4&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=5&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=6&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=7&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=8&type=SweetBox&roomId=1&isAvailable=true
+	-	http://localhost:6060/api/seats/create-seat?seatId=1&row=H&col=9&type=SweetBox&roomId=1&isAvailable=true
+
+

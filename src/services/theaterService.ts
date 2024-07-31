@@ -1,9 +1,22 @@
+import { threadId } from "worker_threads";
 import Theater  from "../models/Theater";
 
 // Create a new theater
 export const createTheater = async (data: any) => {
   try {
+    const existingIds = await Theater.findAll({
+      attributes: ['theaterId'],
+      order: [['theaterId', 'ASC']]
+    });
+
+    const ids = existingIds.map(theater => theater.theaterId);
+
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
+    }
     const newTheater = await Theater.create({
+      threadId: newId,
       name: data.name,
       address: data.address,
       city: data.city

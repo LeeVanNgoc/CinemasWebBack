@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createGenre, deleteGenre, editGenre, getAllGenres, getGenreById } from '../services/genreService';
 
 const handleCreateGenre = async (req: Request, res: Response) => {
-  const data = req.body;
+  const data = req.query;
   try {
     const result = await createGenre(data);
     res.status(201).json(result);

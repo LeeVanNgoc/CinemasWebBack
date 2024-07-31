@@ -5,7 +5,6 @@ module.exports = {
     await queryInterface.createTable('SeatTickets', {
       seatTicketId: {
         allowNull: false,
-        autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },

@@ -26,6 +26,17 @@ const setDecentralization = async (role: string) => {
 
 export const createUser = async (data: any) => {
     try {
+      const existingIds = await User.findAll({
+        attributes: ['userId'],
+        order: [['userId', 'ASC']]
+      });
+
+      const ids = existingIds.map(user => user.userId);
+
+      let newId = 1;
+      while (ids.includes(newId)) {
+        newId++;
+      }
       const existingUser = await User.findOne({ where: { email: data.email } });
 
       if (existingUser) {
@@ -36,6 +47,7 @@ export const createUser = async (data: any) => {
         const hashPassword = await hashUserPassword(data.password);
         const role = await setDecentralization(data.role);
         const newUser = await User.create({
+          userId: newId,
           email: data.email,
           password: hashPassword,
           firstName: data.firstName,

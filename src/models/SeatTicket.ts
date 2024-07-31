@@ -19,7 +19,7 @@ SeatTickets.init({
     allowNull: false,
     references: {
       model: Seat,
-      key: 'id',
+      key: 'seatId',
     },
   },
   ticketId: {
