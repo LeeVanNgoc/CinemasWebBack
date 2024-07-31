@@ -6,15 +6,15 @@ Movie:
 	-	movieid
 	-	title
 	-	description
-	-	country
-	-	genreId
 	-	duration
+	-	country
 	-	releaseDate
-	-	sTimeid
+	-	screenTime
+	-	image
 MovieGenre:
 	- 	movieGenreId
 	-	genreId
-New:
+News:
 	-	poseatTicketId
 	-	title
 	-	content
