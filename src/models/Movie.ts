@@ -1,14 +1,15 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
+import Genres from './Genres';
 
 class Movie extends Model {
-  public movieid!: number;
+  public movieId!: number;
   public title!: string;
   public description!: string;
   public duration!: number;
   public country!: string;
   public releaseDate!: Date;
-  public screenTime!: string;
+  public genreId!: number;
   public image!: string;
 }
 
@@ -37,13 +38,13 @@ Movie.init({
   genreId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: Genres,
+      key: 'genreId',
+    },
   },
   releaseDate: {
     type: DataTypes.DATE,
-    allowNull: false,
-  },
-  screenTime: {
-    type: DataTypes.STRING,
     allowNull: false,
   },
   image: {

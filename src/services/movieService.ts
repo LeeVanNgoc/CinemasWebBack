@@ -3,11 +3,11 @@ import Movie from '../models/Movie';
 export const createMovie = async (data: any) => {
   try {
     const existingIds = await Movie.findAll({
-      attributes: ['movieid'],
-      order: [['movieid', 'ASC']]
+      attributes: ['movieId'],
+      order: [['movieId', 'ASC']]
     });
 
-    const ids = existingIds.map(movie => movie.movieid);
+    const ids = existingIds.map(movie => movie.movieId);
 
     let newId = 1;
     while (ids.includes(newId)) {
@@ -15,13 +15,12 @@ export const createMovie = async (data: any) => {
     }
 
     const newMovie = await Movie.create({
-      movieid: newId,
+      movieId: newId,
       title: data.title,
       description: data.description,
       genreId: data.genreId,
       duration: data.duration,
       country: data.country,
-      screenTime: data.screenTime,
       image: data.image,
       releaseDate: new Date(),
     });
@@ -41,7 +40,7 @@ export const createMovie = async (data: any) => {
 
 export const deleteMovie = async (movieId: number) => {
   try {
-    const movie = await Movie.findOne({ where: { movieid: movieId } });
+    const movie = await Movie.findOne({ where: { movieId: movieId } });
     if (!movie) {
       return { errCode: 1, message: "Movie not found" };
     } else {
@@ -57,13 +56,13 @@ export const deleteMovie = async (movieId: number) => {
 };
 
 export const editMovie = async (data: any) => {
-  const movieid = data.movieid;
+  const movieId = data.movieId;
   try {
-    if (!movieid) {
+    if (!movieId) {
       return { errCode: 4, message: 'Missing required parameters!' };
     }
 
-    const movie = await Movie.findOne({ where: { movieid } });
+    const movie = await Movie.findOne({ where: { movieId } });
     if (!movie) {
       return { errCode: 1, message: 'Movie not found!' };
     }
@@ -102,7 +101,7 @@ export const getAllMovies = async () => {
 
 export const getMovieById = async (movieId: number) => {
   try {
-    const movie = await Movie.findOne({ where: { movieid: movieId } });
+    const movie = await Movie.findOne({ where: { movieId: movieId } });
     if (!movie) {
       return {
         errCode: 1,
