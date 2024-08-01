@@ -27,6 +27,8 @@ Seat.hasMany(Room, { foreignKey: 'theaterId' });
 Room.hasMany(PlanScreenMovie, { foreignKey: 'theaterId' });
 PlanScreenMovie.belongsTo(Room, { foreignKey: 'theaterId' });
 
+Movie.hasMany(PlanScreenMovie, { foreignKey: 'theaterId' });
+
 
 export { Sequelize, sequelize };
 export { Movie, MovieGenre, Genres };
