@@ -1,12 +1,14 @@
 import { Sequelize } from 'sequelize';
 
-import Seat from './Seat';
-import Room from './Room';
-import Theater from './Theater';
-import Movie from './Movie';
-import MovieGenre from './MovieGenre';
+
 import Genres from './Genres';
+import Movie from './Movie';
 import PlanScreenMovie from './PlanScreenMovie';
+import Room from './Room';
+import Seat from './Seat';
+import Theater from './Theater';
+import Tickets from './Tickets';
+import User from './User';
 
 const env = process.env.NODE_ENV || 'development';
 const config = require(__dirname + '/../../config.js')[env];
@@ -15,20 +17,27 @@ const sequelize = config.url
   ? new Sequelize(config.url, config)
   : new Sequelize(config.database, config.username, config.password, config);
 
-Movie.belongsToMany(Genres, { through: MovieGenre, foreignKey: 'movieId' });
-Genres.belongsToMany(Movie, { through: MovieGenre, foreignKey: 'genreId' });
+Genres.hasMany(Movie, { foreignKey: 'genreId' });
+Movie.belongsTo(Genres, { foreignKey: 'genreId' });
+
+Movie.hasMany(PlanScreenMovie, { foreignKey: 'movieId' });
+PlanScreenMovie.belongsTo(Movie, { foreignKey: 'movieId' });
+
+Room.hasMany(PlanScreenMovie, { foreignKey: 'roomId' });
+PlanScreenMovie.belongsTo(Room, { foreignKey: 'roomId' });
 
 Theater.hasMany(Room, { foreignKey: 'theaterId' });
 Room.belongsTo(Theater, { foreignKey: 'theaterId' });
 
-Room.hasMany(Seat, { foreignKey: 'theaterId' });
-Seat.hasMany(Room, { foreignKey: 'theaterId' });
+Room.hasMany(Seat, { foreignKey: 'roomId' });
+Seat.belongsTo(Room, { foreignKey: 'roomId' });
 
-Room.hasMany(PlanScreenMovie, { foreignKey: 'theaterId' });
-PlanScreenMovie.belongsTo(Room, { foreignKey: 'theaterId' });
+PlanScreenMovie.hasMany(Tickets, { foreignKey: 'planScreenMovieId' });
+Tickets.belongsTo(PlanScreenMovie, { foreignKey: 'planScreenMovieId' });
 
-Movie.hasMany(PlanScreenMovie, { foreignKey: 'theaterId' });
+User.hasMany(Tickets, { foreignKey: 'userId' });
+Tickets.belongsTo(User, { foreignKey: 'userId' });
 
 
 export { Sequelize, sequelize };
-export { Movie, MovieGenre, Genres };
+export { Movie, Genres, PlanScreenMovie, Room, Seat, Theater, Tickets, User };

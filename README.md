@@ -2,7 +2,7 @@
 
 ## Project Description
 
-CINEMASWEB is a web-based cinema management project that allows for managing movies, ticket prices, promotions, screening schedules, and various other cinema-related information.
+CINEMASWEB is a web-based cinema management project that allows for managing movie, ticket prices, promotions, screening schedules, and various other cinema-related information.
 
 ## Technologies Used
 
@@ -66,31 +66,31 @@ Below are some main API endpoints along with examples of requests and responses:
 - Create a new genre:
 
     ```
-    POST /api/genres/create-new-genre
+    POST /api/genre/create-new-genre
     ```
 
 - Delete a genre:
 
     ```
-    DELETE /api/genres/delete-genre/:id
+    DELETE /api/genre/delete-genre
     ```
 
 - Edit a genre:
 
     ```
-    PUT /api/genres/edit-genre/:id
+    PUT /api/genre/edit-genre
     ```
 
 - Get all genres:
 
     ```
-    GET /api/genres/get-all-genres
+    GET /api/genre/get-all-genres
     ```
 
 - Get genre by ID:
 
     ```
-    GET /api/genres/get-genre-by-id/:id
+    GET /api/genre/get-genre-by-id/
     ```
 
 ### Movie Routes
@@ -98,58 +98,32 @@ Below are some main API endpoints along with examples of requests and responses:
 - Create a new movie:
 
     ```
-    POST /api/movies/create-new-movie
+    POST /api/movie/create-new-movie
     ```
 
 - Delete a movie:
 
     ```
-    DELETE /api/movies/delete-movie/:movieid
+    DELETE /api/movie/delete-movie
     ```
 
 - Edit a movie:
 
     ```
-    PUT /api/movies/edit-movie/:movieid
+    PUT /api/movie/edit-movie
     ```
 
 - Get all movies:
 
     ```
-    GET /api/movies/get-all-movies
+    GET /api/movie/get-all-movies
     ```
 
 - Get movie by ID:
 
     ```
-    GET /api/movies/get-movie-by-id/:movieid
+    GET /api/movie/get-movie-by-id
     ```
-### Movie Genre Routes
-
-- Create a new movie genre:
-
-    ```
-    POST /api/movies/create-new-movie-genre
-    ```
-
-- Delete a movie genre:
-
-    ```
-    DELETE /api/movies/delete-movie-genre/:movieGenreId
-    ```
-
-- Get all movies genre:
-
-    ```
-    GET /api/movies/get-all-movies-genres
-    ```
-
-- Get movie genre by ID:
-
-    ```
-    GET /api/movies/get-movie-genre-by-id/:movieGenreId
-    ```
-
 
 ### News Routes
 
@@ -162,13 +136,13 @@ Below are some main API endpoints along with examples of requests and responses:
 - Delete a news article:
 
     ```
-    DELETE /api/news/delete-news/:id
+    DELETE /api/news/delete-news
     ```
 
 - Edit a news article:
 
     ```
-    PUT /api/news/edit-news/:id
+    PUT /api/news/edit-news
     ```
 
 - Get all news articles:
@@ -180,38 +154,38 @@ Below are some main API endpoints along with examples of requests and responses:
 - Get news article by ID:
 
     ```
-    GET /api/news/get-news-by-id/:id
+    GET /api/news/get-news-by-id
     ```
 ### Plan Screen Movie Routes
 
 - Create a new PSM:
 
     ```
-    POST /api/news/create-new-plan-screen-movie
+    POST /api/plan-screen-movie/create-new-plan-screen-movie
     ```
 
 - Delete a PSM:
 
     ```
-    DELETE /api/news/delete-plan-screen-movie/:planScreenMovieId
+    DELETE /api/plan-screen-movie/delete-plan-screen-movie
     ```
 
 - Edit a PSM:
 
     ```
-    PUT /api/news/edit-plan-screen-movie/:planScreenMovieId
+    PUT /api/plan-screen-movie/edit-plan-screen-movie
     ```
 
 - Get all PSM:
 
     ```
-    GET /api/news/get-all-plan-screen-movies
+    GET /api/plan-screen-movie/get-all-plan-screen-movie
     ```
 
 - Get PSM by ID:
 
     ```
-    GET /api/news/get-plan-screen-movie-by-id/:planScreenMovieId
+    GET /api/plan-screen-movie/get-plan-screen-movie-by-id
     ```
 
 ### Price Routes
@@ -251,62 +225,62 @@ Below are some main API endpoints along with examples of requests and responses:
 - Create a new promotion:
 
     ```
-    POST /api/promotions/create-new-promotion
+    POST /api/promotion/create-new-promotion
     ```
 
 - Delete a promotion:
 
     ```
-    DELETE /api/promotions/delete-promotion/:promoId
+    DELETE /api/promotion/delete-promotion
     ```
 
 - Edit a promotion:
 
     ```
-    PUT /api/promotions/edit-promotion/:promoId
+    PUT /api/promotion/edit-promotion
     ```
 
 - Get all promotions:
 
     ```
-    GET /api/promotions/get-all-promotions
+    GET /api/promotion/get-all-promotions
     ```
 
 - Get promotion by ID:
 
     ```
-    GET /api/promotions/get-promotion-by-id/:promoId
+    GET /api/promotion/get-promotion-by-id
     ```
 ### Room Routes
 
 - Create a new room:
 
     ```
-    POST /api/promotions/create-new-room
+    POST /api/promotion/create-new-room
     ```
 
 - Delete a room:
 
     ```
-    DELETE /api/promotions/delete-room/:roomId
+    DELETE /api/promotion/delete-room
     ```
 
 - Edit a room:
 
     ```
-    PUT /api/promotions/edit-room/:roomId
+    PUT /api/promotion/edit-room
     ```
 
 - Get all room:
 
     ```
-    GET /api/promotions/get-all-rooms
+    GET /api/promotion/get-all-rooms
     ```
 
 - Get room by ID:
 
     ```
-    GET /api/promotions/get-room-by-id/:roomId
+    GET /api/promotion/get-room-by-id
     ```
 
 ### Seat Routes
