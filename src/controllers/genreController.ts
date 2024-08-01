@@ -12,7 +12,7 @@ const handleCreateGenre = async (req: Request, res: Response) => {
 };
 
 const handleDeleteGenre = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.query.id as string);
+  const genreId = parseInt(req.query.genreId as string);
   if (isNaN(genreId)) {
     return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
   }
@@ -28,7 +28,7 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
-  const genreId = Number(req.query.id);
+  const genreId = Number(req.query.genreId);
   if (isNaN(genreId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid genre ID' });
   }
@@ -54,7 +54,7 @@ const handleGetAllGenres = async (req: Request, res: Response) => {
 };
 
 const handleGetGenreById = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.query.id as string);
+  const genreId = parseInt(req.query.genreId as string);
   if (isNaN(genreId)) {
     return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
   }

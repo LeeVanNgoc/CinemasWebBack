@@ -11,7 +11,7 @@ const genreRoutes = (app: Application) => {
   router.get('/get-all-genres', genreController.handleGetAllGenres);
   router.get('/get-genre-by-id', genreController.handleGetGenreById);
 
-  return app.use('/api/genres', router);
+  return app.use('/api/genre', router);
 };
 
 export default genreRoutes;

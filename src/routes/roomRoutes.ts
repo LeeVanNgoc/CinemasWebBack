@@ -11,7 +11,7 @@ const roomRoutes = (app: Application) => {
   router.get('/get-all-rooms', roomController.handleGetAllRooms);
   router.get('/get-room-by-id', roomController.handleGetRoomById);
 
-  return app.use('/api/rooms', router);
+  return app.use('/api/room', router);
 };
 
 export default roomRoutes;
