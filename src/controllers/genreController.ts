@@ -28,15 +28,19 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
-  const data = req.body;
+  const genreId = Number(req.query.id);
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid genre ID' });
+  }
+  const data = { ...req.body, genreId: genreId };
   try {
     const result = await editGenre(data);
-    if (result.errCode) {
-      return res.status(404).json(result);
+    if (result.errCode !== 0) {
+      return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
-    res.status(200).json(result);
+    res.status(200).json({ errCode: result.errCode, message: result.message, genre: result.genre });
   } catch (error) {
-    res.status(500).json({ errCode: 3, message: `Something went wrong in editing genres: ${error}` });
+    res.status(500).json({ errCode: 3, error: `Something went wrong in editing genre: ${error}` });
   }
 };
 
