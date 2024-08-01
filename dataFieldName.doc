@@ -3,24 +3,24 @@ Genres:
 	- 	name
 	- 	description
 Movie:
-	-	movieid
+	-	movieId
 	-	title
 	-	description
 	-	duration
 	-	country
 	-	releaseDate
-	-	screenTime
 	-	image
+	-	genreId
 MovieGenre:
 	- 	movieGenreId
 	-	genreId
 News:
-	-	poseatTicketId
+	-	postId
 	-	title
 	-	content
 	-	postDate
 PlanScreenMovie:
-	-	planScreenMovieId : planScreenMovieId
+	-	planScreenMovieId
 	-	roomId
 	-	movieId
 	-	startTime
@@ -32,7 +32,7 @@ Prices:
 	-	type : 'Standard', 'Vip', SweetBox'
 	-	isWeekend : 'True : 0', 'False : 1'
 Promotion:
-	-	promoId : PromotionId
+	-	promoId
 	-	description
 	-	discount
 	-	startDate
