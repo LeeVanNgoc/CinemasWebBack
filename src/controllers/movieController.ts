@@ -31,11 +31,11 @@ const handleDeleteMovie = async (req: Request, res: Response) => {
 };
 
 const handleEditMovie = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieid);
+  const movieId = Number(req.query.movieId);
   if (isNaN(movieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
   }
-  const data = { ...req.body, movieid: movieId };
+  const data = { ...req.body, movieId: movieId };
   try {
     const result = await editMovie(data);
     if (result.errCode !== 0) {
@@ -60,7 +60,7 @@ const handleGetAllMovies = async (req: Request, res: Response) => {
 };
 
 const handleGetMovieById = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieid);
+  const movieId = Number(req.params.movieid);
   if (isNaN(movieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
   }
