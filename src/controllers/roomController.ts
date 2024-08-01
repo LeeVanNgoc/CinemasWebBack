@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createRoom, deleteRoom, editRoom, getAllRooms, getRoomById } from '../services/roomService';
 
 const handleCreateRoom = async (req: Request, res: Response) => {
-  const data = req.query;
+  const data = req.body;
   try {
     const result = await createRoom(data);
     if (result.errCode !== 0) {

@@ -11,7 +11,7 @@ const promotionRoutes = (app: Application) => {
   router.get('/get-all-promotions', promotionController.handleGetAllPromotions);
   router.get('/get-promotion-by-id', promotionController.handleGetPromotionById);
 
-  return app.use('/api/promotions', router);
+  return app.use('/api/promotion', router);
 };
 
 export default promotionRoutes;

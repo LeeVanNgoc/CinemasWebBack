@@ -11,7 +11,7 @@ const planScreenMovieRoutes = (app: Application) => {
   router.get('/get-all-plan-screen-movies', planScreenMovieController.handleGetAllPlanScreenMovies);
   router.get('/get-plan-screen-movie-by-id', planScreenMovieController.handleGetPlanScreenMovieById);
 
-  return app.use('/api/plan-screen-movies', router);
+  return app.use('/api/plan-screen-movie', router);
 };
 
 export default planScreenMovieRoutes;
