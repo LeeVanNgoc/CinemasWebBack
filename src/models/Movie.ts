@@ -13,10 +13,10 @@ class Movie extends Model {
 }
 
 Movie.init({
-  movieid: {
+  movieId: {
     type: DataTypes.INTEGER,
     primaryKey: true,
-    autoIncrement: true,
+    allowNull: false,
   },
   title: {
     type: DataTypes.STRING,
@@ -32,6 +32,10 @@ Movie.init({
   },
   country: {
     type: DataTypes.STRING,
+    allowNull: false,
+  },
+  genreId: {
+    type: DataTypes.INTEGER,
     allowNull: false,
   },
   releaseDate: {
