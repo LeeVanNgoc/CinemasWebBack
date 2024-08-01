@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createMovie, deleteMovie, editMovie, getAllMovies, getMovieById } from '../services/movieService';
 
 const handleCreateMovie = async (req: Request, res: Response) => {
-  const data = req.query;
+  const data = req.body;
   try {
     const result = await createMovie(data);
     if (result.errCode !== 0) {

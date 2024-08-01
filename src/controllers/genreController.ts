@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createGenre, deleteGenre, editGenre, getAllGenres, getGenreById } from '../services/genreService';
 
 const handleCreateGenre = async (req: Request, res: Response) => {
-  const data = req.query;
+  const data = req.body;
   try {
     const result = await createGenre(data);
     res.status(201).json(result);
@@ -13,6 +13,9 @@ const handleCreateGenre = async (req: Request, res: Response) => {
 
 const handleDeleteGenre = async (req: Request, res: Response) => {
   const genreId = parseInt(req.query.id as string);
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
+  }
   try {
     const result = await deleteGenre(genreId);
     if (result.errCode) {
@@ -25,7 +28,7 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
-  const data = req.query;
+  const data = req.body;
   try {
     const result = await editGenre(data);
     if (result.errCode) {
@@ -48,6 +51,9 @@ const handleGetAllGenres = async (req: Request, res: Response) => {
 
 const handleGetGenreById = async (req: Request, res: Response) => {
   const genreId = parseInt(req.query.id as string);
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
+  }
   try {
     const result = await getGenreById(genreId);
     if (result.errCode) {
@@ -64,5 +70,5 @@ export default {
   handleDeleteGenre,
   handleEditGenre,
   handleGetAllGenres,
-  handleGetGenreById
+  handleGetGenreById,
 };
