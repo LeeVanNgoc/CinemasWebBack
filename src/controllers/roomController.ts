@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createRoom, deleteRoom, editRoom, getAllRooms, getRoomById } from '../services/roomService';
 
 const handleCreateRoom = async (req: Request, res: Response) => {
-  const data = req.query;
+  const data = req.body;
   try {
     const result = await createRoom(data);
     if (result.errCode !== 0) {
@@ -15,7 +15,7 @@ const handleCreateRoom = async (req: Request, res: Response) => {
 };
 
 const handleDeleteRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.params.roomId);
+  const roomId = Number(req.query.roomId);
   if (isNaN(roomId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid room ID' });
   }
@@ -31,7 +31,7 @@ const handleDeleteRoom = async (req: Request, res: Response) => {
 };
 
 const handleEditRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.params.roomId);
+  const roomId = Number(req.query.roomId);
   if (isNaN(roomId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid room ID' });
   }
@@ -60,7 +60,7 @@ const handleGetAllRooms = async (req: Request, res: Response) => {
 };
 
 const handleGetRoomById = async (req: Request, res: Response) => {
-  const roomId = Number(req.params.roomId);
+  const roomId = Number(req.query.roomId);
   if (isNaN(roomId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid room ID' });
   }

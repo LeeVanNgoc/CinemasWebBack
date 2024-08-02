@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Room from './Room';
+import Movie from './Movie';
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;
@@ -28,6 +29,10 @@ PlanScreenMovie.init({
   movieId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+    references: {
+      model: Movie,
+      key: 'movieId',
+    },
   },
   startTime: {
     type: DataTypes.TIME,

@@ -6,12 +6,12 @@ const router = express.Router();
 
 const promotionRoutes = (app: Application) => {
   router.post('/create-new-promotion', promotionController.handleCreatePromotion);
-  router.delete('/delete-promotion/:promoId', promotionController.handleDeletePromotion);
-  router.put('/edit-promotion/:promoId', promotionController.handleEditPromotion);
+  router.delete('/delete-promotion', promotionController.handleDeletePromotion);
+  router.put('/edit-promotion', promotionController.handleEditPromotion);
   router.get('/get-all-promotions', promotionController.handleGetAllPromotions);
-  router.get('/get-promotion-by-id/:promoId', promotionController.handleGetPromotionById);
+  router.get('/get-promotion-by-id', promotionController.handleGetPromotionById);
 
-  return app.use('/api/promotions', router);
+  return app.use('/api/promotion', router);
 };
 
 export default promotionRoutes;

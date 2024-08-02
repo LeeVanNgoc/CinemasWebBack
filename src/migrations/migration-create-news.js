@@ -4,7 +4,7 @@
 module.exports = {
   up: async (queryInterface, Sequelize) => {
     await queryInterface.createTable('News', {
-      poseatTicketId: {
+      postId: {
         allowNull: false,
         autoIncrement: false,
         primaryKey: false,
@@ -18,6 +18,9 @@ module.exports = {
       },
       postDate: {
         type : Sequelize.DATE
+      },
+      image: {
+        type : Sequelize.STRING
       },
     });
   },

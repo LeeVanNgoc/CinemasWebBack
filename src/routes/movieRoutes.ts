@@ -11,7 +11,7 @@ const movieRoutes = (app: Application) => {
   router.get('/get-all-movies', movieController.handleGetAllMovies);
   router.get('/get-movie-by-id', movieController.handleGetMovieById);
 
-  return app.use('/api/movies', router);
+  return app.use('/api/movie', router);
 };
 
 export default movieRoutes;

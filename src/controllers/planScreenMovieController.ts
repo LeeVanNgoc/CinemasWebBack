@@ -15,7 +15,7 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
 };
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
-  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  const planScreenMovieId = Number(req.query.planScreenMovieId);
   if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
@@ -31,7 +31,7 @@ const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
 };
 
 const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
-  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  const planScreenMovieId = Number(req.query.planScreenMovieId);
   if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
@@ -60,7 +60,7 @@ const handleGetAllPlanScreenMovies = async (req: Request, res: Response) => {
 };
 
 const handleGetPlanScreenMovieById = async (req: Request, res: Response) => {
-  const planScreenMovieId = Number(req.params.planScreenMovieId);
+  const planScreenMovieId = Number(req.query.planScreenMovieId);
   if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }

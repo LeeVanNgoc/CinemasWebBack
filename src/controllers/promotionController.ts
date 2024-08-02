@@ -15,7 +15,7 @@ const handleCreatePromotion = async (req: Request, res: Response) => {
 };
 
 const handleDeletePromotion = async (req: Request, res: Response) => {
-  const promoId = Number(req.params.promoId);
+  const promoId = Number(req.query.promoId);
   if (isNaN(promoId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid promotion ID' });
   }
@@ -31,7 +31,7 @@ const handleDeletePromotion = async (req: Request, res: Response) => {
 };
 
 const handleEditPromotion = async (req: Request, res: Response) => {
-  const promoId = Number(req.params.promoId);
+  const promoId = Number(req.query.promoId);
   if (isNaN(promoId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid promotion ID' });
   }
@@ -60,7 +60,7 @@ const handleGetAllPromotions = async (req: Request, res: Response) => {
 };
 
 const handleGetPromotionById = async (req: Request, res: Response) => {
-  const promoId = Number(req.params.promoId);
+  const promoId = Number(req.query.promoId);
   if (isNaN(promoId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid promotion ID' });
   }

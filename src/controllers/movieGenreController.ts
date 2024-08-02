@@ -20,7 +20,7 @@ const handleCreateMovieGenre = async (req: Request, res: Response) => {
 };
 
 const handleDeleteMovieGenre = async (req: Request, res: Response) => {
-  const movieGenreId = Number(req.params.movieGenreId);
+  const movieGenreId = Number(req.query.id);
   if (isNaN(movieGenreId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid movie genre ID' });
   }
@@ -48,7 +48,7 @@ const handleGetAllMovieGenres = async (req: Request, res: Response) => {
 };
 
 const handleGetMovieGenreById = async (req: Request, res: Response) => {
-  const movieGenreId = Number(req.params.movieGenreId);
+  const movieGenreId = Number(req.query.id);
   if (isNaN(movieGenreId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid movie genre ID' });
   }

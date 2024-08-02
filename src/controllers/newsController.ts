@@ -15,7 +15,7 @@ const handleCreateNews = async (req: Request, res: Response) => {
 };
 
 const handleDeleteNews = async (req: Request, res: Response) => {
-  const newsId = parseInt(req.params.id);
+  const newsId = parseInt(req.query.newsId as string);
   if (isNaN(newsId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID' });
   }
@@ -31,7 +31,7 @@ const handleDeleteNews = async (req: Request, res: Response) => {
 };
 
 const handleEditNews = async (req: Request, res: Response) => {
-  const newsId = parseInt(req.params.id);
+  const newsId = parseInt(req.query.newsId as string);
   if (isNaN(newsId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID' });
   }
@@ -60,7 +60,7 @@ const handleGetAllNews = async (req: Request, res: Response) => {
 };
 
 const handleGetNewsById = async (req: Request, res: Response) => {
-  const newsId = parseInt(req.params.id);
+  const newsId = parseInt(req.query.newsId as string);
   if (isNaN(newsId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID' });
   }

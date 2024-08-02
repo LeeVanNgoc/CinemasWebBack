@@ -18,7 +18,7 @@
     "bcryptjs": "^2.4.3",
     "express": "^4.19.2",
     "joi": "^17.13.3",
-    "mysql2": "^3.10.3",
+    "mysql2": "^3.11.0",
     "nodemon": "^3.1.4",
     "sequelize": "^6.37.3",
     "sequelize-cli": "^6.6.2",

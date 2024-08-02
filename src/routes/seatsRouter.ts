@@ -11,6 +11,7 @@ const seatRouter = (app : Application) => {
     router.get('/get-seat-by-id', seatsController.handleGetSeatById);
     router.get('/get-number-seat-in-room', seatsController.handleGetNumberSeatInRoom);
     router.get('/get-number-row-and-col-in-room', seatsController.handleGetNumberRowAndRow);
+    router.post('/auto-create-seats', seatsController.handleAutoCreateSeats);
 
     app.use('/api/seats', router);
 }

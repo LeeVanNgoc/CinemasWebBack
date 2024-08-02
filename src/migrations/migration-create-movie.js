@@ -23,9 +23,6 @@ module.exports = {
       releaseDate: {
         type: Sequelize.DATE
       },
-      screenTime: {
-        type: Sequelize.STRING
-      },
       image: {
         type: Sequelize.STRING
       },
