@@ -6,6 +6,7 @@ class News extends Model {
   public title!: string;
   public content!: string;
   public readonly postDate!: Date;
+  public image!: string;
 }
 
 News.init({
@@ -26,6 +27,10 @@ News.init({
     type: DataTypes.DATE,
     allowNull: false,
     defaultValue: DataTypes.NOW,
+  },
+  image: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
 }, {
   sequelize,

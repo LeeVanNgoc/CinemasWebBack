@@ -19,6 +19,9 @@ module.exports = {
       postDate: {
         type : Sequelize.DATE
       },
+      image: {
+        type : Sequelize.STRING
+      },
     });
   },
 
