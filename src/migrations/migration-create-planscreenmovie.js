@@ -21,6 +21,9 @@ module.exports = {
       endTime: {
         type: Sequelize.TIME
       },
+      dateScreen: {
+        type: Sequelize.DATEONLY
+      },
       space: {
         type: Sequelize.STRING
       },

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createSeat, getAllSeats, getSeatById, updateSeat, deleteSeat} from "../services/seatsService";
+import { createSeat, getAllSeats, getSeatById, updateSeat, deleteSeat, numberSeatInRoom, getRowAndColumnInRoom} from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
 	const data = req.query;
@@ -96,10 +96,54 @@ const handleDeleteSeat = async (req: Request, res: Response) => {
     }
 }
 
+const handleGetNumberSeatInRoom = async(req: Request, res: Response) => {
+    const roomId = Number(req.query.roomId);
+    try {
+        const getNumberSeatInRoom = await numberSeatInRoom(roomId);
+        if (getNumberSeatInRoom.errCode === 0) {
+            res.status(200).json({
+                errCode: getNumberSeatInRoom.errCode,
+                message: getNumberSeatInRoom.message,
+                numberSeat: getNumberSeatInRoom.numberSeat,
+            })
+        } else {
+            res.status(400).json({
+                errCode: getNumberSeatInRoom.errCode,
+                message: getNumberSeatInRoom.message,
+            })
+        }
+    } catch (error) {
+        res.status(500).json({message: `Something went wrong in getting number seat in room: ${error}`});
+    }
+}
+
+const handleGetNumberRowAndRow = async(req: Request, res: Response) => {
+    const roomId = Number(req.query.roomId);
+    try {
+        const getNumberRowAndRow = await getRowAndColumnInRoom(roomId);
+        if (getNumberRowAndRow.errCode === 0) {
+            res.status(200).json({
+                errCode: getNumberRowAndRow.errCode,
+                message: getNumberRowAndRow.message,
+                numberRow: getNumberRowAndRow.numberRow,
+                numberCol: getNumberRowAndRow.numberCol,
+            })
+        } else {
+            res.status(400).json({
+                errCode: getNumberRowAndRow.errCode,
+                message: getNumberRowAndRow.message,
+            })
+        }
+    } catch (error) {
+        res.status(500).json({message: `Something went wrong in getting number row and row in room: ${error}`});
+    }
+}
 export default {
 	handleCreateSeat,
     handleGetAllSeats,
     handleGetSeatById,
     handleUpdateSeat,
     handleDeleteSeat,
+    handleGetNumberSeatInRoom,
+    handleGetNumberRowAndRow,
 }
