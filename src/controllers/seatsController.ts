@@ -1,18 +1,18 @@
 import { Request, Response } from "express";
-import { createSeat, getAllSeats, getSeatById, updateSeat, deleteSeat} from "../services/seatsService";
+import { createSeat, getAllSeats, getSeatById, updateSeat, deleteSeat, autoCreateSeats } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
-	const data = req.query;
+    const data = req.query;
     try {
         const newSeat = await createSeat(data);
         if (newSeat.errCode === 0) {
             res.status(201).json({ 
-				erroCode: newSeat.errCode,
-				message: newSeat.message });
+                errCode: newSeat.errCode,
+                message: newSeat.message });
         } else {
             res.status(400).json({ 
-				errCode: newSeat.errCode,
-				message: newSeat.message });
+                errCode: newSeat.errCode,
+                message: newSeat.message });
         }
     } catch (error) {
         res.status(500).json({ message: `Something went wrong in creating new seat ${error}` });
@@ -20,17 +20,17 @@ const handleCreateSeat = async (req: Request, res: Response) => {
 }
 
 const handleGetAllSeats = async (req: Request, res: Response) => {
-	try {
+    try {
         const seats = await getAllSeats();
         if (seats.errCode === 0) {
             res.status(200).json({ 
-				error: seats.errCode, 
-				message: seats.message, 
-				seats: seats.seats });
+                error: seats.errCode, 
+                message: seats.message, 
+                seats: seats.seats });
         } else {
             res.status(404).json({ 
-				error: seats.errCode, 
-				message: seats.message });
+                error: seats.errCode, 
+                message: seats.message });
         }
     } catch (error) {
         res.status(500).json({ message: `Something went wrong in getting all seats ${error}` });
@@ -38,10 +38,10 @@ const handleGetAllSeats = async (req: Request, res: Response) => {
 }
 
 const handleGetSeatById = async (req: Request, res: Response) => {
-	const seatId = Number(req.query.seatId);
+    const seatId = Number(req.query.seatId);
     if (isNaN(seatId)) {
-    	return res.status(400).json({ message: 'Invalid user ID' }); // Xử lý khi ID không hợp lệ
-  	}
+        return res.status(400).json({ message: 'Invalid user ID' });
+    }
     try {
         const seat = await getSeatById(seatId);
         if (seat.errCode === 0) {
@@ -79,7 +79,7 @@ const handleUpdateSeat = async (req: Request, res: Response) => {
 }
 
 const handleDeleteSeat = async (req: Request, res: Response) => {
-	const seatId = Number(req.query.seatId);
+    const seatId = Number(req.query.seatId);
     try {
         const deletedSeat = await deleteSeat(seatId);
         if (deletedSeat.errCode === 0) {
@@ -96,10 +96,31 @@ const handleDeleteSeat = async (req: Request, res: Response) => {
     }
 }
 
+const handleAutoCreateSeats = async (req: Request, res: Response) => {
+    const { roomId, vipRows, regularRows, doubleRows, columns } = req.body;
+    try {
+        const result = await autoCreateSeats(roomId, vipRows, regularRows, doubleRows, columns);
+        if (result.errCode === 0) {
+            res.status(201).json({ 
+                errCode: result.errCode,
+                message: result.message 
+            });
+        } else {
+            res.status(400).json({ 
+                errCode: result.errCode,
+                message: result.message 
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ message: `Something went wrong in creating seats ${error}` });
+    }
+}
+
 export default {
-	handleCreateSeat,
+    handleCreateSeat,
     handleGetAllSeats,
     handleGetSeatById,
     handleUpdateSeat,
     handleDeleteSeat,
+    handleAutoCreateSeats
 }
