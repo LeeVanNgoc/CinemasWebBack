@@ -162,3 +162,66 @@ export const updateSeat = async (data: any) => {
         };
     }
 };
+
+const findSmallestAvailableId = async () => {
+    const existingSeats = await Seat.findAll({
+        attributes: ['seatId'],
+        order: [['seatId', 'ASC']]
+    });
+    const existingIds = existingSeats.map(seat => seat.seatId);
+
+    let newId = 1;
+    for (const id of existingIds) {
+        if (id === newId) {
+            newId++;
+        } else {
+            break;
+        }
+    }
+    return newId;
+}
+
+export const autoCreateSeats = async (roomId: string, vipRows: string[], regularRows: string[], doubleRows: string[], columns: number) => {
+    try {
+        const newSeats: Seat[] = [];
+        const createSeatIfNotExist = async (row: string, col: number, type: string) => {
+            const data = { row, col, type, roomId, isAvailable: true };
+            const existingSeat = await checkSeat(data);
+            if (existingSeat.errCode === 0) {
+                return {
+                    errCode: 1,
+                    message: `Seat at row ${row} and col ${col} already exists`,
+                };
+            }
+            const newId = await findSmallestAvailableId();
+            const newSeat = await Seat.create({ seatId: newId, ...data });
+            newSeats.push(newSeat);
+            return { errCode: 0 };
+        };
+
+        for (let col = 1; col <= columns; col++) {
+            for (const row of vipRows) {
+                const result = await createSeatIfNotExist(row, col, 'VIP');
+                if (result.errCode !== 0) return result;
+            }
+            for (const row of regularRows) {
+                const result = await createSeatIfNotExist(row, col, 'Regular');
+                if (result.errCode !== 0) return result;
+            }
+            for (const row of doubleRows) {
+                const result = await createSeatIfNotExist(row, col, 'Double');
+                if (result.errCode !== 0) return result;
+            }
+        }
+        return {
+            newSeats,
+            errCode: 0,
+            message: 'Automated seat creation successful',
+        };
+    } catch (error) {
+        return {
+            errCode: 3,
+            message: `Automated seat creation failed ${error}`,
+        };
+    }
+};

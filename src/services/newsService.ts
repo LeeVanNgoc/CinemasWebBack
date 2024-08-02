@@ -21,6 +21,7 @@ export const createNews = async (data: any) => {
       title: data.title,
       content: data.content,
       postDate: new Date(),
+      image: data.image,
     });
 
     return {
@@ -90,7 +91,7 @@ export const editNews = async (data: any) => {
 export const getAllNews = async () => {
   try {
     const news = await News.findAll({
-      attributes: ['postId', 'title', 'content', 'postDate'],
+      attributes: ['postId', 'title', 'content', 'postDate', 'image'],
       raw: true,
     });
     return {
@@ -110,7 +111,7 @@ export const getNewsById = async (newsId: number) => {
   try {
     const news = await News.findOne({
       where: { postId: newsId },
-      attributes: ['postId', 'title', 'content', 'postDate'],
+      attributes: ['postId', 'title', 'content', 'postDate', 'image'],
       raw: true,
     });
     if (!news) {
