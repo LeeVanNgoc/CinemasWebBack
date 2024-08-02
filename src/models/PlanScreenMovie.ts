@@ -42,6 +42,20 @@ PlanScreenMovie.init({
     type: DataTypes.TIME,
     allowNull: false,
   },
+  dateScreen: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      const rawDate = this.getDataValue('dateScreen');
+      const [year, month, day] = rawDate.split('-');
+      return `${day}/${month}/${year}`; // Trả về định dạng DD/MM/YYYY khi lấy từ cơ sở dữ liệu
+    },
+    set(value : string) {
+      const [day, month, year] = value.split('/');
+      this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
+    }
+  },
+  
   space: {
     type: DataTypes.STRING,
     allowNull: false,

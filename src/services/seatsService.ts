@@ -163,6 +163,59 @@ export const updateSeat = async (data: any) => {
     }
 };
 
+//Get number seat of one room
+export const numberSeatInRoom = async(roomId : number) => {
+    try {
+        const seats = await Seat.findAll({ where: { roomId: roomId} });
+        return {
+            numberSeat: seats.length,
+            errCode: 0,
+            message: 'Get number seat successfuly',
+        };
+    } catch (error) {
+        return {
+            errCode: 3,
+            message: `Error get number seat in room ${error}`,
+        };
+    }
+}
+
+//Get row and column of one room
+export const getRowAndColumnInRoom = async(roomId : number) => {
+    try {
+        const seats = await Seat.findAll({ where: { roomId: roomId} });
+        let numberCol = 0;
+        for (let index = 0; index < seats.length; index++) {
+            const maxCol = seats[index].col;
+            if (numberCol < maxCol ) {
+                numberCol = maxCol;
+            }
+        }
+        const rowAndColumn = {
+            numberRow: seats.length / numberCol,
+            numberCol: numberCol,
+        };
+        if (seats) {
+            return {
+                numberRow : rowAndColumn.numberRow,
+                numberCol : rowAndColumn.numberCol,
+                errCode: 0,
+                message: 'Get row and column successfuly',
+            };
+        } else {
+            return {
+                errCode: 1,
+                message: 'No seats found',
+            };
+        }
+        
+    } catch (error) {
+        return {
+            errCode: 3,
+            message: `Error get row and column in room ${error}`,
+        };
+    }
+}
 const findSmallestAvailableId = async () => {
     const existingSeats = await Seat.findAll({
         attributes: ['seatId'],
