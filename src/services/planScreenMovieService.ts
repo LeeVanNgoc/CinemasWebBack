@@ -1,9 +1,11 @@
 import exp from 'constants';
+import { Op } from 'sequelize';
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
+import moment from 'moment';
 
 export const createPlanScreenMovie = async (data: any) => {
-  try { 
+  try {
     const existingIds = await PlanScreenMovie.findAll({
       attributes: ['planScreenMovieId'],
       order: [['planScreenMovieId', 'ASC']]
@@ -71,7 +73,7 @@ export const editPlanScreenMovie = async (data: any) => {
     Object.assign(planScreenMovie, data);
     await planScreenMovie.save();
 
-    return { 
+    return {
       errCode: 0,
       message: 'Update the PlanScreenMovie succeeds!',
       planScreenMovie
@@ -122,100 +124,86 @@ export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
   }
 };
 
-export const createPlanScreenMovieWithMovie = async(data : any) => {
+export const createPlanScreenMovieWithMovie = async (data: any) => {
   try {
-    const numberSeat = await numberSeatInRoom(data.roomId);
+    const { roomId, movieId, schedule} = data; // Include dateScreen here
+    const numberSeat = await numberSeatInRoom(roomId);
     const existingIds = await PlanScreenMovie.findAll({
       attributes: ['planScreenMovieId'],
       order: [['planScreenMovieId', 'ASC']]
     });
 
     const ids = existingIds.map(psm => psm.planScreenMovieId);
-
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
     }
-    const newPlanScreen = await PlanScreenMovie.create({
-      planScreenMovieId: newId,
-      roomId: data.roomId,
-      movieId: data.movieId,
-      startTime: data.startTime,
-      endTime: data.endTime,
-      dateScreen: data.dateScreen,
-      space: numberSeat.numberSeat,
-    });
-  if (newPlanScreen) {
-    return {
-      errCode: 0,
-      message: 'PlanScreenMovie created successfully',
-      planScreenMovie: newPlanScreen
-    };
-  } else {
-    return {
-      errCode: 1,
-      message: 'Failed to create PlanScreenMovie',
-    };
-  }
+
+    const newPlanScreenMovies = [];
+
+    for (const item of schedule) {
+      const { dateScreen, times } = item;
+
+      const existingSchedules = await PlanScreenMovie.findAll({
+        where: {
+          roomId,
+          dateScreen: dateScreen,
+        },
+      });
+
+      for (const time of times) {
+        const [startTime, endTime] = time.split('-');
+
+        const hasConflict = existingSchedules.some(schedule => {
+          const existingStartTime = schedule.getDataValue('startTime');
+          const existingEndTime = schedule.getDataValue('endTime');
+
+          return (
+            (startTime >= existingStartTime && startTime < existingEndTime) ||
+            (endTime > existingStartTime && endTime <= existingEndTime) ||
+            (startTime <= existingStartTime && endTime >= existingEndTime)
+          );
+        });
+
+        if (hasConflict) {
+          return {
+            errCode: 2,
+            message: `Schedule conflict detected for date ${dateScreen} and time ${time}`,
+          };
+        }
+
+        const newPlanScreen = await PlanScreenMovie.create({
+          planScreenMovieId: newId,
+          roomId: roomId,
+          movieId: movieId,
+          startTime: startTime,
+          endTime: endTime,
+          dateScreen: dateScreen,
+          space: numberSeat.numberSeat,
+        });
+
+        newPlanScreenMovies.push(newPlanScreen);
+        newId++;
+      }
+    }
+
+    if (newPlanScreenMovies.length > 0) {
+      return {
+        errCode: 0,
+        message: 'PlanScreenMovies created successfully',
+        planScreenMovies: newPlanScreenMovies,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: 'No PlanScreenMovies created',
+      };
+    }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error creating PlanScreenMovie: ${error}`
-    }
+      message: `Error creating PlanScreenMovies: ${error}`,
+    };
   }
-}
+};
 
-// export const createPlanScreenMovieWithMovie = async(data : any) => {
-//   try {
-//     const numberSeat = await numberSeatInRoom(data.roomId);
-//     const existingIds = await PlanScreenMovie.findAll({
-//       attributes: ['planScreenMovieId'],
-//       order: [['planScreenMovieId', 'ASC']]
-//     });
-
-//     const ids = existingIds.map(psm => psm.planScreenMovieId);
-
-//     let newId = 1;
-//     while (ids.includes(newId)) {
-//       newId++;
-//     }
-//     const newPlanScreenMovie = [];
-//     const lengthNumberSeat = Number(numberSeat.numberSeat)
-//     if (lengthNumberSeat > 0) {
-//       for (let index = 0; index < lengthNumberSeat; index++) {
-//         const newPlanScreen = await PlanScreenMovie.create({
-//           planScreenMovieId: newId,
-//           roomId: data.roomId,
-//           movieId: data.movieId,
-//           startTime: data.startTime,
-//           endTime: data.endTime,
-//           space: data.space,
-//         });
-//         newPlanScreenMovie.push(newPlanScreen);
-//         newId++;
-//       } 
-//       if (newPlanScreenMovie.length > 1) {
-//         return {
-//         errCode: 0,
-//         message: 'PlanScreenMovie created successfully',
-//         planScreenMovie: newPlanScreenMovie
-//       };
-//       } else {
-//         return {
-//           errCode: 1,
-//           message: 'Failed to create PlanScreenMovie',
-//         };
-//       }
-//     } else {
-//       return {
-//         errCode: 2,
-//         message: 'Number of seat in room not available',
-//       };
-//     }
-//   } catch (error) {
-//     return {
-//       errCode: 3,
-//       message: `Error creating PlanScreenMovie: ${error}`
-//     }
-//   }
-// }
