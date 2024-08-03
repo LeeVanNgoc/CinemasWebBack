@@ -22,7 +22,7 @@ export const createMovie = async (data: any) => {
       duration: data.duration,
       country: data.country,
       image: data.image,
-      releaseDate: new Date(),
+      releaseDate: data.releaseDate,
     });
 
     return {

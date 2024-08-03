@@ -22,7 +22,7 @@ module.exports = {
         type: Sequelize.TIME
       },
       dateScreen: {
-        type: Sequelize.DATEONLY
+        type: Sequelize.DATE
       },
       space: {
         type: Sequelize.STRING
