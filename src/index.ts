@@ -23,11 +23,13 @@ import theaterRoutes from './routes/theaterRouter';
 import seatRouter from './routes/seatsRouter';
 import seatTicketRouter from './routes/seatTicketRouter';
 import priceRouter from './routes/priceRouter';
+import bookedSeatRouter from './routes/bookedSeatRoutes';
 
 dotenv.config();
 
 const app: Application = express();
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 7060;
+const urlReact = process.env.HOST ? process.env.HOST : 'localhost';
 
 // Middlewares
 app.use(express.json());
@@ -35,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
 app.use((req: Request, res: Response, next: Next ) => {
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5050');
+  res.setHeader('Access-Control-Allow-Origin', urlReact);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
@@ -59,6 +61,7 @@ theaterRoutes(app);
 seatRouter(app);
 seatTicketRouter(app);
 priceRouter(app);
+bookedSeatRouter(app);
 
 // Error handling middleware
 app.use(errorHandler);

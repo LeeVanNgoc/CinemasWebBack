@@ -11,7 +11,7 @@ class Tickets extends Model {
   public planScreenMovieId!: number;
   public seatTicketId!: number;
   public bank!: string;
-  public price!: number;
+  public priceId!: number;
   public TicketsDate!: Date;
 }
 
@@ -49,19 +49,19 @@ Tickets.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  price: {
+  priceId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: {
       model: Prices,
-      key: 'price',
+      key: 'priceId',
     },
   },
   ticketsDate: {
     type: DataTypes.DATE,
     allowNull: false,
-    // defaultValue: DataTypes.NOW,
   },
+  
 }, {
   sequelize,
   modelName: 'Tickets',

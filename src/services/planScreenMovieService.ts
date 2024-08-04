@@ -4,6 +4,29 @@ import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
 import moment from 'moment';
 
+export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
+  try {
+    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    if (!planScreenMovie) {
+      return {
+        errCode: 1,
+        message: 'PlanScreenMovie not found'
+      };
+    } else {
+      return {
+        errCode: 0,
+        message: 'PlanScreenMovie found',
+        planScreenMovieId: planScreenMovie.planScreenMovieId,
+    }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error checking PlanScreenMovieId: ${error}`
+    };
+  }
+}
+
 export const createPlanScreenMovie = async (data: any) => {
   try {
     const existingIds = await PlanScreenMovie.findAll({
@@ -207,3 +230,92 @@ export const createPlanScreenMovieWithMovie = async (data: any) => {
   }
 };
 
+// export const createPlanScreenMovieWithMovie = async(data : any) => {
+//   try {
+//     const numberSeat = await numberSeatInRoom(data.roomId);
+//     const existingIds = await PlanScreenMovie.findAll({
+//       attributes: ['planScreenMovieId'],
+//       order: [['planScreenMovieId', 'ASC']]
+//     });
+
+//     const ids = existingIds.map(psm => psm.planScreenMovieId);
+
+//     let newId = 1;
+//     while (ids.includes(newId)) {
+//       newId++;
+//     }
+//     const newPlanScreenMovie = [];
+//     const lengthNumberSeat = Number(numberSeat.numberSeat)
+//     if (lengthNumberSeat > 0) {
+//       for (let index = 0; index < lengthNumberSeat; index++) {
+//         const newPlanScreen = await PlanScreenMovie.create({
+//           planScreenMovieId: newId,
+//           roomId: data.roomId,
+//           movieId: data.movieId,
+//           startTime: data.startTime,
+//           endTime: data.endTime,
+//           space: data.space,
+//         });
+//         newPlanScreenMovie.push(newPlanScreen);
+//         newId++;
+//       } 
+//       if (newPlanScreenMovie.length > 1) {
+//         return {
+//         errCode: 0,
+//         message: 'PlanScreenMovie created successfully',
+//         planScreenMovie: newPlanScreenMovie
+//       };
+//       } else {
+//         return {
+//           errCode: 1,
+//           message: 'Failed to create PlanScreenMovie',
+//         };
+//       }
+//     } else {
+//       return {
+//         errCode: 2,
+//         message: 'Number of seat in room not available',
+//       };
+//     }
+//   } catch (error) {
+//     return {
+//       errCode: 3,
+//       message: `Error creating PlanScreenMovie: ${error}`
+//     }
+//   }
+// }
+
+export const getPlanScreenMovieIdForCreateTicket = async(data : any) => {
+  try {
+    const planScreenMovie = await PlanScreenMovie.findAll({
+      where: {
+        roomId: data.roomId,
+        movieId: data.movieId,
+        startTime:  data.startTime 
+     },
+      attributes: ['planScreenMovieId'],
+      raw: true
+    })
+    const planScreenMovieIds: number[] = [];
+    if (planScreenMovie) {
+      planScreenMovie.forEach((item) => {
+        planScreenMovieIds.push(item.planScreenMovieId)
+      })
+      return {
+        errCode: 0,
+        message: 'Get PlanScreenMovieId success',
+        planScreenMovieIds: planScreenMovieIds,
+      }
+    } else {
+      return {
+        errCode: 1,
+        message: 'No PlanScreenMovie found',
+      }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting PlanScreenMovieId: ${error}`,
+    }
+  }
+}

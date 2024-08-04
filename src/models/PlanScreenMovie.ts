@@ -57,7 +57,6 @@ PlanScreenMovie.init({
     //   this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
     // }
   },
-  
   space: {
     type: DataTypes.STRING,
     allowNull: false,

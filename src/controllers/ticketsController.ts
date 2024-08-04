@@ -11,9 +11,14 @@ const handleCreateTicket = async(req: Request, res: Response) => {
 	try {
 		const newTicket = await createTickets(data);
 		if (newTicket.errCode === 0) {
-		res.status(201).json({ message: newTicket.message });
+		res.status(201).json({ 
+			newTickets: newTicket.newTicket,
+			errCode: newTicket.errCode,
+			message: newTicket.message });
 		} else {
-		res.status(400).json({ message: newTicket.message });
+		res.status(400).json({ 
+			errCode: newTicket.errCode,			
+			message: newTicket.message });
 		}
 	} catch (error) {
 		res.status(500).json({ error: `Something went wrong in creating ticket: ${error}` });

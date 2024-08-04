@@ -14,6 +14,13 @@ module.exports = {
       ticketId: {
         type: Sequelize.INTEGER
       },
+      screenDate: {
+        type: Sequelize.DATEONLY
+      },
+      isBooked: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false
+      }
     });
   },
   async down(queryInterface, Sequelize) {
