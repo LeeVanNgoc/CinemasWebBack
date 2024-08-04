@@ -1,8 +1,5 @@
-import exp from 'constants';
-import { Op } from 'sequelize';
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
-import moment from 'moment';
 
 export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
   try {
@@ -153,7 +150,7 @@ export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
 
 export const createPlanScreenMovieWithMovie = async (data: any) => {
   try {
-    const { roomId, movieId, schedule} = data; // Include dateScreen here
+    const { roomId, movieId, schedule} = data;
     const numberSeat = await numberSeatInRoom(roomId);
     const existingIds = await PlanScreenMovie.findAll({
       attributes: ['planScreenMovieId'],
