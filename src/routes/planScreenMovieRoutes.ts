@@ -5,7 +5,6 @@ import { Application } from 'express-serve-static-core';
 const router = express.Router();
 
 const planScreenMovieRoutes = (app: Application) => {
-  router.post('/create-new-plan-screen-movie', planScreenMovieController.handleCreatePlanScreenMovie);
   router.delete('/delete-plan-screen-movie', planScreenMovieController.handleDeletePlanScreenMovie);
   router.put('/edit-plan-screen-movie', planScreenMovieController.handleEditPlanScreenMovie);
   router.get('/get-all-plan-screen-movies', planScreenMovieController.handleGetAllPlanScreenMovies);
@@ -13,7 +12,7 @@ const planScreenMovieRoutes = (app: Application) => {
   router.post('/create-plan-screen-with-movie', planScreenMovieController.handleCreatePlanScreenWithMovie);
   router.get('/get-all-plan-screen-id-for-create-ticket', planScreenMovieController.handleGetPlanScreenMovieIdForCreateTicket);
 
-  return app.use('/api/plan-screen-movies', router); 
+  return app.use('/api/plan-screen-movies', router);
 };
 
 export default planScreenMovieRoutes;

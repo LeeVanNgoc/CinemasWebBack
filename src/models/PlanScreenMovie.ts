@@ -10,7 +10,6 @@ class PlanScreenMovie extends Model {
   public startTime!: TimeRanges;
   public endTime!: TimeRanges;
   public dateScreen!: Date;
-  public space!: string;
 }
 
 PlanScreenMovie.init({
@@ -45,7 +44,7 @@ PlanScreenMovie.init({
     allowNull: false,
   },
   dateScreen: {
-    type: DataTypes.DATE ,
+    type: DataTypes.DATEONLY ,
     allowNull: false,
     // get() {
     //   const rawDate = this.getDataValue('dateScreen');
@@ -56,10 +55,6 @@ PlanScreenMovie.init({
     //   const [day, month, year] = value.split('/');
     //   this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
     // }
-  },
-  space: {
-    type: DataTypes.STRING,
-    allowNull: false,
   },
   
 }, {

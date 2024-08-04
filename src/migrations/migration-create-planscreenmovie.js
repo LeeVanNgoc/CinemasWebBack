@@ -22,11 +22,9 @@ module.exports = {
         type: Sequelize.TIME
       },
       dateScreen: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
-      space: {
-        type: Sequelize.STRING
-      },
+
     });
   },
   async down(queryInterface, Sequelize) {
