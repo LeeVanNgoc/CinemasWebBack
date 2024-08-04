@@ -1,8 +1,5 @@
-import exp from 'constants';
-import { Op } from 'sequelize';
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
-import moment from 'moment';
 
 export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
   try {
@@ -48,7 +45,6 @@ export const createPlanScreenMovie = async (data: any) => {
       startTime: data.startTime,
       endTime: data.endTime,
       dateScreen: data.dateScreen,
-      space: data.space,
     });
 
     return {
@@ -153,7 +149,7 @@ export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
 
 export const createPlanScreenMovieWithMovie = async (data: any) => {
   try {
-    const { roomId, movieId, schedule} = data; // Include dateScreen here
+    const { roomId, movieId, schedule} = data;
     const numberSeat = await numberSeatInRoom(roomId);
     const existingIds = await PlanScreenMovie.findAll({
       attributes: ['planScreenMovieId'],
@@ -206,7 +202,6 @@ export const createPlanScreenMovieWithMovie = async (data: any) => {
           startTime: startTime,
           endTime: endTime,
           dateScreen: dateScreen,
-          space: numberSeat.numberSeat,
         });
 
         newPlanScreenMovies.push(newPlanScreen);
@@ -258,7 +253,6 @@ export const createPlanScreenMovieWithMovie = async (data: any) => {
 //           movieId: data.movieId,
 //           startTime: data.startTime,
 //           endTime: data.endTime,
-//           space: data.space,
 //         });
 //         newPlanScreenMovie.push(newPlanScreen);
 //         newId++;

@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { 
-  createPlanScreenMovie, 
   deletePlanScreenMovie, 
   editPlanScreenMovie, 
   getAllPlanScreenMovies, 
@@ -8,19 +7,6 @@ import {
   createPlanScreenMovieWithMovie, 
   getPlanScreenMovieIdForCreateTicket 
 } from '../services/planScreenMovieService';
-
-const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
-  const data = req.body;
-  try {
-    const result = await createPlanScreenMovie(data);
-    if (result.errCode !== 0) {
-      return res.status(400).json({ errCode: result.errCode, error: result.message });
-    }
-    res.status(201).json({ errCode: result.errCode, message: result.message, planScreenMovie: result.planScreenMovie });
-  } catch (error) {
-    res.status(500).json({ errCode: 3, error: `Something went wrong in creating PlanScreenMovie: ${error}` });
-  }
-};
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
   const planScreenMovieId = Number(req.query.planScreenMovieId);
@@ -149,7 +135,6 @@ const handleGetPlanScreenMovieIdForCreateTicket = async(req: Request, res: Respo
 }
 
 export default {
-  handleCreatePlanScreenMovie,
   handleDeletePlanScreenMovie,
   handleEditPlanScreenMovie,
   handleGetAllPlanScreenMovies,
