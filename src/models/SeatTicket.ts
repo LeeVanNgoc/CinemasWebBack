@@ -6,6 +6,8 @@ class SeatTickets extends Model {
 	public seatTicketId!: number;
   public seatId!: number;
   public ticketId!: number;
+  public screenDate!: Date;
+  public isBooked!: Boolean;
 }
 
 SeatTickets.init({
@@ -30,6 +32,23 @@ SeatTickets.init({
       key: 'ticketId',
     },
   },
+  screenDate: {
+    type: DataTypes.DATEONLY,
+    allowNull: false,
+    get() {
+      const rawDate = this.getDataValue('screenDate');
+      const [year, month, day] = rawDate.split('-');
+      return `${day}/${month}/${year}`; // Trả về định dạng DD/MM/YYYY khi lấy từ cơ sở dữ liệu
+    },
+    set(value : string) {
+      const [day, month, year] = value.split('/');
+      this.setDataValue('screenDate', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
+    }
+  },
+  isBooked: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+  }
 }, {
   sequelize,
   modelName: 'SeatTickets',

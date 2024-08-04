@@ -17,7 +17,7 @@ module.exports = {
       seatTicketId: {
         type: Sequelize.INTEGER
       },
-      price: {
+      priceId : {
         type: Sequelize.INTEGER
       },
       bank: {

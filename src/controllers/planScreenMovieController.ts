@@ -1,5 +1,13 @@
 import { Request, Response } from 'express';
-import { createPlanScreenMovie, deletePlanScreenMovie, editPlanScreenMovie, getAllPlanScreenMovies, getPlanScreenMovieById, createPlanScreenMovieWithMovie } from '../services/planScreenMovieService';
+import { 
+  createPlanScreenMovie, 
+  deletePlanScreenMovie, 
+  editPlanScreenMovie, 
+  getAllPlanScreenMovies, 
+  getPlanScreenMovieById, 
+  createPlanScreenMovieWithMovie, 
+  getPlanScreenMovieIdForCreateTicket 
+} from '../services/planScreenMovieService';
 
 const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   const data = req.body;
@@ -96,6 +104,28 @@ const handleCreatePlanScreenWithMovie = async(req: Request, res: Response) => {
   }
 }
 
+const handleGetPlanScreenMovieIdForCreateTicket = async(req: Request, res: Response) => {
+  const data = req.query
+  try {
+    const planScreenMovieId = await getPlanScreenMovieIdForCreateTicket(data);
+    if (planScreenMovieId.errCode === 0) {
+      res.status(200).json({
+        errCode: planScreenMovieId.errCode,
+        message: planScreenMovieId.message,
+        planScreenMovieIds: planScreenMovieId.planScreenMovieIds
+      });
+    } else {
+      res.status(400).json({
+        errCode: planScreenMovieId.errCode,
+        message: planScreenMovieId.message
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `Error in handle get plan screen movie id for create ticket ${error}` });
+  }
+ 
+}
+
 export default {
   handleCreatePlanScreenMovie,
   handleDeletePlanScreenMovie,
@@ -103,4 +133,5 @@ export default {
   handleGetAllPlanScreenMovies,
   handleGetPlanScreenMovieById,
   handleCreatePlanScreenWithMovie,
+  handleGetPlanScreenMovieIdForCreateTicket,
 };

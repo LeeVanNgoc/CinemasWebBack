@@ -1,4 +1,7 @@
+import { PlanScreenMovie } from "../models";
 import Tickets from "../models/Tickets";
+import {getPlanScreenMovieIdForCreateTicket} from './planScreenMovieService';
+import {getSeatTicketBySeatIdAndTicketIdAndScreenDate} from './seatTicketService';
 
 export const createTickets = async (data: any) => {
   try {
@@ -13,18 +16,26 @@ export const createTickets = async (data: any) => {
     while (ids.includes(newId)) {
       newId++;
     }
+
+    const planScreenMovieId = await getPlanScreenMovieIdForCreateTicket(data);
+    const newPlanScreenMovieId = planScreenMovieId.planScreenMovieIds;
+    console.log(newPlanScreenMovieId);
+    const allSeatTicket = await getSeatTicketBySeatIdAndTicketIdAndScreenDate(data);
+    const seatTicketIds = allSeatTicket.seatTicketIds;
+    console.log(seatTicketIds)
     const newTicket = await Tickets.create({
       ticketId: newId,
       userId: data.userId,
-      planScreenMovieId: data.planScreenMovieId,
-      seatTicketId: data.seatTicketId,
+      planScreenMovieId: newPlanScreenMovieId,
+      seatTicketId: seatTicketIds,
       bank: data.bank,
-      price: data.price,
+      priceId: data.priceId,
       ticketsDate: new Date(),
-    });
+    });    
 
     if (newTicket) {
       return {
+        newTicket: newTicket,
         errCode: 0,
         message: "Create ticket successfully",
       };
@@ -85,7 +96,7 @@ export const editTicket = async (data: any) => {
     ticket.planScreenMovieId = data.planScreenMovieId || ticket.planScreenMovieId;
     ticket.seatTicketId = data.seatTicketId || ticket.seatTicketId;
     ticket.bank = data.bank || ticket.bank;
-    ticket.price = data.price || ticket.price;
+    ticket.priceId = data.priceId || ticket.priceId;
     ticket.TicketsDate = new Date();
     await ticket.save();
 
@@ -159,3 +170,4 @@ export const getTicketById = async (ticketId : number) => {
     }
   }
 }
+

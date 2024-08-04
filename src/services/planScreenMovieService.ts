@@ -2,6 +2,29 @@ import exp from 'constants';
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
 
+export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
+  try {
+    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    if (!planScreenMovie) {
+      return {
+        errCode: 1,
+        message: 'PlanScreenMovie not found'
+      };
+    } else {
+      return {
+        errCode: 0,
+        message: 'PlanScreenMovie found',
+        planScreenMovieId: planScreenMovie.planScreenMovieId,
+    }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error checking PlanScreenMovieId: ${error}`
+    };
+  }
+}
+
 export const createPlanScreenMovie = async (data: any) => {
   try { 
     const existingIds = await PlanScreenMovie.findAll({
@@ -219,3 +242,39 @@ export const createPlanScreenMovieWithMovie = async(data : any) => {
 //     }
 //   }
 // }
+
+export const getPlanScreenMovieIdForCreateTicket = async(data : any) => {
+  try {
+    const planScreenMovie = await PlanScreenMovie.findAll({
+      where: {
+        roomId: data.roomId,
+        movieId: data.movieId,
+        startTime:  data.startTime ,
+        dateScreen: data.dateScreen
+      },
+      attributes: ['planScreenMovieId'],
+      raw: true
+    })
+    const planScreenMovieIds: number[] = [];
+    if (planScreenMovie) {
+      planScreenMovie.forEach((item) => {
+        planScreenMovieIds.push(item.planScreenMovieId)
+      })
+      return {
+        errCode: 0,
+        message: 'Get PlanScreenMovieId success',
+        planScreenMovieIds: planScreenMovieIds,
+      }
+    } else {
+      return {
+        errCode: 1,
+        message: 'No PlanScreenMovie found',
+      }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting PlanScreenMovieId: ${error}`,
+    }
+  }
+}

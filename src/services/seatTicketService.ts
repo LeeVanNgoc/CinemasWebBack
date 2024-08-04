@@ -30,8 +30,8 @@ export const checkTicketExist = async (ticketId: number) => {
 export const createSeatTicket = async (data: any) => {
 	try {
         const existingIds = await SeatTickets.findAll({
-            attributes: ['seatTicketsId'],
-            order: [['seatTicketsId', 'ASC']]
+            attributes: ['seatTicketId'],
+            order: [['seatTicketId', 'ASC']]
         });
 
         const ids = existingIds.map(seatTickets => seatTickets.seatTicketId);
@@ -40,17 +40,12 @@ export const createSeatTicket = async (data: any) => {
         while (ids.includes(newId)) {
             newId++;
         }
-        const checkTicket = await checkTicketExist(data.ticketId);
-        if (checkTicket.errCode === 0) {
-            return {
-                errCode: 1,
-                message: 'Ticket is exist, please put other ticket id',
-            };
-        }
 		const newSeatTicket = await SeatTickets.create({
-            seatTicketsId: newId,
+            seatTicketId: newId,
             seatId: data.seatId,
             ticketId: data.ticketId,
+            screenDate: data.screenDate,
+            isBooked: false,
         });
 		return {
 			newSeatTicket,
@@ -91,7 +86,6 @@ export const getSeatTicketById = async (seatTicketId: number) => {
 };
 
 // Get all Seat tickets
-
 export const getAllSeatTickets = async () => {
     try {
         const seatTickets = await SeatTickets.findAll();
@@ -162,6 +156,35 @@ export const deleteSeatTicket = async (seatTicketId: number) => {
         return {
             errCode : 3,
             message: `Error delete Seat ticket by id ${error}`,
+        };
+    }
+};
+
+// Get Seat ticket by seatId and ticketId
+export const getSeatTicketBySeatIdAndTicketIdAndScreenDate = async (data: any) => {
+    try {
+        const seatTicket = await SeatTickets.findAll({
+            where: { seatId: data.seatId, ticketId: data.ticketId, dateScreen: data.dateScreen },
+        });
+        const seatTicketIds: number[] = []
+        seatTicket.forEach(item => {
+            seatTicketIds.push(item.seatTicketId);
+        });
+        if (!seatTicket) {
+            return {
+                errCode: 1,
+                message: 'Seat ticket not found',
+            };
+        }
+        return {
+            seatTicketIds : seatTicketIds,
+            errCode : 0,
+            message: 'Get Seat ticket successfuly',
+        };
+    } catch (error) {
+        return {
+            errCode : 3,
+            message: `Error get Seat ticket by seatId and ticketId ${error}`,
         };
     }
 };
