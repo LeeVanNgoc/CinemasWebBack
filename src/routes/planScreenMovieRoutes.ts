@@ -5,7 +5,6 @@ import { Application } from 'express-serve-static-core';
 const router = express.Router();
 
 const planScreenMovieRoutes = (app: Application) => {
-  router.post('/create-new-plan-screen-movie', planScreenMovieController.handleCreatePlanScreenMovie);
   router.delete('/delete-plan-screen-movie', planScreenMovieController.handleDeletePlanScreenMovie);
   router.put('/edit-plan-screen-movie', planScreenMovieController.handleEditPlanScreenMovie);
   router.get('/get-all-plan-screen-movies', planScreenMovieController.handleGetAllPlanScreenMovies);

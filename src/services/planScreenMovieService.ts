@@ -45,7 +45,6 @@ export const createPlanScreenMovie = async (data: any) => {
       startTime: data.startTime,
       endTime: data.endTime,
       dateScreen: data.dateScreen,
-      space: data.space,
     });
 
     return {
@@ -203,7 +202,6 @@ export const createPlanScreenMovieWithMovie = async (data: any) => {
           startTime: startTime,
           endTime: endTime,
           dateScreen: dateScreen,
-          space: numberSeat.numberSeat,
         });
 
         newPlanScreenMovies.push(newPlanScreen);
@@ -255,7 +253,6 @@ export const createPlanScreenMovieWithMovie = async (data: any) => {
 //           movieId: data.movieId,
 //           startTime: data.startTime,
 //           endTime: data.endTime,
-//           space: data.space,
 //         });
 //         newPlanScreenMovie.push(newPlanScreen);
 //         newId++;
