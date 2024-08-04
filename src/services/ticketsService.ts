@@ -16,18 +16,33 @@ export const createTickets = async (data: any) => {
     while (ids.includes(newId)) {
       newId++;
     }
-
     const planScreenMovieId = await getPlanScreenMovieIdForCreateTicket(data);
     const newPlanScreenMovieId = planScreenMovieId.planScreenMovieIds;
-    console.log(newPlanScreenMovieId);
+    console.log("newPlanScreenMovieId : ",newPlanScreenMovieId);
     const allSeatTicket = await getSeatTicketBySeatIdAndTicketIdAndScreenDate(data);
-    const seatTicketIds = allSeatTicket.seatTicketIds;
-    console.log(seatTicketIds)
+    const seatTicketIds = allSeatTicket.seatTicketIdss;
+    let planScreenMovieString: any = "";
+    if (newPlanScreenMovieId) {
+      for (let index = 0; index < newPlanScreenMovieId.length - 1; index++) {
+        const element =  newPlanScreenMovieId[index];
+        planScreenMovieString += element + ",";
+      }
+      planScreenMovieString += newPlanScreenMovieId[newPlanScreenMovieId.length - 1];
+    }
+
+    let seatTicketId: any = "";
+    if (seatTicketIds) {
+      for (let index = 0; index < seatTicketIds.length - 1; index++) {
+        const element =  seatTicketIds[index];
+        seatTicketId += element + ",";
+      }
+      seatTicketId += seatTicketIds[seatTicketIds.length - 1];
+    }
     const newTicket = await Tickets.create({
       ticketId: newId,
       userId: data.userId,
-      planScreenMovieId: newPlanScreenMovieId,
-      seatTicketId: seatTicketIds,
+      planScreenMovieId: planScreenMovieString,
+      seatTicketId: seatTicketId,
       bank: data.bank,
       priceId: data.priceId,
       ticketsDate: new Date(),

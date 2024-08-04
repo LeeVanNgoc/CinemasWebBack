@@ -16,8 +16,9 @@ class PlanScreenMovie extends Model {
 PlanScreenMovie.init({
   planScreenMovieId: {
     type: DataTypes.INTEGER,
-    autoIncrement: true,
+    autoIncrement: false,
     primaryKey: true,
+    allowNull: false,
   },
   roomId: {
     type: DataTypes.INTEGER,
@@ -44,17 +45,17 @@ PlanScreenMovie.init({
     allowNull: false,
   },
   dateScreen: {
-    type: DataTypes.DATEONLY,
+    type: DataTypes.DATE ,
     allowNull: false,
-    get() {
-      const rawDate = this.getDataValue('dateScreen');
-      const [year, month, day] = rawDate.split('-');
-      return `${day}/${month}/${year}`; // Trả về định dạng DD/MM/YYYY khi lấy từ cơ sở dữ liệu
-    },
-    set(value : string) {
-      const [day, month, year] = value.split('/');
-      this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
-    }
+    // get() {
+    //   const rawDate = this.getDataValue('dateScreen');
+    //   const [year, month, day] = rawDate.split('-');
+    //   return `${day}/${month}/${year}`; // Trả về định dạng DD/MM/YYYY khi lấy từ cơ sở dữ liệu
+    // },
+    // set(value : string) {
+    //   const [day, month, year] = value.split('/');
+    //   this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
+    // }
   },
   space: {
     type: DataTypes.STRING,
@@ -67,6 +68,5 @@ PlanScreenMovie.init({
   tableName: 'planscreenmovie',
   timestamps: false,
 });
-
 
 export default PlanScreenMovie;

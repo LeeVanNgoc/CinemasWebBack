@@ -164,11 +164,11 @@ export const deleteSeatTicket = async (seatTicketId: number) => {
 export const getSeatTicketBySeatIdAndTicketIdAndScreenDate = async (data: any) => {
     try {
         const seatTicket = await SeatTickets.findAll({
-            where: { seatId: data.seatId, ticketId: data.ticketId, dateScreen: data.dateScreen },
+            where: { seatId: data.seatId, ticketId: data.ticketId},
         });
-        const seatTicketIds: number[] = []
+        const seatTicketIdss: number[] = []
         seatTicket.forEach(item => {
-            seatTicketIds.push(item.seatTicketId);
+            seatTicketIdss.push(item.seatTicketId);
         });
         if (!seatTicket) {
             return {
@@ -177,7 +177,7 @@ export const getSeatTicketBySeatIdAndTicketIdAndScreenDate = async (data: any) =
             };
         }
         return {
-            seatTicketIds : seatTicketIds,
+            seatTicketIdss : seatTicketIdss,
             errCode : 0,
             message: 'Get Seat ticket successfuly',
         };

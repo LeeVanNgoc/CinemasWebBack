@@ -83,26 +83,48 @@ const handleGetPlanScreenMovieById = async (req: Request, res: Response) => {
   }
 }
 
-const handleCreatePlanScreenWithMovie = async(req: Request, res: Response) => {
-  const data = req.query
+// const handleCreatePlanScreenWithMovie = async(req: Request, res: Response) => {
+//   const data = req.query
+//   try {
+//     const planScreenWithMovie = await createPlanScreenMovieWithMovie(data);
+//     if (planScreenWithMovie.errCode === 0) {
+//       res.status(200).json({ 
+//         errCode: planScreenWithMovie.errCode, 
+//         message: planScreenWithMovie.message ,
+//         planScreenMovie: planScreenWithMovie.planScreenMovie
+//       });
+//     } else {
+//       res.status(400).json({ 
+//         errCode: planScreenWithMovie.errCode,
+//         message: planScreenWithMovie.message
+//       });
+//     }
+//   } catch (error) {
+//       res.status(500).json({message: `Error in handle create plan screen movie with movie ${error}`});
+//   }
+// }
+
+const handleCreatePlanScreenWithMovie = async (req: Request, res: Response) => {
+  const data = req.body;
   try {
     const planScreenWithMovie = await createPlanScreenMovieWithMovie(data);
     if (planScreenWithMovie.errCode === 0) {
-      res.status(200).json({ 
-        errCode: planScreenWithMovie.errCode, 
-        message: planScreenWithMovie.message ,
-        planScreenMovie: planScreenWithMovie.planScreenMovie
+      res.status(200).json({
+        errCode: planScreenWithMovie.errCode,
+        message: planScreenWithMovie.message,
+        planScreenMovies: planScreenWithMovie.planScreenMovies
       });
     } else {
-      res.status(400).json({ 
+      res.status(400).json({
         errCode: planScreenWithMovie.errCode,
         message: planScreenWithMovie.message
       });
     }
   } catch (error) {
-      res.status(500).json({message: `Error in handle create plan screen movie with movie ${error}`});
+    res.status(500).json({ message: `Error in handle create plan screen movie with movie ${error}` });
   }
-}
+};
+
 
 const handleGetPlanScreenMovieIdForCreateTicket = async(req: Request, res: Response) => {
   const data = req.query

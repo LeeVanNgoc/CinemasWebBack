@@ -2,34 +2,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('PlanScreenMovie', {
-      planScreenMovieId: {
+    await queryInterface.createTable('BookedSeats', {
+      bookedSeatId: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      planSCreenMovieId: {
+        type: Sequelize.INTEGER
+      },
       roomId: {
         type: Sequelize.INTEGER
       },
-      movieId: {
-        type: Sequelize.INTEGER
-      },
-      startTime: {
-        type: Sequelize.TIME
-      },
-      endTime: {
-        type: Sequelize.TIME
-      },
-      dateScreen: {
-        type: Sequelize.DATE
-      },
-      space: {
+      row: {
         type: Sequelize.STRING
+      },
+      col: {
+        type: Sequelize.INTEGER
       },
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('PlanScreenMovie');
+    await queryInterface.dropTable('BookedSeats');
   }
 };
