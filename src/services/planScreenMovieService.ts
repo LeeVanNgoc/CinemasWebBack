@@ -93,7 +93,11 @@ export const editPlanScreenMovie = async (data: any) => {
       return { errCode: 1, message: 'PlanScreenMovie not found!' };
     }
 
-    Object.assign(planScreenMovie, data);
+    planScreenMovie.roomId = data.roomId || planScreenMovie.roomId,
+    planScreenMovie.movieId = data.movieId || planScreenMovie.movieId,
+    planScreenMovie.startTime = data.startTime || planScreenMovie.startTime,
+    planScreenMovie.endTime = data.endTime || planScreenMovie.endTime,
+    planScreenMovie.dateScreen = data.dateScreen || planScreenMovie.dateScreen,
     await planScreenMovie.save();
 
     return {
