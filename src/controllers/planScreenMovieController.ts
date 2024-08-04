@@ -43,7 +43,7 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
-  const data = { ...req.body, planScreenMovieId: planScreenMovieId };
+  const data = req.query
   try {
     const result = await editPlanScreenMovie(data);
     if (result.errCode !== 0) {
