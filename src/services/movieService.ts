@@ -70,7 +70,7 @@ export const editMovie = async (data: any) => {
     Object.assign(movie, data);
     await movie.save();
 
-    return { 
+    return {
       errCode: 0,
       message: 'Update the movie succeeds!',
       movie

@@ -1,5 +1,5 @@
 import Room from "../models/Room";
 
-export const checkRoomIdExist = (roomId : number) => {
-	
+export const checkRoomIdExist = (roomId: number) => {
+
 }

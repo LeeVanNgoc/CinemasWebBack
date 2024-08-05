@@ -164,12 +164,12 @@ Quy tặc gán errCode:
 
 5. planScreenMovieRoutes
     API tạo mới lịch chiếu:
-        - 	router.post('/create-plan-screen-movie');
+        - 	router.post('/create-plan-screen-with-movie');
         - 	Input : + roomId: id phòng chiếu (number)
                  	+ movieId (number)
-				 	+ startTime: thời gian bắt đầu (Time)
-                 	+ endTime: thời gian kết thúc (Time)
-					+ space: phòng chiếu (String)
+					+ schedule: 
+						{dateScreen (YYYY-MM-DD), times (HH:MM-HH-MM)}
+
         - 	Output: + errCode: 0 (tạo thành công)
                   	+ errCode: 1 (không tìm thấy phim hoặc phòng chiếu)
                   	+ errCode: 3 (lỗi khi tạo)
@@ -198,10 +198,22 @@ Quy tặc gán errCode:
 
     API lấy lịch chiếu theo id:
         - 	router.get('/get-plan-screen-movie-by-id');
+        - 	Input : + roomId
+					+ movieId
+					+ startTime
+					+ dateScreen
+				eg: GET /api/plan-screen-movie/get-all-plan-screen-id-for-create-ticket?roomId=1&movieId=1&startTime=13:00&dateScreen=2010-10-19
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+
+	API lấy id lịch chiếu để tạo vé:
+        - 	router.get('/get-all-plan-screen-id-for-create-ticket');
         - 	Input : + planScreenMovieId: id lịch chiếu (number)
         - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
+					
 
     Liên kết đường dẫn:
         - 	app.use('/api/plan-screen-movie', router);

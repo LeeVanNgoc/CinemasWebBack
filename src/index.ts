@@ -36,7 +36,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // CORS configuration
-app.use((req: Request, res: Response, next: Next ) => {
+app.use((req: Request, res: Response, next: Next) => {
   res.setHeader('Access-Control-Allow-Origin', urlReact);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
   res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');

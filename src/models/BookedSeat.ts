@@ -20,10 +20,10 @@ BookedSeat.init({
   planSCreenMovieId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-	references: {
-		model: 'PlanScreenMovie',
-    key: 'planScreenMovieId',
-	}
+    references: {
+      model: 'PlanScreenMovie',
+      key: 'planScreenMovieId',
+    }
   },
   roomId: {
     type: DataTypes.INTEGER,
@@ -47,6 +47,6 @@ BookedSeat.init({
   timestamps: false,
 });
 
-BookedSeat.belongsTo(Room, { foreignKey:'roomId' });
-BookedSeat.belongsTo(PlanScreenMovie, {foreignKey: 'planScreenMovieId'});
+BookedSeat.belongsTo(Room, { foreignKey: 'roomId' });
+BookedSeat.belongsTo(PlanScreenMovie, { foreignKey: 'planScreenMovieId' });
 export default BookedSeat;

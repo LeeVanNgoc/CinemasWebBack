@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Genres from './Genres';
 
@@ -8,7 +8,7 @@ class Movie extends Model {
   public description!: string;
   public duration!: number;
   public country!: string;
-  public releaseDate!: Date;
+  public releaseDate!: DateOnlyDataType;
   public genreId!: number;
   public image!: string;
 }

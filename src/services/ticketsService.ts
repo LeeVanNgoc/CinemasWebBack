@@ -1,7 +1,6 @@
 import { PlanScreenMovie } from "../models";
 import Tickets from "../models/Tickets";
-import {getPlanScreenMovieIdForCreateTicket} from './planScreenMovieService';
-import {getSeatTicketBySeatIdAndTicketIdAndScreenDate} from './seatTicketService';
+import { getPlanScreenMovieIdForCreateTicket } from './planScreenMovieService';
 
 export const createTickets = async (data: any) => {
   try {
@@ -18,26 +17,26 @@ export const createTickets = async (data: any) => {
     }
     const planScreenMovieId = await getPlanScreenMovieIdForCreateTicket(data);
     const newPlanScreenMovieId = planScreenMovieId.planScreenMovieIds;
-    console.log("newPlanScreenMovieId : ",newPlanScreenMovieId);
-    const allSeatTicket = await getSeatTicketBySeatIdAndTicketIdAndScreenDate(data);
-    const seatTicketIds = allSeatTicket.seatTicketIdss;
+    console.log("newPlanScreenMovieId : ", newPlanScreenMovieId);
+    // const allSeatTicket = await getSeatTicketBySeatIdAndTicketIdAndScreenDate(data);
+    // const seatTicketIds = allSeatTicket.seatTicketIdss;
     let planScreenMovieString: any = "";
     if (newPlanScreenMovieId) {
       for (let index = 0; index < newPlanScreenMovieId.length - 1; index++) {
-        const element =  newPlanScreenMovieId[index];
+        const element = newPlanScreenMovieId[index];
         planScreenMovieString += element + ",";
       }
       planScreenMovieString += newPlanScreenMovieId[newPlanScreenMovieId.length - 1];
     }
 
     let seatTicketId: any = "";
-    if (seatTicketIds) {
-      for (let index = 0; index < seatTicketIds.length - 1; index++) {
-        const element =  seatTicketIds[index];
-        seatTicketId += element + ",";
-      }
-      seatTicketId += seatTicketIds[seatTicketIds.length - 1];
-    }
+    // if (seatTicketIds) {
+    //   for (let index = 0; index < seatTicketIds.length - 1; index++) {
+    //     const element =  seatTicketIds[index];
+    //     seatTicketId += element + ",";
+    //   }
+    //   seatTicketId += seatTicketIds[seatTicketIds.length - 1];
+    // }
     const newTicket = await Tickets.create({
       ticketId: newId,
       userId: data.userId,
@@ -46,7 +45,7 @@ export const createTickets = async (data: any) => {
       bank: data.bank,
       priceId: data.priceId,
       ticketsDate: new Date(),
-    });    
+    });
 
     if (newTicket) {
       return {
@@ -68,37 +67,37 @@ export const createTickets = async (data: any) => {
   }
 };
 
-export const deleteTicket = async (ticketId : number) => {
-    try {
-      const ticket = await Tickets.findOne({
-		    where: {ticketId : ticketId}
-	    });
-  
-      if (!ticket) {
-        return {
-          errCode: 1,
-          message: "Not found Ticket"
-        }
-      } else {
-        await ticket.destroy();
-  
-        return {
-          errCode: 0,
-          message: "Ticket deleted successfully"
-        }
-      }
-    } catch (error) {
+export const deleteTicket = async (ticketId: number) => {
+  try {
+    const ticket = await Tickets.findOne({
+      where: { ticketId: ticketId }
+    });
+
+    if (!ticket) {
       return {
-        errCode : 3,
-        message : `Delete false by error: ${error}`,
+        errCode: 1,
+        message: "Not found Ticket"
+      }
+    } else {
+      await ticket.destroy();
+
+      return {
+        errCode: 0,
+        message: "Ticket deleted successfully"
       }
     }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Delete false by error: ${error}`,
+    }
+  }
 };
 
 export const editTicket = async (data: any) => {
   try {
     const ticket = await Tickets.findOne({
-      where: {ticketId: data.ticketId},
+      where: { ticketId: data.ticketId },
     })
     if (!ticket) {
       return {
@@ -121,16 +120,16 @@ export const editTicket = async (data: any) => {
     }
   } catch (error) {
     return {
-      errCode : 3,
-      message : `Edit false by error: ${error}`,
+      errCode: 3,
+      message: `Edit false by error: ${error}`,
     }
   }
 }
 
-export const getListTicket = async() => {
+export const getListTicket = async () => {
   try {
     const tickets = await Tickets.findAll({
-      attributes: ['ticketId', 'userId', 'planScreenMovieId','seatTicketId', 'bank', 'price', 'ticketsDate'],
+      attributes: ['ticketId', 'userId', 'planScreenMovieId', 'seatTicketId', 'bank', 'price', 'ticketsDate'],
       raw: true,
     });
     if (tickets === null) {
@@ -146,25 +145,25 @@ export const getListTicket = async() => {
       message: "List ticket fetched successfully",
     };
   } catch (error) {
-    return{
+    return {
       errCode: 3,
-      message : `Get false by error: ${error}`,
+      message: `Get false by error: ${error}`,
     }
   }
-    
+
 }
 
-export const getTicketById = async (ticketId : number) => {
+export const getTicketById = async (ticketId: number) => {
   try {
     if (!ticketId) {
       return {
-        errCode : 2,
-        message : "TicketId is required"
+        errCode: 2,
+        message: "TicketId is required"
       }
     }
     const ticket = await Tickets.findOne({
-      where: {ticketId: ticketId},
-      attributes: ['ticketId', 'userId', 'planScreenMovieId','seatTicketId', 'bank', 'price', 'ticketsDate'],
+      where: { ticketId: ticketId },
+      attributes: ['ticketId', 'userId', 'planScreenMovieId', 'seatTicketId', 'bank', 'price', 'ticketsDate'],
       raw: true,
     });
     if (!ticket) {
@@ -181,7 +180,7 @@ export const getTicketById = async (ticketId : number) => {
   } catch (error) {
     return {
       errCode: 3,
-      message : `Get false by error: ${error}`,
+      message: `Get false by error: ${error}`,
     }
   }
 }
