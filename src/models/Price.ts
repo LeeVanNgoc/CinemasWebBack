@@ -1,15 +1,16 @@
 import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
-class Prices extends Model {
-  public pricesId!: number;
+class Price extends Model {
+  public priceId!: number;
   public cost!: number;
-  public type!: string;
+  public roomType!: string;
+  public seatType!: string;
   public isWeekend!: boolean;
 }
 
-Prices.init({
-  pricesId: {
+Price.init({
+  priceId: {
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
@@ -18,7 +19,11 @@ Prices.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },
-  type: {
+  roomType: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  seatType: {
     type: DataTypes.STRING,
     allowNull: false,
   },
@@ -32,4 +37,4 @@ Prices.init({
   timestamps: false,
 });
 
-export default Prices;
+export default Price;

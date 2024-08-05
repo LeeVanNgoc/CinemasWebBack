@@ -119,12 +119,10 @@ const handleGetPlanScreenMovieIdForCreateTicket = async (req: Request, res: Resp
 }
 
 const handleGetPlanScreenMovieIdByMovieId = async (req: Request, res: Response) => {
-  const data = {
-    movieId: Number(req.query.movieId),    
-  };
+  const movieId = Number(req.query.movieId);
 
   try {
-    const planScreenMovieId = await getPlanScreenMovieIdByMovie(data);
+    const planScreenMovieId = await getPlanScreenMovieIdByMovie(movieId);
     if (planScreenMovieId.errCode === 0) {
       res.status(200).json({
         errCode: planScreenMovieId.errCode,
@@ -138,7 +136,7 @@ const handleGetPlanScreenMovieIdByMovieId = async (req: Request, res: Response) 
       });
     }
   } catch (error) {
-    res.status(500).json({ message: `Error in handle get planScreenMOvieId by movieId ${error}` });
+    res.status(500).json({ message: `Error in handle get planScreenMovieId by movieId ${error}` });
   }
 }
 
