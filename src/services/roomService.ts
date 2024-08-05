@@ -19,13 +19,20 @@ export const createRoom = async (data: any) => {
       theaterId: data.theaterId,
       type: data.type,
       numberSeats: data.numberSeats,
+      isAvailable: data.isAvailable,
     });
-
-    return {
-      errCode: 0,
-      message: 'Room created successfully',
-      room: newRoom
-    };
+    if (newRoom) {
+      return {
+        errCode: 0,
+        message: 'Room created successfully',
+        room: newRoom
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: 'Failed to create room'
+      };
+    }
   } catch (error) {
     return {
       errCode: 3,
@@ -63,7 +70,8 @@ export const editRoom = async (data: any) => {
       return { errCode: 1, message: 'Room not found!' };
     }
 
-    Object.assign(room, data);
+    room.type = data.type || room.type;
+    room.isAvailable = data.isAvailable || room.isAvailable;
     await room.save();
 
     return { 

@@ -18,6 +18,9 @@ module.exports = {
       numberSeats: {
         type: Sequelize.INTEGER
       },
+      isAvailable: {
+        type: Sequelize.BOOLEAN
+      },
     });
   },
   async down(queryInterface, Sequelize) {
