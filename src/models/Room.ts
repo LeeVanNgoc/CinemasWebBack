@@ -6,6 +6,7 @@ class Room extends Model {
   public ticketId!: number;
   public numberSeats!: number;
   public type!: string;
+  public isAvailable!: boolean;
 }
 
 Room.init({
@@ -31,6 +32,11 @@ Room.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  isAvailable: {
+    type: DataTypes.BOOLEAN,
+    allowNull: false,
+    defaultValue: true,
+  }
 }, {
   sequelize,
   modelName: 'Room',

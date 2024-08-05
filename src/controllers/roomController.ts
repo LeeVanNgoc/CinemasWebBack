@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { createRoom, deleteRoom, editRoom, getAllRooms, getRoomById } from '../services/roomService';
 
 const handleCreateRoom = async (req: Request, res: Response) => {
-  const data = req.body;
+  const data = req.query;
   try {
     const result = await createRoom(data);
     if (result.errCode !== 0) {
@@ -35,7 +35,7 @@ const handleEditRoom = async (req: Request, res: Response) => {
   if (isNaN(roomId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid room ID' });
   }
-  const data = { ...req.body, roomId: roomId };
+  const data = req.query
   try {
     const result = await editRoom(data);
     if (result.errCode !== 0) {
