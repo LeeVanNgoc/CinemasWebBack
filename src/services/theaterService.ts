@@ -1,5 +1,5 @@
 import { threadId } from "worker_threads";
-import Theater  from "../models/Theater";
+import Theater from "../models/Theater";
 
 // Create a new theater
 export const createTheater = async (data: any) => {
@@ -23,13 +23,13 @@ export const createTheater = async (data: any) => {
     });
     return {
       newTheater,
-      errCode : 0,
-	    message: 'Create theater successfuly',
+      errCode: 0,
+      message: 'Create theater successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
-	    message: `Error create new theater ${error}`,
+      errCode: 3,
+      message: `Error create new theater ${error}`,
     };
   }
 };
@@ -40,12 +40,12 @@ export const getAllTheaters = async () => {
     const theaters = await Theater.findAll();
     return {
       theaters,
-      errCode : 0,
+      errCode: 0,
       message: 'Get all theaters successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
+      errCode: 3,
       message: `Error get all theaters ${error}`,
     };
   }
@@ -63,12 +63,12 @@ export const getTheaterById = async (theaterID: number) => {
     }
     return {
       theater,
-      errCode : 0,
+      errCode: 0,
       message: 'Get theater successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
+      errCode: 3,
       message: `Error get theater by id ${error}`,
     };
   }
@@ -76,7 +76,7 @@ export const getTheaterById = async (theaterID: number) => {
 
 // Get theaters by city
 export const getTheatersByCity = async (city: string) => {
-	try {
+  try {
     const theaters = await Theater.findAll({ where: { city } });
     if (!theaters.length) {
       return {
@@ -86,12 +86,12 @@ export const getTheatersByCity = async (city: string) => {
     }
     return {
       theaters,
-      errCode : 0,
+      errCode: 0,
       message: 'Get theaters successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
+      errCode: 3,
       message: `Error get theaters by city ${error}`,
     };
   }
@@ -114,12 +114,12 @@ export const updateTheater = async (data: any) => {
     await theater.save();
     return {
       theater,
-      errCode : 0,
+      errCode: 0,
       message: 'Update theater successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
+      errCode: 3,
       message: `Error update theater by id ${error}`,
     };
   }
@@ -137,12 +137,12 @@ export const deleteTheater = async (id: number) => {
     }
     await theater.destroy();
     return {
-      errCode : 0,
+      errCode: 0,
       message: 'Delete theater successfuly',
     };
   } catch (error) {
     return {
-      errCode : 3,
+      errCode: 3,
       message: `Error delete theater by id ${error}`,
     };
   }

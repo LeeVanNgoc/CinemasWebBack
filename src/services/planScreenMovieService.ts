@@ -3,7 +3,7 @@ import { Op } from 'sequelize';
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
 
-export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
+export const checkPlanScreenMovieId = async (planScreenMovieId: number) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
     if (!planScreenMovie) {
@@ -16,7 +16,7 @@ export const checkPlanScreenMovieId = async(planScreenMovieId : number) => {
         errCode: 0,
         message: 'PlanScreenMovie found',
         planScreenMovieId: planScreenMovie.planScreenMovieId,
-    }
+      }
     }
   } catch (error) {
     return {
@@ -92,11 +92,11 @@ export const editPlanScreenMovie = async (data: any) => {
     }
 
     planScreenMovie.roomId = data.roomId || planScreenMovie.roomId,
-    planScreenMovie.movieId = data.movieId || planScreenMovie.movieId,
-    planScreenMovie.startTime = data.startTime || planScreenMovie.startTime,
-    planScreenMovie.endTime = data.endTime || planScreenMovie.endTime,
-    planScreenMovie.dateScreen = data.dateScreen || planScreenMovie.dateScreen,
-    await planScreenMovie.save();
+      planScreenMovie.movieId = data.movieId || planScreenMovie.movieId,
+      planScreenMovie.startTime = data.startTime || planScreenMovie.startTime,
+      planScreenMovie.endTime = data.endTime || planScreenMovie.endTime,
+      planScreenMovie.dateScreen = data.dateScreen || planScreenMovie.dateScreen,
+      await planScreenMovie.save();
 
     return {
       errCode: 0,
@@ -151,7 +151,7 @@ export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
 
 export const createPlanScreenMovieWithMovie = async (data: any) => {
   try {
-    const { roomId, movieId, schedule} = data;
+    const { roomId, movieId, schedule } = data;
     const numberSeat = await numberSeatInRoom(roomId);
     const existingIds = await PlanScreenMovie.findAll({
       attributes: ['planScreenMovieId'],

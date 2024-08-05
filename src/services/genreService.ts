@@ -66,7 +66,7 @@ export const editGenre = async (data: any) => {
     Object.assign(genre, data);
     await genre.save();
 
-    return { 
+    return {
       errCode: 0,
       message: 'Update the genre succeeds!',
       genre

@@ -2,34 +2,34 @@ import Prices from "../models/Prices";
 
 // Create a new price record
 export const createPrice = async (data: any) => {
-	try {
-      const existingIds = await Prices.findAll({
-        attributes: ['pricesId'],
-        order: [['pricesId', 'ASC']]
-      });
+  try {
+    const existingIds = await Prices.findAll({
+      attributes: ['pricesId'],
+      order: [['pricesId', 'ASC']]
+    });
 
-      const ids = existingIds.map(prices => prices.pricesId);
+    const ids = existingIds.map(prices => prices.pricesId);
 
-      let newId = 1;
-      while (ids.includes(newId)) {
-        newId++;
-      }
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
+    }
     const newPrice = await Prices.create({
       priceId: newId,
       cost: data.cost,
       type: data.type,
       isWeekend: data.isWeekend,
     });
-	if (!newPrice) {
-		return {
-			errCode: 1,
-            message: 'False to create price record',
-		}
-	}
+    if (!newPrice) {
+      return {
+        errCode: 1,
+        message: 'False to create price record',
+      }
+    }
     return {
       newPrice,
-      errCode : 0,
-	    message: 'Price created successfully',
+      errCode: 0,
+      message: 'Price created successfully',
     };
   } catch (error) {
     return {
@@ -40,7 +40,7 @@ export const createPrice = async (data: any) => {
 }
 
 // Get all price records
- export const getAllPrices = async () => {
+export const getAllPrices = async () => {
   try {
     const prices = await Prices.findAll();
     if (!prices) {
@@ -63,19 +63,19 @@ export const createPrice = async (data: any) => {
 }
 
 // Get a specific price record
- export const getPriceById = async (pricesId: number) => {
+export const getPriceById = async (pricesId: number) => {
   try {
     const price = await Prices.findOne({
-		where: { pricesId: pricesId },
-		raw: true,
-	});
+      where: { pricesId: pricesId },
+      raw: true,
+    });
     if (!price) {
       return {
         errCode: 1,
         message: 'Price not found',
       }
     }
-	
+
     return {
       price,
       errCode: 0,
@@ -90,22 +90,22 @@ export const createPrice = async (data: any) => {
 }
 
 // Update a specific price record
- export const updatePrice = async (data: any) => {
+export const updatePrice = async (data: any) => {
   const pricesId = data.pricesId;
   try {
-	const price = await Prices.findOne({
-		where: {pricesId : pricesId},
-	})
-	if (!price) {
-		return {
-            errCode: 1,
-            message: 'Price not found',
-        }
-	}
-	price.cost = data.cost || price.cost
-	price.type = data.type || price.type
-	price.isWeekend = data.isWeekend || price.isWeekend
-	await price.save();
+    const price = await Prices.findOne({
+      where: { pricesId: pricesId },
+    })
+    if (!price) {
+      return {
+        errCode: 1,
+        message: 'Price not found',
+      }
+    }
+    price.cost = data.cost || price.cost
+    price.type = data.type || price.type
+    price.isWeekend = data.isWeekend || price.isWeekend
+    await price.save();
     return {
       price: price,
       errCode: 0,
@@ -120,7 +120,7 @@ export const createPrice = async (data: any) => {
 }
 
 // Delete a specific price record
- export const deletePrice = async (data: any) => {
+export const deletePrice = async (data: any) => {
   const priceId = data.priceId;
   try {
     const price = await Prices.findOne({
