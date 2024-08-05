@@ -281,9 +281,9 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
   }
 };
 
-export const getPlanScreenMovieIdByMovie = async (data: any) => {
+export const getPlanScreenMovieIdByMovie = async (movieId: number) => {
   try {
-    if (!data.movieId) {
+    if (!movieId) {
       return {
         errCode: 2,
         message: 'Missing required parameters',
@@ -292,7 +292,7 @@ export const getPlanScreenMovieIdByMovie = async (data: any) => {
 
     const planScreenMovies = await PlanScreenMovie.findAll({
       where: {
-        movieId: data.movieId,
+        movieId: movieId,
       },
       attributes: ['planScreenMovieId'],
       raw: true

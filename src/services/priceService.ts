@@ -1,23 +1,24 @@
-import Prices from "../models/Prices";
+import Price from "../models/Price";
 
 // Create a new price record
 export const createPrice = async (data: any) => {
   try {
-    const existingIds = await Prices.findAll({
-      attributes: ['pricesId'],
-      order: [['pricesId', 'ASC']]
+    const existingIds = await Price.findAll({
+      attributes: ['priceId'],
+      order: [['priceId', 'ASC']]
     });
 
-    const ids = existingIds.map(prices => prices.pricesId);
+    const ids = existingIds.map(prices => prices.priceId);
 
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
     }
-    const newPrice = await Prices.create({
+    const newPrice = await Price.create({
       priceId: newId,
       cost: data.cost,
-      type: data.type,
+      roomType: data.roomType,
+      seatType: data.seatType,
       isWeekend: data.isWeekend,
     });
     if (!newPrice) {
@@ -42,7 +43,7 @@ export const createPrice = async (data: any) => {
 // Get all price records
 export const getAllPrices = async () => {
   try {
-    const prices = await Prices.findAll();
+    const prices = await Price.findAll();
     if (!prices) {
       return {
         errCode: 1,
@@ -63,10 +64,10 @@ export const getAllPrices = async () => {
 }
 
 // Get a specific price record
-export const getPriceById = async (pricesId: number) => {
+export const getPriceById = async (priceId: number) => {
   try {
-    const price = await Prices.findOne({
-      where: { pricesId: pricesId },
+    const price = await Price.findOne({
+      where: { priceId: priceId },
       raw: true,
     });
     if (!price) {
@@ -91,10 +92,10 @@ export const getPriceById = async (pricesId: number) => {
 
 // Update a specific price record
 export const updatePrice = async (data: any) => {
-  const pricesId = data.pricesId;
+  const priceId = data.priceId;
   try {
-    const price = await Prices.findOne({
-      where: { pricesId: pricesId },
+    const price = await Price.findOne({
+      where: { priceId: priceId },
     })
     if (!price) {
       return {
@@ -103,7 +104,8 @@ export const updatePrice = async (data: any) => {
       }
     }
     price.cost = data.cost || price.cost
-    price.type = data.type || price.type
+    price.roomType = data.roomType || price.roomType
+    price.seatType = data.seatType || price.seatType
     price.isWeekend = data.isWeekend || price.isWeekend
     await price.save();
     return {
@@ -120,23 +122,23 @@ export const updatePrice = async (data: any) => {
 }
 
 // Delete a specific price record
-export const deletePrice = async (data: any) => {
-  const priceId = data.priceId;
+export const deletePrice = async (priceId: number) => {
   try {
-    const price = await Prices.findOne({
-      where: { priceId: priceId },
+    const price = await Price.findOne({
+      where: { priceId },
     });
     if (!price) {
       return {
         errCode: 1,
         message: 'Price not found',
       }
+    } else {
+      await price.destroy();
+      return {
+        errCode: 0,
+        message: 'Price deleted successfully',
+      };
     }
-    await price.destroy();
-    return {
-      errCode: 0,
-      message: 'Price deleted successfully',
-    };
   } catch (error) {
     return {
       errCode: 3,
@@ -144,3 +146,46 @@ export const deletePrice = async (data: any) => {
     };
   }
 }
+
+export const getCost = async (data: any) => {
+  try {
+    if (!data.roomType || !data.seatType || typeof data.isWeekend === 'undefined') {
+      return {
+        errCode: 2,
+        message: 'Missing required parameters',
+      };
+    }
+
+    const isWeekendValue = parseInt(data.isWeekend) === 1 ? 1 : 0;
+
+    const costs = await Price.findAll({
+      where: {
+        roomType: data.roomType,
+        seatType: data.seatType,
+        isWeekend: isWeekendValue,
+      },
+      attributes: ['cost'],
+      raw: true
+    });
+
+    if (costs.length > 0) {
+      const costOutput = costs.map(item => item.cost);
+      return {
+        errCode: 0,
+        message: 'Get cost success',
+        costOutput,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: 'No cost found',
+      };
+    }
+  } catch (error) {
+    console.error('Error in getting cost:', error);
+    return {
+      errCode: 3,
+      message: `Error getting cost: ${error}`,
+    };
+  }
+};

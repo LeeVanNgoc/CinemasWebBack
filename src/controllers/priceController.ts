@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { createPrice, getAllPrices, getPriceById, updatePrice, deletePrice } from "../services/priceService";
+import { createPrice, getAllPrices, getPriceById, updatePrice, deletePrice, getCost } from "../services/priceService";
 
 const handleCreatePrice = async (req: Request, res: Response) => {
     const data = req.query;
@@ -100,10 +100,37 @@ const handleDeletePrice = async (req: Request, res: Response) => {
     }
 }
 
+export const handleGetCost = async (req: Request, res: Response) => {
+    const data = {
+        roomType: req.query.roomType as string,
+        seatType: req.query.seatType as string,
+        isWeekend: req.query.isWeekend as string, // Ensure this is a string to parse later
+    };
+
+    try {
+        const cost = await getCost(data);
+        if (cost.errCode === 0) {
+            res.status(200).json({
+                errCode: cost.errCode,
+                message: cost.message,
+                costOutput: cost.costOutput,
+            });
+        } else {
+            res.status(400).json({
+                errCode: cost.errCode,
+                message: cost.message
+            });
+        }
+    } catch (error) {
+        res.status(500).json({ message: `Error in handle getting cost: ${error}` });
+    }
+};
+
 export default {
     handleCreatePrice,
     handleGetAllPrices,
     handleGetPriceById,
     handleUpdatePrice,
     handleDeletePrice,
+    handleGetCost
 }
