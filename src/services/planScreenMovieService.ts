@@ -269,7 +269,7 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
     } else {
       return {
         errCode: 1,
-        message: 'No PlanScreenMovie found',
+        message: 'No PlanScreenMovieId found',
       };
     }
   } catch (error) {

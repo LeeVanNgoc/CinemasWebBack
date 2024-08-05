@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
-import { 
-  deletePlanScreenMovie, 
-  editPlanScreenMovie, 
-  getAllPlanScreenMovies, 
-  getPlanScreenMovieById, 
-  createPlanScreenMovieWithMovie, 
-  getPlanScreenMovieIdForCreateTicket 
+import {
+  deletePlanScreenMovie,
+  editPlanScreenMovie,
+  getAllPlanScreenMovies,
+  getPlanScreenMovieById,
+  createPlanScreenMovieWithMovie,
+  getPlanScreenMovieIdForCreateTicket
 } from '../services/planScreenMovieService';
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -90,7 +90,7 @@ const handleCreatePlanScreenWithMovie = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetPlanScreenMovieIdForCreateTicket = async(req: Request, res: Response) => {
+const handleGetPlanScreenMovieIdForCreateTicket = async (req: Request, res: Response) => {
   const data = {
     roomId: Number(req.query.roomId),
     movieId: Number(req.query.movieId),
