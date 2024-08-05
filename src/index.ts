@@ -29,7 +29,7 @@ dotenv.config();
 
 const app: Application = express();
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 7060;
-const urlReact = process.env.HOST ? process.env.HOST : 'localhost';
+const urlReact = process.env.URLREACT ? process.env.URLREACT : 'localhost';
 
 // Middlewares
 app.use(express.json());
