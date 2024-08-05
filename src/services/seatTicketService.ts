@@ -1,5 +1,6 @@
-import SeatTickets from "../models/SeatTicket";
+import { Op } from 'sequelize';
 
+import SeatTickets from "../models/SeatTicket";
 
 // Check ticket exist
 export const checkTicketExist = async (ticketId: number) => {
@@ -160,31 +161,53 @@ export const deleteSeatTicket = async (seatTicketId: number) => {
     }
 };
 
-// Get Seat ticket by seatId and ticketId
+// Get Seat ticket by seatId and ticketId and dateScreen
 export const getSeatTicketBySeatIdAndTicketIdAndScreenDate = async (data: any) => {
     try {
-        const seatTicket = await SeatTickets.findAll({
-            where: { seatId: data.seatId, ticketId: data.ticketId},
-        });
-        const seatTicketIdss: number[] = []
-        seatTicket.forEach(item => {
-            seatTicketIdss.push(item.seatTicketId);
-        });
-        if (!seatTicket) {
-            return {
-                errCode: 1,
-                message: 'Seat ticket not found',
-            };
+        if (!data.roomId || !data.movieId || !data.startTime || !data.dateScreen) {
+          return {
+            errCode: 2,
+            message: 'Missing required parameters',
+          };
         }
+    
+        // Convert dateScreen to Date object
+        const dateScreen = new Date(data.dateScreen);
+        // Set time to start of day
+        dateScreen.setUTCHours(0, 0, 0, 0);
+    
+        const seatTickets = await SeatTickets.findAll({
+          where: {
+            roomId: data.roomId,
+            movieId: data.movieId,
+            startTime: data.startTime,
+            dateScreen: {
+              [Op.gte]: dateScreen,
+              [Op.lt]: new Date(dateScreen.getTime() + 24 * 60 * 60 * 1000)
+            }
+          },
+          attributes: ['planScreenMovieId'],
+          raw: true
+        });
+    
+        if (seatTickets.length > 0) {
+          const planScreenMovieIds = seatTickets.map(item => item.seatTicketId);
+          return {
+            errCode: 0,
+            message: 'Get PlanScreenMovieId success',
+            planScreenMovieIds,
+          };
+        } else {
+          return {
+            errCode: 1,
+            message: 'No PlanScreenMovie found',
+          };
+        }
+      } catch (error) {
+        console.error('Error in getPlanScreenMovieIdForCreateTicket:', error);
         return {
-            seatTicketIdss : seatTicketIdss,
-            errCode : 0,
-            message: 'Get Seat ticket successfuly',
+          errCode: 3,
+          message: `Error getting PlanScreenMovieId: ${error}`,
         };
-    } catch (error) {
-        return {
-            errCode : 3,
-            message: `Error get Seat ticket by seatId and ticketId ${error}`,
-        };
-    }
-};
+      }
+    };
