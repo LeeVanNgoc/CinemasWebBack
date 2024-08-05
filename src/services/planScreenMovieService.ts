@@ -280,3 +280,42 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
     };
   }
 };
+
+export const getPlanScreenMovieIdByMovie = async (data: any) => {
+  try {
+    if (!data.movieId) {
+      return {
+        errCode: 2,
+        message: 'Missing required parameters',
+      };
+    }
+
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        movieId: data.movieId,
+      },
+      attributes: ['planScreenMovieId'],
+      raw: true
+    });
+
+    if (planScreenMovies.length > 0) {
+      const planScreenMovieIds = planScreenMovies.map(item => item.planScreenMovieId);
+      return {
+        errCode: 0,
+        message: 'Get PlanScreenMovieId success',
+        planScreenMovieIds,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: 'No PlanScreenMovieId found',
+      };
+    }
+  } catch (error) {
+    console.error('Error in getPlanScreenMovieIdByMovieId:', error);
+    return {
+      errCode: 3,
+      message: `Error getting PlanScreenMovieId: ${error}`,
+    };
+  }
+};

@@ -5,7 +5,8 @@ import {
   getAllPlanScreenMovies,
   getPlanScreenMovieById,
   createPlanScreenMovieWithMovie,
-  getPlanScreenMovieIdForCreateTicket
+  getPlanScreenMovieIdForCreateTicket,
+  getPlanScreenMovieIdByMovie
 } from '../services/planScreenMovieService';
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -117,6 +118,30 @@ const handleGetPlanScreenMovieIdForCreateTicket = async (req: Request, res: Resp
   }
 }
 
+const handleGetPlanScreenMovieIdByMovieId = async (req: Request, res: Response) => {
+  const data = {
+    movieId: Number(req.query.movieId),    
+  };
+
+  try {
+    const planScreenMovieId = await getPlanScreenMovieIdByMovie(data);
+    if (planScreenMovieId.errCode === 0) {
+      res.status(200).json({
+        errCode: planScreenMovieId.errCode,
+        message: planScreenMovieId.message,
+        planScreenMovieId: planScreenMovieId.planScreenMovieIds
+      });
+    } else {
+      res.status(400).json({
+        errCode: planScreenMovieId.errCode,
+        message: planScreenMovieId.message
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ message: `Error in handle get planScreenMOvieId by movieId ${error}` });
+  }
+}
+
 export default {
   handleDeletePlanScreenMovie,
   handleEditPlanScreenMovie,
@@ -124,4 +149,5 @@ export default {
   handleGetPlanScreenMovieById,
   handleCreatePlanScreenWithMovie,
   handleGetPlanScreenMovieIdForCreateTicket,
+  handleGetPlanScreenMovieIdByMovieId
 };
