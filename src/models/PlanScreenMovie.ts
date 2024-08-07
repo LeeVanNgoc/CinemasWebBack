@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Room from './Room';
 import Movie from './Movie';
@@ -9,7 +9,7 @@ class PlanScreenMovie extends Model {
   public movieId!: number;
   public startTime!: TimeRanges;
   public endTime!: TimeRanges;
-  public dateScreen!: Date;
+  public dateScreen!: DateOnlyDataType;
 }
 
 PlanScreenMovie.init({

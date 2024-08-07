@@ -10,6 +10,7 @@ const ticketRoutes = (app: Application) => {
 	router.put('/edit-ticket', ticketsController.handleEditTicket);
 	router.get('/get-tickets', ticketsController.handleGetTicketById);
 	router.get('/get-list-tickets', ticketsController.handleGetListTicket);
+	router.get('/get-ticket-by-user-id', ticketsController.handleGetTicketByUserId);
 
 	return app.use('/api/ticket', router);
 }

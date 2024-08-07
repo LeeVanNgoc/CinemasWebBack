@@ -1,7 +1,7 @@
 import Trailer from "../models/Trailer";
 
-export const createTrailer = async(data : any) => {
-	try {
+export const createTrailer = async (data: any) => {
+    try {
         const existingIds = await Trailer.findAll({
             attributes: ['trailerId'],
             order: [['trailerId', 'ASC']]
@@ -19,21 +19,21 @@ export const createTrailer = async(data : any) => {
             link: data.link,
         });
         return {
-			newTrailer,
-			errCode : 0,
-			message : "Trailer created successfully",
+            newTrailer,
+            errCode: 0,
+            message: "Trailer created successfully",
         };
     } catch (error) {
         return {
-            message : `Create false by error: ${error}`,
+            message: `Create false by error: ${error}`,
         };
     }
 }
 
-export const getTrailerById = async(trailerId : number) => {
+export const getTrailerById = async (trailerId: number) => {
     try {
         const trailer = await Trailer.findOne({
-            where: {trailerId: trailerId},
+            where: { trailerId: trailerId },
             raw: true,
         })
 
@@ -50,16 +50,16 @@ export const getTrailerById = async(trailerId : number) => {
         }
     } catch (error) {
         return {
-            errCode: 3, 
+            errCode: 3,
             message: `Error getting trailer by id: ${error}`,
         }
     }
 }
 
-export const getTrailerByMovieId = async(movieId : number) => {
+export const getTrailerByMovieId = async (movieId: number) => {
     try {
         const trailer = await Trailer.findAll({
-            where: {movieId: movieId},
+            where: { movieId: movieId },
             raw: true,
         })
 
@@ -76,7 +76,7 @@ export const getTrailerByMovieId = async(movieId : number) => {
         }
     } catch (error) {
         return {
-            errCode: 3, 
+            errCode: 3,
             message: `Error getting trailer by id: ${error}`,
         }
     }
@@ -88,8 +88,8 @@ export const getAllTrailer = async () => {
             attributes: ['trailerId', 'movieId', 'link'],
             raw: true,
         });
-        
-        if(!trailers) {
+
+        if (!trailers) {
             return {
                 trailers: null,
                 errCode: 1,
@@ -110,10 +110,10 @@ export const getAllTrailer = async () => {
     }
 }
 
-export const deleteTrailer = async(trailerId : number) => {
+export const deleteTrailer = async (trailerId: number) => {
     try {
         const trailer = await Trailer.findOne({
-            where: {trailerId: trailerId},
+            where: { trailerId: trailerId },
             raw: true,
         })
         if (!trailer) {
@@ -140,7 +140,7 @@ export const deleteTrailer = async(trailerId : number) => {
     }
 }
 
-export const updateTrailer = async(data : any) => {
+export const updateTrailer = async (data: any) => {
     const trailerId = data.trailerId
     try {
         if (!trailerId) {
@@ -150,7 +150,7 @@ export const updateTrailer = async(data : any) => {
             }
         }
         const trailer = await Trailer.findOne({
-            where: {trailerId: trailerId},
+            where: { trailerId: trailerId },
         })
         if (!trailer) {
             return {
@@ -166,7 +166,7 @@ export const updateTrailer = async(data : any) => {
             errCode: 0,
             message: "Trailer updated successfully",
         }
-        
+
     } catch (error) {
         return {
             errCode: 3,

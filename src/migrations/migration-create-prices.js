@@ -12,7 +12,10 @@ module.exports = {
       cost: {
         type: Sequelize.INTEGER
       },
-      type: {
+      roomType: {
+        type: Sequelize.STRING
+      },
+      seatType: {
         type: Sequelize.STRING
       },
       isWeekend: {

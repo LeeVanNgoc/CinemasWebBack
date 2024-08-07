@@ -2,17 +2,19 @@ import { Request, Response } from "express";
 import { createSeatTicket, getAllSeatTickets, getSeatTicketById, deleteSeatTicket, updateSeatTicket } from "../services/seatTicketService";
 
 const handleCreateSeatTicket = async (req: Request, res: Response) => {
-	const data = req.query;
+    const data = req.query;
     try {
         const result = await createSeatTicket(data);
         if (result.errCode === 0) {
-            res.status(201).json({ 
-				errCode: result.errCode,
-				message: result.message });
+            res.status(201).json({
+                errCode: result.errCode,
+                message: result.message
+            });
         } else {
-            res.status(400).json({ 
-				errCode: result.errCode,
-				message: result.message });
+            res.status(400).json({
+                errCode: result.errCode,
+                message: result.message
+            });
         }
     } catch (error) {
         console.error(error);
@@ -21,17 +23,19 @@ const handleCreateSeatTicket = async (req: Request, res: Response) => {
 }
 
 const handleGetAllSeatTickets = async (req: Request, res: Response) => {
-	try {
+    try {
         const result = await getAllSeatTickets();
-		if (result.errCode === 0) {
-			res.status(201).json({
-			errCode: result.errCode,
-			message: result.message,
-            seatTickets: result.seatTickets });
-		}else{
-			res.status(400).json({
+        if (result.errCode === 0) {
+            res.status(201).json({
                 errCode: result.errCode,
-                message: result.message });
+                message: result.message,
+                seatTickets: result.seatTickets
+            });
+        } else {
+            res.status(400).json({
+                errCode: result.errCode,
+                message: result.message
+            });
         }
     } catch (error) {
         console.error(error);
@@ -40,21 +44,23 @@ const handleGetAllSeatTickets = async (req: Request, res: Response) => {
 }
 
 const handleGetSeatTicketById = async (req: Request, res: Response) => {
-	const seatTicketId = Number(req.query.seatTicketId);
+    const seatTicketId = Number(req.query.seatTicketId);
     if (isNaN(seatTicketId)) {
-    	return res.status(400).json({ message: 'Invalid seatTicket ID' }); // Xử lý khi ID không hợp lệ
-  	}
+        return res.status(400).json({ message: 'Invalid seatTicket ID' }); // Xử lý khi ID không hợp lệ
+    }
     try {
         const result = await getSeatTicketById(seatTicketId);
         if (result.errCode === 0) {
             res.status(201).json({
                 errCode: result.errCode,
                 message: result.message,
-                seatTicket: result.seatTicket });
-        }else{
+                seatTicket: result.seatTicket
+            });
+        } else {
             res.status(400).json({
                 errCode: result.errCode,
-                message: result.message });
+                message: result.message
+            });
         }
     } catch (error) {
         console.error(error);
@@ -63,7 +69,7 @@ const handleGetSeatTicketById = async (req: Request, res: Response) => {
 }
 
 const handleDeleteSeatTicket = async (req: Request, res: Response) => {
-	const seatTicketId = Number(req.query.seatTicketId);
+    const seatTicketId = Number(req.query.seatTicketId);
     if (isNaN(seatTicketId)) {
         return res.status(400).json({ message: 'Invalid seat ticket ID' });
     }
@@ -72,11 +78,13 @@ const handleDeleteSeatTicket = async (req: Request, res: Response) => {
         if (result.errCode === 0) {
             res.status(204).json({
                 errCode: result.errCode,
-                message: result.message });
-        }else{
+                message: result.message
+            });
+        } else {
             res.status(400).json({
                 errCode: result.errCode,
-                message: result.message });
+                message: result.message
+            });
         }
     } catch (error) {
         console.error(error);
@@ -85,8 +93,8 @@ const handleDeleteSeatTicket = async (req: Request, res: Response) => {
 }
 
 const handleUpdateSeatTicket = async (req: Request, res: Response) => {
-	const data = req.query;
-	const seatTicketId = Number(req.query.seatTicketId);
+    const data = req.query;
+    const seatTicketId = Number(req.query.seatTicketId);
     if (isNaN(seatTicketId)) {
         return res.status(400).json({ message: 'Invalid seat ticket ID' });
     }
@@ -96,11 +104,13 @@ const handleUpdateSeatTicket = async (req: Request, res: Response) => {
             res.status(201).json({
                 seatticket: result.seatTicket,
                 errCode: result.errCode,
-                message: result.message });
-        }else{
+                message: result.message
+            });
+        } else {
             res.status(400).json({
                 errCode: result.errCode,
-                message: result.message });
+                message: result.message
+            });
         }
     } catch (error) {
         console.error(error);
@@ -109,7 +119,7 @@ const handleUpdateSeatTicket = async (req: Request, res: Response) => {
 }
 
 export default {
-	handleCreateSeatTicket,
+    handleCreateSeatTicket,
     handleGetAllSeatTickets,
     handleDeleteSeatTicket,
     handleGetSeatTicketById,

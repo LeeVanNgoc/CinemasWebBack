@@ -74,7 +74,7 @@ export const editPromotion = async (data: any) => {
     Object.assign(promotion, data);
     await promotion.save();
 
-    return { 
+    return {
       errCode: 0,
       message: 'Update the promotion succeeds!',
       promotion

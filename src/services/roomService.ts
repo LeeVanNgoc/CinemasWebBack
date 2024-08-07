@@ -74,7 +74,7 @@ export const editRoom = async (data: any) => {
     room.isAvailable = data.isAvailable || room.isAvailable;
     await room.save();
 
-    return { 
+    return {
       errCode: 0,
       message: 'Update the room succeeds!',
       room

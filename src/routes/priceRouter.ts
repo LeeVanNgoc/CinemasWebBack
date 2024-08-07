@@ -10,6 +10,8 @@ const priceRouter = (app : Application) => {
     router.put('/edit-price', priceController.handleUpdatePrice);
     router.get('/get-price-by-id', priceController.handleGetPriceById);
     router.get('/get-all-prices', priceController.handleGetAllPrices);
+    router.get('/get-cost', priceController.handleGetCost);
+
     app.use('/api/prices', router);
 }
 
