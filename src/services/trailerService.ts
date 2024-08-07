@@ -85,7 +85,7 @@ export const getTrailerByMovieId = async(movieId : number) => {
 export const getAllTrailer = async () => {
     try {
         const trailers = await Trailer.findAll({
-            attributes: ['movieId', 'link'],
+            attributes: ['trailerId', 'movieId', 'link'],
             raw: true,
         });
         
