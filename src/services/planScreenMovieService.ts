@@ -1,4 +1,4 @@
-import { Op } from 'sequelize';
+import { DateOnlyDataType, Op } from 'sequelize';
 
 import PlanScreenMovie from '../models/PlanScreenMovie';
 import { numberSeatInRoom } from './seatsService';
@@ -281,38 +281,32 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
   }
 };
 
-export const getPlanScreenMovieIdByMovie = async (movieId: number) => {
+export const getStartTime = async (data: any) => {
   try {
-    if (!movieId) {
-      return {
-        errCode: 2,
-        message: 'Missing required parameters',
-      };
-    }
-
-    const planScreenMovies = await PlanScreenMovie.findAll({
+    const startTimePlan = await PlanScreenMovie.findAll({
       where: {
-        movieId: movieId,
+        movieId: data.movieId,
+        dateScreen: data.dateScreen,
       },
-      attributes: ['planScreenMovieId'],
-      raw: true
+      attributes: ["startTime"],
+      raw: true,
     });
 
-    if (planScreenMovies.length > 0) {
-      const planScreenMovieIds = planScreenMovies.map(item => item.planScreenMovieId);
+    if (startTimePlan.length > 0) {
+      const startTimePlanScreen = startTimePlan.map((item) => item.startTime);
       return {
         errCode: 0,
-        message: 'Get PlanScreenMovieId success',
-        planScreenMovieIds,
+        message: "Get PlanScreenMovieId success",
+        startTimePlanScreen,
       };
     } else {
       return {
         errCode: 1,
-        message: 'No PlanScreenMovieId found',
+        message: "No PlanScreenMovieId found",
       };
     }
   } catch (error) {
-    console.error('Error in getPlanScreenMovieIdByMovieId:', error);
+    console.error("Error in getPlanScreenMovieIdByMovieId:", error);
     return {
       errCode: 3,
       message: `Error getting PlanScreenMovieId: ${error}`,
