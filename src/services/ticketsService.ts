@@ -185,3 +185,42 @@ export const getTicketById = async (ticketId: number) => {
   }
 }
 
+export const getTicketByUserId = async (userId: number) => {
+  try {
+    if (!userId) {
+      return {
+        errCode: 2,
+        message: 'Missing required parameters',
+      };
+    }
+
+    const ticket = await Tickets.findAll({
+      where: {
+        userId: userId,
+      },
+      attributes: ['ticketId'],
+      raw: true
+    });
+
+    if (ticket.length > 0) {
+      const ticketIds = ticket.map(item => item.ticketId);
+      return {
+        errCode: 0,
+        message: 'Get ticketId success',
+        ticketIds,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: 'No ticketId found',
+      };
+    }
+  } catch (error) {
+    console.error('Error in getTicketByUserId:', error);
+    return {
+      errCode: 3,
+      message: `Error getting ticketId: ${error}`,
+    };
+  }
+};
+

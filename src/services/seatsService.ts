@@ -1,3 +1,4 @@
+import { Tickets } from "../models";
 import Seat from "../models/Seat";
 
 //Check row exist
@@ -278,3 +279,5 @@ export const autoCreateSeats = async (roomId: string, vipRows: string[], regular
         };
     }
 };
+
+

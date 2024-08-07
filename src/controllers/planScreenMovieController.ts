@@ -6,7 +6,7 @@ import {
   getPlanScreenMovieById,
   createPlanScreenMovieWithMovie,
   getPlanScreenMovieIdForCreateTicket,
-  getPlanScreenMovieIdByMovie
+  getStartTime
 } from '../services/planScreenMovieService';
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -118,27 +118,28 @@ const handleGetPlanScreenMovieIdForCreateTicket = async (req: Request, res: Resp
   }
 }
 
-const handleGetPlanScreenMovieIdByMovieId = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieId);
-
+const handleGetStartTime = async (req: Request, res: Response) => {
+  const data = req.query;
   try {
-    const planScreenMovieId = await getPlanScreenMovieIdByMovie(movieId);
-    if (planScreenMovieId.errCode === 0) {
+    const startTime = await getStartTime(data);
+    if (startTime.errCode === 0) {
       res.status(200).json({
-        errCode: planScreenMovieId.errCode,
-        message: planScreenMovieId.message,
-        planScreenMovieId: planScreenMovieId.planScreenMovieIds
+        errCode: startTime.errCode,
+        message: startTime.message,
+        startTimes: startTime.startTimePlanScreen,
       });
     } else {
       res.status(400).json({
-        errCode: planScreenMovieId.errCode,
-        message: planScreenMovieId.message
+        errCode: startTime.errCode,
+        message: startTime.message,
       });
     }
   } catch (error) {
-    res.status(500).json({ message: `Error in handle get planScreenMovieId by movieId ${error}` });
+    res.status(500).json({
+      message: `Error in handle get planScreenMOvieId by movieId ${error}`,
+    });
   }
-}
+};
 
 export default {
   handleDeletePlanScreenMovie,
@@ -147,5 +148,5 @@ export default {
   handleGetPlanScreenMovieById,
   handleCreatePlanScreenWithMovie,
   handleGetPlanScreenMovieIdForCreateTicket,
-  handleGetPlanScreenMovieIdByMovieId
+  handleGetStartTime
 };

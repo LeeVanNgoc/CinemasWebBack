@@ -4,7 +4,8 @@ import {
 	deleteTicket,
 	editTicket,
 	getTicketById,
-	getListTicket
+	getListTicket,
+	getTicketByUserId
 } from '../services/ticketsService';
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -92,10 +93,34 @@ const handleGetTicketById = async (req: Request, res: Response) => {
 		res.status(500).json({ error: `Something went wrong in getting ticket: ${error}` });
 	}
 }
+
+const handleGetTicketByUserId = async (req: Request, res: Response) => {
+	const userId = Number(req.query.userId);
+
+	try {
+		const ticketId = await getTicketByUserId(userId);
+		if (ticketId.errCode === 0) {
+			res.status(200).json({
+				errCode: ticketId.errCode,
+				message: ticketId.message,
+				ticketId: ticketId.ticketIds
+			});
+		} else {
+			res.status(400).json({
+				errCode: ticketId.errCode,
+				message: ticketId.message
+			});
+		}
+	} catch (error) {
+		res.status(500).json({ message: `Error in handle get ticketId by userId ${error}` });
+	}
+}
+
 export default {
 	handleCreateTicket,
 	handleDeleteTicket,
 	handleEditTicket,
 	handleGetTicketById,
 	handleGetListTicket,
+	handleGetTicketByUserId,
 }
