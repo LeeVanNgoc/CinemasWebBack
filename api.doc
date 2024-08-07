@@ -386,7 +386,7 @@ Quy tặc gán errCode:
 	Liên kết đường dẫn : 
     	app.use('/api/seats', router);
 
-seatTicketRouter
+10. seatTicketRouter
 	API tạo trung gian chiều giữa vé và ghế:
 		router.post('/create-seat-ticket);
 		-	Input :
@@ -433,7 +433,7 @@ seatTicketRouter
 	Liên kết đường dẫn :
     	app.use('/api/seattickets', router);
 
-theaterRoutes
+11. theaterRoutes
 	API tạo rạp chiếu phim : 
 		router.post("/create-theater);
 		-	Input :
@@ -487,7 +487,7 @@ theaterRoutes
 				+ errCode : 3 (Lỗi khi lấy rạp)
 	app.use("/api/theater", router);
 
-ticketRoutes
+12. ticketRoutes
 	API tạo mới vé :
 		router.post('/create-ticket);
 		-	Input :
@@ -540,7 +540,7 @@ ticketRoutes
 				+ errCode : 3 (Lỗi khi lấy vé)
 	app.use('/api/ticket', router);
 
-trailerRoutes
+13. trailerRoutes
 	- API tạo trailer
 		router.post('/create-trailer);
 		-	Input :
@@ -594,7 +594,7 @@ trailerRoutes
 				+ errCode : 3 (Lỗi khi lấy trailer)
 	app.use('/api/trailer', router);
 
-userRoutes
+14. userRoutes
 	- API tạo user
 		router.post('/create-new-user);
 		-	Input :
@@ -662,3 +662,27 @@ userRoutes
 				+ errCode : 5 (Mật khẩu ko đúng)
 				+ errCode : 3 (Lỗi khi đăng nhập)
 	app.use('/api/user', router);	
+
+15. BookedSeatRoutes
+	- API tạo ghế đã đặt
+		router.post('/create-booked-seat', bookedSeatController.handleBookSeat);
+		-	Input : 
+				+ bookedSeatId: (number) (Id)
+				+ roomId: (number) (Id phòng),
+				+ planSCreenMovieId: (number) (Id kế hoạch chiếu),
+				+ row: (string) (Hàng : A, B, C, D, E, F, G, H, I, K, L, M),
+				+ col: (number) (Cột : 1, 2, 3, 4, 5, 6, 7, 8, 9, ....),
+		-	Output:
+				+ errCode : 0, message : create successfuly, result : newBookedSeat
+				+ errCode : 1, message : failed to create booked seat
+				+ errCode : 2, message : Seat was already booked
+				+ errCode : 3, message : Error create + (error)
+	- API lấy hàng và cột ghế đã đặt
+		-	Input :
+				+ planSCreenMovieId : (number) (Kế hoạch ca chiếu)
+		-	Output:
+				+ errCode : 0, message : Lấy thành công, rowAndColArray : Mảng 2 chiều có dạng : [ [ 'A', 4 ], [ 'A', 5 ], [ 'A', 6 ] ]
+				+ errCode : 1, message ; lấy thất bại
+				+ errCode : 3, message : lỗi khi lấy + error
+	router.get('/get-row-and-col-of-booked-seat', bookedSeatController.handleGetRowAndColOfBookedSeat);
+	app.use('/api/bookedSeat', router);
