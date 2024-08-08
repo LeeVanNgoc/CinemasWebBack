@@ -243,6 +243,7 @@ export const autoCreateSeats = async (
 ) => {
   try {
     const newSeats: Seat[] = [];
+    
     const createSeatIfNotExist = async (
       row: string,
       col: number,
@@ -288,6 +289,7 @@ export const autoCreateSeats = async (
     };
   }
 };
+
 
 export const getSeatInRoom = async (roomId: number) => {
   try {

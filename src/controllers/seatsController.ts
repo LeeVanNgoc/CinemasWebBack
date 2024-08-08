@@ -127,15 +127,17 @@ const handleDeleteSeat = async (req: Request, res: Response) => {
 };
 
 const handleAutoCreateSeats = async (req: Request, res: Response) => {
-  const { roomId, vipRows, regularRows, doubleRows, columns } = req.body;
+  const { roomId, vipRows, regularRows, doubleRows, columns } = req.query;
+  
   try {
     const result = await autoCreateSeats(
-      roomId,
-      vipRows,
-      regularRows,
-      doubleRows,
-      columns
+      roomId as string,
+      (vipRows as string).split(','),
+      (regularRows as string).split(','),
+      (doubleRows as string).split(','),
+      Number(columns)
     );
+
     if (result.errCode === 0) {
       res.status(201).json({
         errCode: result.errCode,
