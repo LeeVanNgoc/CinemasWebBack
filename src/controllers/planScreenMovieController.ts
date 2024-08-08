@@ -4,7 +4,7 @@ import {
   editPlanScreenMovie,
   getAllPlanScreenMovies,
   getPlanScreenMovieById,
-  createPlanScreenMovieWithMovie,
+  createPlanScreenMovie,
   getPlanScreenMovieIdForCreateTicket,
   getStartTime
 } from '../services/planScreenMovieService';
@@ -27,10 +27,22 @@ const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
 
 const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const planScreenMovieId = Number(req.query.planScreenMovieId);
+  const roomId = req.query.roomId ? Number(req.query.roomId) : undefined;
+  const movieId = req.query.movieId ? Number(req.query.movieId) : undefined;
+  const dateScreen = req.query.dateScreen as string;
+  const times = req.query.times as string;
+
   if (isNaN(planScreenMovieId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid PlanScreenMovie ID' });
   }
-  const data = req.query
+
+  let startTime, endTime;
+  if (times) {
+    [startTime, endTime] = times.split('-');
+  }
+
+  const data = { planScreenMovieId, roomId, movieId, startTime, endTime, dateScreen };
+
   try {
     const result = await editPlanScreenMovie(data);
     if (result.errCode !== 0) {
@@ -70,10 +82,18 @@ const handleGetPlanScreenMovieById = async (req: Request, res: Response) => {
   }
 }
 
-const handleCreatePlanScreenWithMovie = async (req: Request, res: Response) => {
-  const data = req.body;
+const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
+  const roomId = Number(req.query.roomId);
+  const movieId = Number(req.query.movieId);
+  const dateScreen = req.query.dateScreen as string;
+  const times = (req.query.times as string).split(',');
+
+  if (!roomId || !movieId || !dateScreen || times.length === 0) {
+    return res.status(400).json({ errCode: 2, message: 'Missing required parameters' });
+  }
+
   try {
-    const planScreenWithMovie = await createPlanScreenMovieWithMovie(data);
+    const planScreenWithMovie = await createPlanScreenMovie(roomId, movieId, dateScreen, times);
     if (planScreenWithMovie.errCode === 0) {
       res.status(200).json({
         errCode: planScreenWithMovie.errCode,
@@ -87,7 +107,7 @@ const handleCreatePlanScreenWithMovie = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res.status(500).json({ message: `Error in handle create plan screen movie with movie ${error}` });
+    res.status(500).json({ message: `Error in handle create plan screen movie ${error}` });
   }
 };
 
@@ -146,7 +166,7 @@ export default {
   handleEditPlanScreenMovie,
   handleGetAllPlanScreenMovies,
   handleGetPlanScreenMovieById,
-  handleCreatePlanScreenWithMovie,
+  handleCreatePlanScreenMovie,
   handleGetPlanScreenMovieIdForCreateTicket,
   handleGetStartTime
 };

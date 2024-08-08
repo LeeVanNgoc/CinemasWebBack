@@ -11,7 +11,7 @@ export const createPromotion = async (data: PromotionData) => {
   try {
     const existingIds = await Promotion.findAll({
       attributes: ['promoId'],
-      order: [['promoId', 'ASC']]
+      order: [['promoId', 'ASC']],
     });
 
     const ids = existingIds.map(promo => promo.promoId);
@@ -32,12 +32,12 @@ export const createPromotion = async (data: PromotionData) => {
     return {
       errCode: 0,
       message: 'Promotion created successfully',
-      promotion: newPromotion
+      promotion: newPromotion,
     };
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error creating promotion: ${error}`
+      message: `Error creating promotion: ${error}`,
     };
   }
 };
@@ -60,7 +60,8 @@ export const deletePromotion = async (promoId: number) => {
 };
 
 export const editPromotion = async (data: any) => {
-  const promoId = data.promoId;
+  const { promoId, description, discount, startDate, endDate } = data;
+  
   try {
     if (!promoId) {
       return { errCode: 4, message: 'Missing required parameters!' };
@@ -71,18 +72,22 @@ export const editPromotion = async (data: any) => {
       return { errCode: 1, message: 'Promotion not found!' };
     }
 
-    Object.assign(promotion, data);
+    if (description !== undefined) promotion.description = description;
+    if (discount !== undefined) promotion.discount = discount;
+    if (startDate !== undefined) promotion.startDate = startDate;
+    if (endDate !== undefined) promotion.endDate = endDate;
+
     await promotion.save();
 
     return {
       errCode: 0,
       message: 'Update the promotion succeeds!',
-      promotion
+      promotion,
     };
   } catch (error) {
     return {
       errCode: 2,
-      message: `Error updating promotion: ${error}`
+      message: `Error updating promotion: ${error}`,
     };
   }
 };
