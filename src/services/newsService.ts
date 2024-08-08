@@ -1,6 +1,6 @@
 import News from "../models/News";
 
-export const createNews = async (data: any) => {
+export const createNews = async (data: { title: string; content: string; image: string }) => {
   try {
     const existingIds = await News.findAll({
       attributes: ["postId"],
@@ -54,30 +54,19 @@ export const deleteNews = async (postId: number) => {
   }
 };
 
-export const editNews = async (data: any) => {
+export const editNews = async (data: { postId: number; title: string; content: string; image: string }) => {
   try {
-    const { id, title, content } = data;
-    if (!id) {
-      return { errCode: 4, message: "Missing required parameters: id" };
-    }
-
-    const news = await News.findOne({ where: { postId: id } });
+    const news = await News.findOne({ where: { postId: data.postId } });
     if (!news) {
-      return { errCode: 1, message: "News not found!" };
+      return { errCode: 1, message: "News not found" };
     }
 
-    if (title) {
-      news.title = title;
-    }
-    if (content) {
-      news.content = content;
-    }
-
+    Object.assign(news, data);
     await news.save();
 
     return {
       errCode: 0,
-      message: "Update the news succeeds!",
+      message: "News updated successfully",
       news,
     };
   } catch (error) {

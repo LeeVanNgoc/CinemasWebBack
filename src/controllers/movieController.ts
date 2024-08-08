@@ -2,9 +2,19 @@ import { Request, Response } from 'express';
 import { createMovie, deleteMovie, editMovie, getAllMovies, getMovieById } from '../services/movieService';
 
 const handleCreateMovie = async (req: Request, res: Response) => {
-  const data = req.body;
+  const title = req.query.title as string;
+  const description = req.query.description as string;
+  const duration = req.query.duration as string;
+  const country = req.query.country as string;
+  const genreId = Number(req.query.genreId);
+  const releaseDate = req.query.releaseDate as string;
+  const image = req.query.image as string;
+  if (!title || !description || !releaseDate || !duration || !country || !genreId || !image) {
+    return res.status(400).json({ errCode: 2, error: 'Missing required parameters' });
+  }
+
   try {
-    const result = await createMovie(data);
+    const result = await createMovie({ title, description, releaseDate, duration, country, genreId, image });
     if (result.errCode !== 0) {
       return res.status(400).json({ errCode: result.errCode, error: result.message });
     }
@@ -32,12 +42,20 @@ const handleDeleteMovie = async (req: Request, res: Response) => {
 
 const handleEditMovie = async (req: Request, res: Response) => {
   const movieId = Number(req.query.movieId);
-  if (isNaN(movieId)) {
-    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID' });
+  const title = req.query.title as string;
+  const description = req.query.description as string;
+  const duration = req.query.duration as string;
+  const country = req.query.country as string;
+  const genreId = Number(req.query.genreId);
+  const releaseDate = req.query.releaseDate as string;
+  const image = req.query.image as string;
+
+  if (isNaN(movieId) || !title || !description || !releaseDate || !duration || !country || !genreId || !image) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID or missing parameters' });
   }
-  const data = { ...req.body, movieId: movieId };
+
   try {
-    const result = await editMovie(data);
+    const result = await editMovie({ movieId, title, description, releaseDate, duration, country, genreId, image });
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
