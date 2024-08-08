@@ -493,9 +493,9 @@ Quy tặc gán errCode:
 		-	Input :
 				+ userId : (number) (Id người dùng)
 				+ planScreenMovieId : (number) (Id lịch chiếu)
-				+ seatTicketId : (number) (Id của trung gian vé và ghế)
-				+ bank : (string) (cost or bank) 
-				+ price : (number) (Giá vé)
+				+ seats : (number) (các ghế được đặt, cách nhau bởi dấu phẩy)
+				+ bank : (string) (tên ngân hàng (VCB, MB, VTB)) 
+				+ totalPrice : (number) (Tổng tiền)
 				+ ticketsDate : (Data) (Ngày tạo vé)
 		-	Output:
 				+ errCode : 0 (Tạo thành công)
@@ -515,9 +515,9 @@ Quy tặc gán errCode:
 				+ ticketId : (number) (Id của vé)
 				+ userId : (number) (Id người dùng)
 				+ planScreenMovieId : (number) (Id lịch chiếu)
-				+ seatTicketId : (number) (Id của trung gian vé và ghế)
-				+ bank : (string) (cost or bank) 
-				+ price : (number) (Giá vé)
+				+ sests : (number) (Các ghế được đặt)
+				+ bank : (string) (tên ngân hàng (VCB, VTB, MB))
+				+ totalPrice : (number) (Tổng tiền)
 				+ ticketsDate : (Data) (Ngày tạo vé)
 		-	Output:
 				+ errCode : 0 (Cập nhật thành công)
