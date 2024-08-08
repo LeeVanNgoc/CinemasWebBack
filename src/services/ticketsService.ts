@@ -1,6 +1,4 @@
-import { PlanScreenMovie } from "../models";
 import Tickets from "../models/Tickets";
-import { getPlanScreenMovieIdForCreateTicket } from "./planScreenMovieService";
 
 export const createTickets = async (data: any) => {
   try {
@@ -19,7 +17,7 @@ export const createTickets = async (data: any) => {
     const newTicket = await Tickets.create({
       ticketId: newId,
       userId: data.userId,
-      planScreenMovieId: data.planSCreenMovieId,
+      planScreenMovieId: data.planScreenMovieId,
       seats: data.seats,
       bank: data.bank,
       totalPrice: data.totalPrice,
