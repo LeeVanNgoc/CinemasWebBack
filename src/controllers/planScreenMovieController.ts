@@ -136,7 +136,7 @@ const handleGetStartTime = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      message: `Error in handle get planScreenMOvieId by movieId ${error}`,
+      message: `Error in handle get planScreenMovieId by movieId ${error}`,
     });
   }
 };
