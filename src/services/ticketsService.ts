@@ -222,6 +222,7 @@ export const getTicketDetailsById = async (ticketId: number) => {
   try {
     const ticket = await Tickets.findOne({
       where: { ticketId },
+      attributes: ["ticketId", "userId", "seats", "bank", "totalPrice"],
       include: [{
         model: PlanScreenMovie,
         as: "planScreenMovie",
