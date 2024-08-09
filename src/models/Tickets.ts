@@ -8,8 +8,8 @@ import Prices from "./Price";
 class Tickets extends Model {
   public ticketId!: number;
   public userId!: number;
-  public planScreenMovieId!: string;
-  public seats!: number;
+  public planScreenMovieId!: number;
+  public seats!: string;
   public bank!: string;
   public totalPrice!: number;
   public TicketsDate!: Date;
@@ -21,13 +21,14 @@ Tickets.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
     },
     userId: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: User,
-        key: "id",
+        key: "userId",
       },
     },
     planScreenMovieId: {
@@ -35,7 +36,7 @@ Tickets.init(
       allowNull: false,
       references: {
         model: PlanScreenMovie,
-        key: "id",
+        key: "planScreenMovieId",
       },
     },
     seats: {
@@ -62,7 +63,12 @@ Tickets.init(
   }
 );
 
-Tickets.belongsTo(User, { foreignKey: "userId" });
-Tickets.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieId" });
+const defineAssociations = () => {
+  Tickets.belongsTo(User, { foreignKey: "userId" });
+  Tickets.belongsTo(PlanScreenMovie, {
+    foreignKey: 'planScreenMovieId',
+    as: 'planScreenMovie'
+  });
+};
 
 export default Tickets;

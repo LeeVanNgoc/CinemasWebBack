@@ -431,6 +431,7 @@ Quy tặc gán errCode:
 				+ errCode : 3 (Lỗi khi lấy ghế)
 
 	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
+	
 	Liên kết đường dẫn : 
     	app.use('/api/seats', router);
 
