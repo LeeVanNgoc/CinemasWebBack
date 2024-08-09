@@ -2,15 +2,15 @@ import { Model, DataTypes } from 'sequelize';
 import sequelize from '../config/connectDB';
 
 class News extends Model {
-  public postId!: number;
+  public newsId!: number;
   public title!: string;
   public content!: string;
-  public readonly postDate!: Date;
+  public postDate!: Date;
   public image!: string;
 }
 
 News.init({
-  postId: {
+  newsId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     primaryKey: true,
@@ -29,6 +29,10 @@ News.init({
     defaultValue: DataTypes.NOW,
   },
   image: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  link: {
     type: DataTypes.STRING,
     allowNull: false,
   },
