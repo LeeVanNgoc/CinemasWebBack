@@ -1,34 +1,38 @@
-import { DateOnlyDataType, Op } from 'sequelize';
+import { DateOnlyDataType, Op } from "sequelize";
 
-import PlanScreenMovie from '../models/PlanScreenMovie';
-import { numberSeatInRoom } from './seatsService';
+import PlanScreenMovie from "../models/PlanScreenMovie";
+import { numberSeatInRoom } from "./seatsService";
 
-export const checkPlanScreenMovieId = async (planScreenMovieId: number) => {
+export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
   try {
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({
+      where: { planScreenMovieId },
+    });
     if (!planScreenMovie) {
       return {
         errCode: 1,
-        message: 'PlanScreenMovie not found'
+        message: "PlanScreenMovie not found",
       };
     } else {
       return {
         errCode: 0,
-        message: 'PlanScreenMovie found',
+        message: "PlanScreenMovie found",
         planScreenMovieId: planScreenMovie.planScreenMovieId,
-      }
+      };
     }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error checking PlanScreenMovieId: ${error}`
+      message: `Error checking planScreenMovieId: ${error}`,
     };
   }
-}
+};
 
 export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
   try {
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({
+      where: { planScreenMovieId },
+    });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found" };
     } else {
@@ -38,22 +42,25 @@ export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error deleting PlanScreenMovie: ${error}`
+      message: `Error deleting PlanScreenMovie: ${error}`,
     };
   }
 };
 
 export const editPlanScreenMovie = async (data: any) => {
-  const { planScreenMovieId, roomId, movieId, startTime, endTime, dateScreen } = data;
+  const { planScreenMovieId, roomId, movieId, startTime, endTime, dateScreen } =
+    data;
 
   try {
     if (!planScreenMovieId) {
-      return { errCode: 4, message: 'Missing required parameters!' };
+      return { errCode: 4, message: "Missing required parameters!" };
     }
 
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({
+      where: { planScreenMovieId },
+    });
     if (!planScreenMovie) {
-      return { errCode: 1, message: 'PlanScreenMovie not found!' };
+      return { errCode: 1, message: "PlanScreenMovie not found!" };
     }
 
     // Cập nhật các giá trị mới nếu có
@@ -75,16 +82,15 @@ export const editPlanScreenMovie = async (data: any) => {
 
     // Lưu các thay đổi
     await planScreenMovie.save();
-
     return {
       errCode: 0,
-      message: 'Update the PlanScreenMovie succeeds!',
-      planScreenMovie
+      message: "Update the PlanScreenMovie succeeds!",
+      planScreenMovie,
     };
   } catch (error) {
     return {
       errCode: 2,
-      message: `Error updating PlanScreenMovie: ${error}` // Trả về thông báo lỗi chi tiết hơn
+      message: `Error updating PlanScreenMovie: ${error}`, // Trả về thông báo lỗi chi tiết hơn
     };
   }
 };
@@ -94,47 +100,54 @@ export const getAllPlanScreenMovies = async () => {
     const planScreenMovies = await PlanScreenMovie.findAll();
     return {
       errCode: 0,
-      message: 'Get all PlanScreenMovies success',
-      planScreenMovies
+      message: "Get all PlanScreenMovies success",
+      planScreenMovies,
     };
   } catch (error) {
     return {
       errCode: 1,
-      message: `Error getting PlanScreenMovies: ${error}`
+      message: `Error getting PlanScreenMovies: ${error}`,
     };
   }
 };
 
 export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
   try {
-    const planScreenMovie = await PlanScreenMovie.findOne({ where: { planScreenMovieId } });
+    const planScreenMovie = await PlanScreenMovie.findOne({
+      where: { planScreenMovieId },
+    });
     if (!planScreenMovie) {
       return {
         errCode: 1,
-        message: 'PlanScreenMovie not found'
+        message: "PlanScreenMovie not found",
       };
     }
     return {
       errCode: 0,
-      message: 'Get PlanScreenMovie success',
-      planScreenMovie
+      message: "Get PlanScreenMovie success",
+      planScreenMovie,
     };
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error getting PlanScreenMovie: ${error}`
+      message: `Error getting PlanScreenMovie: ${error}`,
     };
   }
 };
 
-export const createPlanScreenMovie = async (roomId: number, movieId: number, dateScreen: string, times: string[]) => {
+export const createPlanScreenMovie = async (
+  roomId: number,
+  movieId: number,
+  dateScreen: string,
+  times: string[]
+) => {
   try {
     const existingIds = await PlanScreenMovie.findAll({
-      attributes: ['planScreenMovieId'],
-      order: [['planScreenMovieId', 'ASC']]
+      attributes: ["planScreenMovieId"],
+      order: [["planScreenMovieId", "ASC"]],
     });
 
-    const ids = existingIds.map(psm => psm.planScreenMovieId);
+    const ids = existingIds.map((psm) => psm.planScreenMovieId);
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
@@ -150,7 +163,7 @@ export const createPlanScreenMovie = async (roomId: number, movieId: number, dat
     });
 
     for (const time of times) {
-      const [startTime, endTime] = time.split('-');
+      const [startTime, endTime] = time.split("-");
 
       // Kiểm tra giá trị startTime và endTime
       if (!startTime || !endTime) {
@@ -160,9 +173,9 @@ export const createPlanScreenMovie = async (roomId: number, movieId: number, dat
         };
       }
 
-      const hasConflict = existingSchedules.some(schedule => {
-        const existingStartTime = schedule.getDataValue('startTime');
-        const existingEndTime = schedule.getDataValue('endTime');
+      const hasConflict = existingSchedules.some((schedule) => {
+        const existingStartTime = schedule.getDataValue("startTime");
+        const existingEndTime = schedule.getDataValue("endTime");
 
         return (
           (startTime >= existingStartTime && startTime < existingEndTime) ||
@@ -195,13 +208,13 @@ export const createPlanScreenMovie = async (roomId: number, movieId: number, dat
     if (newPlanScreenMovies.length > 0) {
       return {
         errCode: 0,
-        message: 'PlanScreenMovies created successfully',
+        message: "PlanScreenMovies created successfully",
         planScreenMovies: newPlanScreenMovies,
       };
     } else {
       return {
         errCode: 1,
-        message: 'No PlanScreenMovies created',
+        message: "No PlanScreenMovies created",
       };
     }
   } catch (error) {
@@ -212,13 +225,12 @@ export const createPlanScreenMovie = async (roomId: number, movieId: number, dat
   }
 };
 
-
 export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
   try {
     if (!data.roomId || !data.movieId || !data.startTime || !data.dateScreen) {
       return {
         errCode: 2,
-        message: 'Missing required parameters',
+        message: "Missing required parameters",
       };
     }
 
@@ -234,31 +246,33 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
         startTime: data.startTime,
         dateScreen: {
           [Op.gte]: dateScreen,
-          [Op.lt]: new Date(dateScreen.getTime() + 24 * 60 * 60 * 1000)
-        }
+          [Op.lt]: new Date(dateScreen.getTime() + 24 * 60 * 60 * 1000),
+        },
       },
-      attributes: ['planScreenMovieId'],
-      raw: true
+      attributes: ["planScreenMovieId"],
+      raw: true,
     });
 
     if (planScreenMovies.length > 0) {
-      const planScreenMovieIds = planScreenMovies.map(item => item.planScreenMovieId);
+      const planScreenMovieIds = planScreenMovies.map(
+        (item) => item.planScreenMovieId
+      );
       return {
         errCode: 0,
-        message: 'Get PlanScreenMovieId success',
+        message: "Get planScreenMovieId success",
         planScreenMovieIds,
       };
     } else {
       return {
         errCode: 1,
-        message: 'No PlanScreenMovieId found',
+        message: "No planScreenMovieId found",
       };
     }
   } catch (error) {
-    console.error('Error in getPlanScreenMovieIdForCreateTicket:', error);
+    console.error("Error in getplanScreenMovieIdForCreateTicket:", error);
     return {
       errCode: 3,
-      message: `Error getting PlanScreenMovieId: ${error}`,
+      message: `Error getting planScreenMovieId: ${error}`,
     };
   }
 };
@@ -283,14 +297,14 @@ export const getStartTime = async (data: any) => {
     } else {
       return {
         errCode: 1,
-        message: "No PlanScreenMovieId found",
+        message: "No planScreenMovieId found",
       };
     }
   } catch (error) {
-    console.error("Error in getPlanScreenMovieIdByMovieId:", error);
+    console.error("Error in getplanScreenMovieIdByMovieId:", error);
     return {
       errCode: 3,
-      message: `Error getting PlanScreenMovieId: ${error}`,
+      message: `Error getting planScreenMovieId: ${error}`,
     };
   }
 };
