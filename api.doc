@@ -587,6 +587,15 @@ Quy tặc gán errCode:
 				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
 				+ errCode : 1 (Không tồn tại vé)
 				+ errCode : 3 (Lỗi khi lấy vé)
+	API lấy vé để tạo bill
+		router.get('/get-ticket-details);
+		-	Input :
+				+ ticketId : Id của Vé
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
+				+ errCode : 1 (Không tồn tại vé)
+				+ errCode : 3 (Lỗi khi lấy vé)
+	
 	app.use('/api/ticket', router);
 
 12. trailerRoutes
