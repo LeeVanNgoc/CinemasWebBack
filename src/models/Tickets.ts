@@ -1,9 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/connectDB";
 import User from "./User";
-import SeatTickets from "./SeatTicket";
 import PlanScreenMovie from "./PlanScreenMovie";
-import Prices from "./Price";
 
 class Tickets extends Model {
   public ticketId!: number;
@@ -63,12 +61,7 @@ Tickets.init(
   }
 );
 
-const defineAssociations = () => {
-  Tickets.belongsTo(User, { foreignKey: "userId" });
-  Tickets.belongsTo(PlanScreenMovie, {
-    foreignKey: 'planScreenMovieId',
-    as: 'planScreenMovie'
-  });
-};
+Tickets.belongsTo(User, { foreignKey: "userId" });
+Tickets.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieId", as: "planScreenMovie" });
 
 export default Tickets;
