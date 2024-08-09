@@ -220,7 +220,7 @@ Quy tặc gán errCode:
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 	e.g: http://localhost:6060/api/plan-screen-movie/get-start-time?movieId=1&dateScreen=2010-10-19
-	
+
     Liên kết đường dẫn:
         - 	app.use('/api/plan-screen-movie', router);
 
@@ -261,6 +261,17 @@ Quy tặc gán errCode:
 		-	Output: + errCode : 0 (Lấy thành công) && Tất cả bản ghi
 					+ errCode : 1 (Ko tìm thấy bản ghi nào)
 					+ errCode : 3 (Lỗi khi lấy bản ghi)
+
+	API lấy giá của tất cả loại ghế & phòng:
+    	-	router.get('/get-cost');
+		-	Input : + roomType (number)
+					+ seatType (number)
+					+ isWeekend (0/1)
+		-	Output: + errCode : 0 (Lấy thành công) && Tất cả bản ghi
+					+ errCode : 1 (Ko tìm thấy bản ghi nào)
+					+ errCode : 3 (Lỗi khi lấy bản ghi)		
+	e.g: http://localhost:6060/api/prices/get-cost?roomType=3D&seatType=Sweetbox&isWeekend=1
+
 	Liên kết đường dẫn :
     	-	app.use('/api/prices', router);
 
@@ -273,6 +284,8 @@ Quy tặc gán errCode:
 					+ endDate (Date)
 		-	Output: + errCode: 0 (tạo thành công)
                   	+ errCode: 3 (lỗi khi tạo)
+	e.g: http://localhost:6060/api/promotion/create-new-promotion?description=Summer%20Sale&discount=20%&startDate=2024-08-01&endDate=2024-08-31
+
     API xoá khuyến mãi :
 		-	router.delete('/delete-promotion);
 		-	Input : + promoId: id (number)
@@ -282,11 +295,16 @@ Quy tặc gán errCode:
 
 	API cập nhật khuyến mãi :
     	-	router.put('/edit-promotion);
-		-	Input : + any (bất kì thuộc tính nào của API)
+		-	Input : + promoId: id (number)
+					+ description (text)
+					+ discount (string)
+					+ startDate (Date)
+					+ endDate (Date)
 		-	Output: + errCode: 0 (cập nhật thành công)
 					+ errCode: 1 (không tìm thấy bản ghi tương ứng id)
 					+ errCode: 3 (lỗi khi cập nhật)
 					+ errCode: 4 (lỗi khi cập nhật)
+	e.g: http://localhost:6060/api/promotion/edit-promotion?promoId=3&description=Winter%20Sale&discount=30%&startDate=2024-12-01&endDate=2024-12-31
 
 	API lấy khuyến mãi theo id:
     	-	router.get('/get-promotion-by-id);
@@ -308,8 +326,10 @@ Quy tặc gán errCode:
         - 	Input : + theaterId (number)
                  	+ type (text)
                  	+ numberSeats (number)
+					+ isAvailable (0/1)
         - 	Output: + errCode: 0 (tạo thành công)
                   	+ errCode: 3 (lỗi khi tạo)
+	e.g: http://localhost:6060/api/room/create-new-room?theaterId=1&type=2D&numberSeats=72&isAvailable=true
 
     API xoá phòng:
         - 	router.delete('/delete-room');
@@ -320,11 +340,17 @@ Quy tặc gán errCode:
 
     API cập nhật phòng:
         - 	router.put('/edit-room');
-        - 	Input : + any (bất kì thuộc tính nào của Room)
+        - 	Input : + roomId: id phòng (number)
+					+ theaterId (number)
+                 	+ type (text)
+                 	+ numberSeats (number)
+					+ isAvailable (0/1)
         - 	Output: + errCode: 0 (cập nhật thành công)
                   	+ errCode: 1 (không tìm thấy phòng)
                   	+ errCode: 3 (lỗi khi cập nhật)
 					+ errCode: 4 (thiếu ID phòng cần cập nhật)
+					
+	e.g: http://localhost:6060/api/room/edit-room?roomId=19&type=2D&numberSeats=150&isAvailable=true			
 
     API lấy tất cả phòng:
         - 	router.get('/get-all-rooms');
@@ -390,6 +416,21 @@ Quy tặc gán errCode:
 				+ errCode : 0 (Lấy thành công) && (bản ghi của ghế)
 				+ errCode : 1 (Ko tìm thấy ghế theo id)
 				+ errCode : 3 (Lỗi khi lấy ghế)
+
+	API tạo hàng loạt ghế:
+    	router.get('/auto-create-seats);
+		-	Input :
+				+ roomId (number)
+				+ vipRows (D,E,F,G,H,I)
+				+ regularRows (A,B,C,J,K)
+				+ doubleRows (L)
+				+ columns: số hàng ghế (number)
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (bản ghi của ghế)
+				+ errCode : 1 (Ko tìm thấy ghế theo id)
+				+ errCode : 3 (Lỗi khi lấy ghế)
+
+	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
 	Liên kết đường dẫn : 
     	app.use('/api/seats', router);
 
