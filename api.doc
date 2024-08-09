@@ -667,22 +667,33 @@ Quy tặc gán errCode:
 	- API tạo ghế đã đặt
 		router.post('/create-booked-seat', bookedSeatController.handleBookSeat);
 		-	Input : 
-				+ bookedSeatId: (number) (Id)
-				+ roomId: (number) (Id phòng),
-				+ planSCreenMovieId: (number) (Id kế hoạch chiếu),
-				+ row: (string) (Hàng : A, B, C, D, E, F, G, H, I, K, L, M),
-				+ col: (number) (Cột : 1, 2, 3, 4, 5, 6, 7, 8, 9, ....),
+				Dạng data (req.query)
+				+ bookedSeatId: (number) (Id) (Mặc định 0)
+				+ ticketId: (number) (Id vé),
 		-	Output:
 				+ errCode : 0, message : create successfuly, result : newBookedSeat
 				+ errCode : 1, message : failed to create booked seat
 				+ errCode : 2, message : Seat was already booked
 				+ errCode : 3, message : Error create + (error)
 	- API lấy hàng và cột ghế đã đặt
+		router.get('/get-row-and-col-of-booked-seat', bookedSeatController.handleGetRowAndColOfBookedSeat);
 		-	Input :
-				+ planSCreenMovieId : (number) (Kế hoạch ca chiếu)
+				+ planScreenMovieId : (number) (Kế hoạch ca chiếu)
 		-	Output:
 				+ errCode : 0, message : Lấy thành công, rowAndColArray : Mảng 2 chiều có dạng : [ [ 'A', 4 ], [ 'A', 5 ], [ 'A', 6 ] ]
 				+ errCode : 1, message ; lấy thất bại
 				+ errCode : 3, message : lỗi khi lấy + error
-	router.get('/get-row-and-col-of-booked-seat', bookedSeatController.handleGetRowAndColOfBookedSeat);
+	
+	- API tách hàng và Cột
+		router.get("/get-row-and-col-of-booked-seat", bookedSeatController.handleGetRowAndColOfBookedSeat);
+		-	Input :
+				Dạng data : (req.query)
+				+ ticketId : (number) Id của Vé
+		-	Output :
+				+ errCode : 0, message : Lấy thành công, planSCreenMovieId, rows, cols
+				+ errCode : 1, message : Lấy thất bại
+				+ errCode : 3, message : lỗi khi lấy + error
 	app.use('/api/bookedSeat', router);
+
+	
+		
