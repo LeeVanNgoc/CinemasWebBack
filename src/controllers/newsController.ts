@@ -13,8 +13,17 @@ const handleCreateNews = async (req: Request, res: Response) => {
   const image = req.query.image as string;
   const link = req.query.link as string;
 
-  if (!title || !content || !image || !link) {
-    return res.status(400).json({ errCode: 2, error: 'Missing required parameters' });
+  if (!title) {
+    return res.status(400).json({ errCode: 2, error: 'Missing title parameters' });
+  }
+  if (!content) {
+    return res.status(400).json({ errCode: 2, error: 'Missing content parameter' });
+  }
+  if (!image) {
+    return res.status(400).json({ errCode: 2, error: 'Missing image parameter' });
+  }
+  if (!link) {
+    return res.status(400).json({ errCode: 2, error: 'Missing link parameter' });
   }
   
   try {
@@ -51,8 +60,20 @@ const handleEditNews = async (req: Request, res: Response) => {
   const image = req.query.image as string;
   const link = req.query.link as string;
 
-  if (isNaN(newsId) || !title || !content || !image || !link) {
-    return res.status(400).json({ errCode: 2, error: 'Invalid news ID or missing parameters' });
+  if (isNaN(newsId)) {
+    return res.status(400).json({ errCode: 2, error: 'Invalid newsId or missing newsId' });
+  }
+  if (!title) {
+    return res.status(400).json({ errCode: 2, error: 'Missing title parameters' });
+  }
+  if (!content) {
+    return res.status(400).json({ errCode: 2, error: 'Missing content parameter' });
+  }
+  if (!image) {
+    return res.status(400).json({ errCode: 2, error: 'Missing image parameter' });
+  }
+  if (!link) {
+    return res.status(400).json({ errCode: 2, error: 'Missing link parameter' });
   }
 
   try {
