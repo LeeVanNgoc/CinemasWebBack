@@ -1,5 +1,74 @@
 import { Express } from "express";
 import BookedSeat from "../models/BookedSeat";
+import Tickets from "../models/Tickets";
+import PlanScreenMovie from "../models/PlanScreenMovie";
+
+// Lấy phòng từ kế hoạch chiếu phim
+const getRoomInPlanScreen = async (planScreenMovieId: number) => {
+  try {
+    const room = await PlanScreenMovie.findOne({
+      where: { planSCreenMovieId: planScreenMovieId },
+      attributes: ["roomId"],
+    });
+    if (room) {
+      return {
+        roomId: room.roomId,
+        errCode: 0,
+        message: "Get room successfuly",
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "No room found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `False to get room ${error}`,
+    };
+  }
+};
+
+// Tách hàng và cột
+export const getRowAndColOfSeats = async (data: any) => {
+  try {
+    const ticket = await Tickets.findAll({
+      where: {
+        ticketId: data.ticketId,
+      },
+      attributes: ["seats", "planScreenMovieId"],
+    });
+    if (ticket) {
+      const planScreenMovieIds = ticket.map((seat) => seat.planScreenMovieId);
+      const planScreenMovieId = planScreenMovieIds[0];
+      const seats = ticket.map((ticket) => ticket.seats);
+
+      const seatsData = seats.toString();
+
+      const seatData = seatsData.split(",");
+      const rows = seatData.map((seat: string) => seat.trim()[0]);
+      const cols = seatData.map((seat: string) => parseInt(seat.trim()[1]));
+      return {
+        planScreenMovieId,
+        rows,
+        cols,
+        errCode: 0,
+        message: "Get row and col of seats successfuly",
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "No seats found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `False to get row and col of seats ${error}`,
+    };
+  }
+};
 
 // Kiểm tra sự tồn tại của ghế đã được đặt trong 1 ca chiếu
 export const checkExistSeatWasBooked = async (data: any) => {
@@ -50,23 +119,39 @@ export const createNewBookedSeat = async (data: any) => {
     while (ids.includes(newId)) {
       newId++;
     }
-    const newBookedSeat = await BookedSeat.create({
-      bookedSeatId: newId,
-      roomId: data.roomId,
-      planSCreenMovieId: data.planSCreenMovieId,
-      row: data.row,
-      col: data.col,
-    });
-    if (newBookedSeat) {
-      return {
-        newBookedSeat: newBookedSeat,
-        errCode: 0,
-        message: "Create new booked seat successfuly",
-      };
+    const ticket = await getRowAndColOfSeats(data);
+
+    if (ticket.errCode === 0) {
+      const planScreenMovieId = Number(ticket.planScreenMovieId) || 0;
+      const rows = ticket.rows || [];
+      const cols = ticket.cols || [];
+      const room = await getRoomInPlanScreen(planScreenMovieId);
+      const bookedSeats = rows.map((row: string, index: number) => {
+        return {
+          bookedSeatId: newId + index, // Cung cấp ID duy nhất cho từng bản ghi
+          planScreenMovieId: planScreenMovieId,
+          row: row,
+          col: cols[index],
+          roomId: data.roomId,
+        };
+      });
+      const newBookedSeat = await BookedSeat.bulkCreate(bookedSeats);
+      if (newBookedSeat) {
+        return {
+          newBookedSeat: newBookedSeat,
+          errCode: 0,
+          message: "Create new booked seat successfuly",
+        };
+      } else {
+        return {
+          errCode: 1,
+          message: "Create new booked seat failed",
+        };
+      }
     } else {
       return {
-        errCode: 1,
-        message: "Create new booked seat failed",
+        errCode: 2,
+        message: "Ticket not found",
       };
     }
   } catch (error) {
@@ -77,10 +162,10 @@ export const createNewBookedSeat = async (data: any) => {
   }
 };
 
-export const getRowAndColOfBookedSeat = async (planSCreenMovieId: number) => {
+export const getRowAndColOfBookedSeat = async (planScreenMovieId: number) => {
   try {
     const bookedSeat = await BookedSeat.findAll({
-      where: { planSCreenMovieId: planSCreenMovieId },
+      where: { planScreenMovieId: planScreenMovieId },
       attributes: ["row", "col"],
     });
     const rowAndColStrings = bookedSeat.map((seat) => `${seat.row}${seat.col}`);

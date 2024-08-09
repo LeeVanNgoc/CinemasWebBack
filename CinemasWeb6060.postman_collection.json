@@ -1,1256 +1,1033 @@
 {
-	"info": {
-		"_postman_id": "88d4dd81-af07-458a-b2d3-fb153a9c102f",
-		"name": "CinemasWeb6060",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "36450861"
-	},
-	"item": [
-		{
-			"name": "Ticket",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/ticket/create-ticket?userId=1&planScreenMovieId=1&seatTicketId=1&bank=bank&price=100000",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/ticket/create-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"ticket",
-								"create-ticket"
-							],
-							"query": [
-								{
-									"key": "ticketId",
-									"value": "4"
-								},
-								{
-									"key": "userId",
-									"value": "2"
-								},
-								{
-									"key": "planScreenMovieId",
-									"value": "3"
-								},
-								{
-									"key": "seatTicketId",
-									"value": "3"
-								},
-								{
-									"key": "bank",
-									"value": "bank"
-								},
-								{
-									"key": "price",
-									"value": "120000"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/ticket/delete-ticket?ticketId=3",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/ticket/delete-ticket?ticketId=5",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"ticket",
-								"delete-ticket"
-							],
-							"query": [
-								{
-									"key": "ticketId",
-									"value": "5"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/ticket/get-tickets?ticketId=ALL",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/ticket/get-tickets?ticketId=ALL",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"ticket",
-								"get-tickets"
-							],
-							"query": [
-								{
-									"key": "ticketId",
-									"value": "ALL"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/ticket/edit-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/ticket/edit-ticket?ticketId=7&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"ticket",
-								"edit-ticket"
-							],
-							"query": [
-								{
-									"key": "ticketId",
-									"value": "7"
-								},
-								{
-									"key": "userId",
-									"value": "2"
-								},
-								{
-									"key": "planScreenMovieId",
-									"value": "3"
-								},
-								{
-									"key": "seatTicketId",
-									"value": "3"
-								},
-								{
-									"key": "bank",
-									"value": "bank"
-								},
-								{
-									"key": "price",
-									"value": "120000"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/ticket/get-list-tickets",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/ticket/get-list-tickets",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"ticket",
-								"get-list-tickets"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Users",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/login-user?email=huavuthi@gmail.com&password=123456",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "huavuthi@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "123456",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:6060/api/user/login-user?email=vuysja@gmail.com&password=123456",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"login-user"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "vuysja@gmail.com"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/create-new-user?email=huavuthi@gmail.com&password=123456&firstName=Hứa &lastName=Y&birthYear=2003&role=user",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "email",
-									"value": "huavuthi@gmail.com",
-									"type": "text"
-								},
-								{
-									"key": "password",
-									"value": "123456",
-									"type": "text"
-								},
-								{
-									"key": "firstName",
-									"value": "Hứa ",
-									"type": "text"
-								},
-								{
-									"key": "lastName",
-									"value": "Vũ",
-									"type": "text"
-								},
-								{
-									"key": "userName",
-									"value": "Huavuy",
-									"type": "text"
-								},
-								{
-									"key": "birthYear",
-									"value": "2003",
-									"type": "text"
-								},
-								{
-									"key": "role",
-									"value": "user",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:6060/api/user/create-new-user?email=vuyn@gmail.com&password=123456&firstName=Vu&lastName=Le&userName=VuChangli&birthYear=2003&role=admin&phonenumber=092374623",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"create-new-user"
-							],
-							"query": [
-								{
-									"key": "email",
-									"value": "vuyn@gmail.com"
-								},
-								{
-									"key": "password",
-									"value": "123456"
-								},
-								{
-									"key": "firstName",
-									"value": "Vu"
-								},
-								{
-									"key": "lastName",
-									"value": "Le"
-								},
-								{
-									"key": "userName",
-									"value": "VuChangli"
-								},
-								{
-									"key": "birthYear",
-									"value": "2003"
-								},
-								{
-									"key": "role",
-									"value": "admin"
-								},
-								{
-									"key": "phonenumber",
-									"value": "092374623"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/get-all-user-by-id?id=ALL",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": []
-						},
-						"url": {
-							"raw": "http://localhost:6060/api/user/get-all-users?userId=ALL",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"get-all-users"
-							],
-							"query": [
-								{
-									"key": "userId",
-									"value": "ALL"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/delete-user?id=4",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/user/delete-user?id=2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"delete-user"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/edit-user?id=1&firstName=Thượng&lastName=Quan",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/user/edit-user?userId=4&firstName=Thượng&lastName=Quan&userName=VuChang&birthYear=2001&phonenumber=0827463532",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"edit-user"
-							],
-							"query": [
-								{
-									"key": "userId",
-									"value": "4"
-								},
-								{
-									"key": "firstName",
-									"value": "Thượng"
-								},
-								{
-									"key": "lastName",
-									"value": "Quan"
-								},
-								{
-									"key": "userName",
-									"value": "VuChang"
-								},
-								{
-									"key": "birthYear",
-									"value": "2001"
-								},
-								{
-									"key": "phonenumber",
-									"value": "0827463532"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/user/get-user-by-id?userId=1",
-					"protocolProfileBehavior": {
-						"disableBodyPruning": true
-					},
-					"request": {
-						"method": "GET",
-						"header": [],
-						"body": {
-							"mode": "urlencoded",
-							"urlencoded": [
-								{
-									"key": "id",
-									"value": "1",
-									"type": "text"
-								}
-							]
-						},
-						"url": {
-							"raw": "http://localhost:6060/api/user/get-user-by-id?userId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"user",
-								"get-user-by-id"
-							],
-							"query": [
-								{
-									"key": "userId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Trailer",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/trailer/create-trailer?movieId=1&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer/create-trailer?movieId=3&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"create-trailer"
-							],
-							"query": [
-								{
-									"key": "movieId",
-									"value": "3"
-								},
-								{
-									"key": "link",
-									"value": "https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/trailer/get-trailer-by-movie-id?movieId=1",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer/get-trailer-by-movie-id?movieId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"get-trailer-by-movie-id"
-							],
-							"query": [
-								{
-									"key": "movieId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/trailer/get-trailer-by-id?trailerId=2",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer/get-trailer-by-id?trailerId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"get-trailer-by-id"
-							],
-							"query": [
-								{
-									"key": "trailerId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/trailer//get-all-trailers",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer//get-all-trailers",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"",
-								"get-all-trailers"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/trailer/delete-trailer?trailerId=1",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer/delete-trailer?trailerId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"delete-trailer"
-							],
-							"query": [
-								{
-									"key": "trailerId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/trailer/edit-trailer?trailerId=2&movieId=3&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/trailer/edit-trailer?trailerId=4&movieId=5&link=https://youtu.be/EX6clvI19s?si=GpZ9T9yDogCu5jQO",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"trailer",
-								"edit-trailer"
-							],
-							"query": [
-								{
-									"key": "trailerId",
-									"value": "4"
-								},
-								{
-									"key": "movieId",
-									"value": "5"
-								},
-								{
-									"key": "link",
-									"value": "https://youtu.be/EX6clvI19s?si=GpZ9T9yDogCu5jQO"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Movie",
-			"item": []
-		},
-		{
-			"name": "Seats",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seats",
-								"create-seat"
-							],
-							"query": [
-								{
-									"key": "row",
-									"value": "A"
-								},
-								{
-									"key": "col",
-									"value": "7"
-								},
-								{
-									"key": "type",
-									"value": "3D"
-								},
-								{
-									"key": "roomId",
-									"value": "1"
-								},
-								{
-									"key": "isAvailable",
-									"value": "true"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seats/get-seat-by-id?seatId=2",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seats/get-seat-by-id?seatId=2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seats",
-								"get-seat-by-id"
-							],
-							"query": [
-								{
-									"key": "seatId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seats/get-seats",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seats/get-seats",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seats",
-								"get-seats"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seats/delete-seat?seatId=1",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seats/delete-seat?seatId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seats",
-								"delete-seat"
-							],
-							"query": [
-								{
-									"key": "seatId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seats/edit-seat?seatId=2&isAvailable=true",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seats/edit-seat?seatId=2&isAvailable=true",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seats",
-								"edit-seat"
-							],
-							"query": [
-								{
-									"key": "seatId",
-									"value": "2"
-								},
-								{
-									"key": "isAvailable",
-									"value": "true"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "SeatTicket",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true Copy",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seattickets/create-seat-ticket?seatId=1&ticketId=3",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seattickets",
-								"create-seat-ticket"
-							],
-							"query": [
-								{
-									"key": "seatId",
-									"value": "1"
-								},
-								{
-									"key": "ticketId",
-									"value": "3"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seattickets/get-all-seat-ticket",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seattickets/get-all-seat-ticket",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seattickets",
-								"get-all-seat-ticket"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seattickets/delete-seats-ticket",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seattickets/delete-seats-ticket?seatTicketId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seattickets",
-								"delete-seats-ticket"
-							],
-							"query": [
-								{
-									"key": "seatTicketId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seattickets/edit-seat-ticket",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seattickets/edit-seat-ticket?seatTicketId=2&seatId=3&ticketId=6",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seattickets",
-								"edit-seat-ticket"
-							],
-							"query": [
-								{
-									"key": "seatTicketId",
-									"value": "2"
-								},
-								{
-									"key": "seatId",
-									"value": "3"
-								},
-								{
-									"key": "ticketId",
-									"value": "6"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id?seatTicketId=2",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"seattickets",
-								"get-seats-ticket-by-id"
-							],
-							"query": [
-								{
-									"key": "seatTicketId",
-									"value": "2"
-								}
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Theaters",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"create-theater"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Đông Dương"
-								},
-								{
-									"key": "address",
-									"value": "Cầu Giấy, Hà Nội"
-								},
-								{
-									"key": "city",
-									"value": "Hà Nội"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"get-theaters-by-id"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/delete-theater?theaterId=1",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/delete-theater?theaterId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"delete-theater"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"edit-theater"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "2"
-								},
-								{
-									"key": "name",
-									"value": "Đông Dương 3"
-								},
-								{
-									"key": "address",
-									"value": "Thanh Xuân, Hà Nội"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/get-theater",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/get-theater",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"get-theater"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "Prices",
-			"item": [
-				{
-					"name": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội Copy",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"create-theater"
-							],
-							"query": [
-								{
-									"key": "name",
-									"value": "Đông Dương"
-								},
-								{
-									"key": "address",
-									"value": "Cầu Giấy, Hà Nội"
-								},
-								{
-									"key": "city",
-									"value": "Hà Nội"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1 Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"get-theaters-by-id"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/delete-theater?theaterId=1 Copy",
-					"request": {
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/delete-price?theaterId=1",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"delete-price"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "1"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội Copy",
-					"request": {
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"edit-theater"
-							],
-							"query": [
-								{
-									"key": "theaterId",
-									"value": "2"
-								},
-								{
-									"key": "name",
-									"value": "Đông Dương 3"
-								},
-								{
-									"key": "address",
-									"value": "Thanh Xuân, Hà Nội"
-								}
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "http://localhost:6060/api/theater/get-theater Copy",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "http://localhost:6060/api/theater/get-theater",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "6060",
-							"path": [
-								"api",
-								"theater",
-								"get-theater"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		}
-	]
+  "info": {
+    "_postman_id": "88d4dd81-af07-458a-b2d3-fb153a9c102f",
+    "name": "CinemasWeb6060",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36450861"
+  },
+  "item": [
+    {
+      "name": "Ticket",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/ticket/create-ticket?userId=1&planScreenMovieId=1&seatTicketId=1&bank=bank&price=100000",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/ticket/create-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "ticket", "create-ticket"],
+              "query": [
+                {
+                  "key": "ticketId",
+                  "value": "4"
+                },
+                {
+                  "key": "userId",
+                  "value": "2"
+                },
+                {
+                  "key": "planScreenMovieId",
+                  "value": "3"
+                },
+                {
+                  "key": "seatTicketId",
+                  "value": "3"
+                },
+                {
+                  "key": "bank",
+                  "value": "bank"
+                },
+                {
+                  "key": "price",
+                  "value": "120000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/ticket/delete-ticket?ticketId=3",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/ticket/delete-ticket?ticketId=5",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "ticket", "delete-ticket"],
+              "query": [
+                {
+                  "key": "ticketId",
+                  "value": "5"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/ticket/get-tickets?ticketId=ALL",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/ticket/get-tickets?ticketId=ALL",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "ticket", "get-tickets"],
+              "query": [
+                {
+                  "key": "ticketId",
+                  "value": "ALL"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/ticket/edit-ticket?ticketId=4&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/ticket/edit-ticket?ticketId=7&userId=2&planScreenMovieId=3&seatTicketId=3&bank=bank&price=120000",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "ticket", "edit-ticket"],
+              "query": [
+                {
+                  "key": "ticketId",
+                  "value": "7"
+                },
+                {
+                  "key": "userId",
+                  "value": "2"
+                },
+                {
+                  "key": "planScreenMovieId",
+                  "value": "3"
+                },
+                {
+                  "key": "seatTicketId",
+                  "value": "3"
+                },
+                {
+                  "key": "bank",
+                  "value": "bank"
+                },
+                {
+                  "key": "price",
+                  "value": "120000"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/ticket/get-list-tickets",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/ticket/get-list-tickets",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "ticket", "get-list-tickets"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/login-user?email=huavuthi@gmail.com&password=123456",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "huavuthi@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:6060/api/user/login-user?email=vuysja@gmail.com&password=123456",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "login-user"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "vuysja@gmail.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123456"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/create-new-user?email=huavuthi@gmail.com&password=123456&firstName=Hứa &lastName=Y&birthYear=2003&role=user",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "email",
+                  "value": "huavuthi@gmail.com",
+                  "type": "text"
+                },
+                {
+                  "key": "password",
+                  "value": "123456",
+                  "type": "text"
+                },
+                {
+                  "key": "firstName",
+                  "value": "Hứa ",
+                  "type": "text"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Vũ",
+                  "type": "text"
+                },
+                {
+                  "key": "userName",
+                  "value": "Huavuy",
+                  "type": "text"
+                },
+                {
+                  "key": "birthYear",
+                  "value": "2003",
+                  "type": "text"
+                },
+                {
+                  "key": "role",
+                  "value": "user",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:6060/api/user/create-new-user?email=vuyn@gmail.com&password=123456&firstName=Vu&lastName=Le&userName=VuChangli&birthYear=2003&role=admin&phonenumber=092374623",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "create-new-user"],
+              "query": [
+                {
+                  "key": "email",
+                  "value": "vuyn@gmail.com"
+                },
+                {
+                  "key": "password",
+                  "value": "123456"
+                },
+                {
+                  "key": "firstName",
+                  "value": "Vu"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Le"
+                },
+                {
+                  "key": "userName",
+                  "value": "VuChangli"
+                },
+                {
+                  "key": "birthYear",
+                  "value": "2003"
+                },
+                {
+                  "key": "role",
+                  "value": "admin"
+                },
+                {
+                  "key": "phonenumber",
+                  "value": "092374623"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/get-all-user-by-id?id=ALL",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": []
+            },
+            "url": {
+              "raw": "http://localhost:6060/api/user/get-all-users?userId=ALL",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "get-all-users"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "ALL"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/delete-user?id=4",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/user/delete-user?id=2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "delete-user"],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/edit-user?id=1&firstName=Thượng&lastName=Quan",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/user/edit-user?userId=4&firstName=Thượng&lastName=Quan&userName=VuChang&birthYear=2001&phonenumber=0827463532",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "edit-user"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "4"
+                },
+                {
+                  "key": "firstName",
+                  "value": "Thượng"
+                },
+                {
+                  "key": "lastName",
+                  "value": "Quan"
+                },
+                {
+                  "key": "userName",
+                  "value": "VuChang"
+                },
+                {
+                  "key": "birthYear",
+                  "value": "2001"
+                },
+                {
+                  "key": "phonenumber",
+                  "value": "0827463532"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/user/get-user-by-id?userId=1",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                {
+                  "key": "id",
+                  "value": "1",
+                  "type": "text"
+                }
+              ]
+            },
+            "url": {
+              "raw": "http://localhost:6060/api/user/get-user-by-id?userId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "user", "get-user-by-id"],
+              "query": [
+                {
+                  "key": "userId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Trailer",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/trailer/create-trailer?movieId=1&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer/create-trailer?movieId=3&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "create-trailer"],
+              "query": [
+                {
+                  "key": "movieId",
+                  "value": "3"
+                },
+                {
+                  "key": "link",
+                  "value": "https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/trailer/get-trailer-by-movie-id?movieId=1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer/get-trailer-by-movie-id?movieId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "get-trailer-by-movie-id"],
+              "query": [
+                {
+                  "key": "movieId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/trailer/get-trailer-by-id?trailerId=2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer/get-trailer-by-id?trailerId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "get-trailer-by-id"],
+              "query": [
+                {
+                  "key": "trailerId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/trailer//get-all-trailers",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer//get-all-trailers",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "", "get-all-trailers"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/trailer/delete-trailer?trailerId=1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer/delete-trailer?trailerId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "delete-trailer"],
+              "query": [
+                {
+                  "key": "trailerId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/trailer/edit-trailer?trailerId=2&movieId=3&link=https://youtu.be/EX6clvId19s?si=GpZ9T9yDogCu5jQO",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/trailer/edit-trailer?trailerId=4&movieId=5&link=https://youtu.be/EX6clvI19s?si=GpZ9T9yDogCu5jQO",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "trailer", "edit-trailer"],
+              "query": [
+                {
+                  "key": "trailerId",
+                  "value": "4"
+                },
+                {
+                  "key": "movieId",
+                  "value": "5"
+                },
+                {
+                  "key": "link",
+                  "value": "https://youtu.be/EX6clvI19s?si=GpZ9T9yDogCu5jQO"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Movie",
+      "item": []
+    },
+    {
+      "name": "Seats",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seats", "create-seat"],
+              "query": [
+                {
+                  "key": "row",
+                  "value": "A"
+                },
+                {
+                  "key": "col",
+                  "value": "7"
+                },
+                {
+                  "key": "type",
+                  "value": "3D"
+                },
+                {
+                  "key": "roomId",
+                  "value": "1"
+                },
+                {
+                  "key": "isAvailable",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seats/get-seat-by-id?seatId=2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seats/get-seat-by-id?seatId=2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seats", "get-seat-by-id"],
+              "query": [
+                {
+                  "key": "seatId",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seats/get-seats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seats/get-seats",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seats", "get-seats"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seats/delete-seat?seatId=1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seats/delete-seat?seatId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seats", "delete-seat"],
+              "query": [
+                {
+                  "key": "seatId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seats/edit-seat?seatId=2&isAvailable=true",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seats/edit-seat?seatId=2&isAvailable=true",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seats", "edit-seat"],
+              "query": [
+                {
+                  "key": "seatId",
+                  "value": "2"
+                },
+                {
+                  "key": "isAvailable",
+                  "value": "true"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "SeatTicket",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/seats/create-seat?row=A&col=7&type=3D&roomId=1&isAvailable=true Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seattickets/create-seat-ticket?seatId=1&ticketId=3",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seattickets", "create-seat-ticket"],
+              "query": [
+                {
+                  "key": "seatId",
+                  "value": "1"
+                },
+                {
+                  "key": "ticketId",
+                  "value": "3"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seattickets/get-all-seat-ticket",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seattickets/get-all-seat-ticket",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seattickets", "get-all-seat-ticket"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seattickets/delete-seats-ticket",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seattickets/delete-seats-ticket?seatTicketId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seattickets", "delete-seats-ticket"],
+              "query": [
+                {
+                  "key": "seatTicketId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seattickets/edit-seat-ticket",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seattickets/edit-seat-ticket?seatTicketId=2&seatId=3&ticketId=6",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seattickets", "edit-seat-ticket"],
+              "query": [
+                {
+                  "key": "seatTicketId",
+                  "value": "2"
+                },
+                {
+                  "key": "seatId",
+                  "value": "3"
+                },
+                {
+                  "key": "ticketId",
+                  "value": "6"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/seattickets/get-seats-ticket-by-id?seatTicketId=2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "seattickets", "get-seats-ticket-by-id"],
+              "query": [
+                {
+                  "key": "seatTicketId",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Theaters",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "create-theater"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Đông Dương"
+                },
+                {
+                  "key": "address",
+                  "value": "Cầu Giấy, Hà Nội"
+                },
+                {
+                  "key": "city",
+                  "value": "Hà Nội"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "get-theaters-by-id"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/delete-theater?theaterId=1",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/delete-theater?theaterId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "delete-theater"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "edit-theater"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "2"
+                },
+                {
+                  "key": "name",
+                  "value": "Đông Dương 3"
+                },
+                {
+                  "key": "address",
+                  "value": "Thanh Xuân, Hà Nội"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/get-theater",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/get-theater",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "get-theater"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Prices",
+      "item": [
+        {
+          "name": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội Copy",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/create-theater?name=Đông Dương&address=Cầu Giấy, Hà Nội&city=Hà Nội",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "create-theater"],
+              "query": [
+                {
+                  "key": "name",
+                  "value": "Đông Dương"
+                },
+                {
+                  "key": "address",
+                  "value": "Cầu Giấy, Hà Nội"
+                },
+                {
+                  "key": "city",
+                  "value": "Hà Nội"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1 Copy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/get-theaters-by-id?theaterId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "get-theaters-by-id"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/delete-theater?theaterId=1 Copy",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/delete-price?theaterId=1",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "delete-price"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội Copy",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/edit-theater?theaterId=2&name=Đông Dương 3&address=Thanh Xuân, Hà Nội",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "edit-theater"],
+              "query": [
+                {
+                  "key": "theaterId",
+                  "value": "2"
+                },
+                {
+                  "key": "name",
+                  "value": "Đông Dương 3"
+                },
+                {
+                  "key": "address",
+                  "value": "Thanh Xuân, Hà Nội"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "http://localhost:6060/api/theater/get-theater Copy",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:6060/api/theater/get-theater",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "6060",
+              "path": ["api", "theater", "get-theater"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
 }
