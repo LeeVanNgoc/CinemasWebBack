@@ -104,7 +104,7 @@ export const handleGetCost = async (req: Request, res: Response) => {
     const data = {
         roomType: req.query.roomType as string,
         seatType: req.query.seatType as string,
-        isWeekend: req.query.isWeekend as string, // Ensure this is a string to parse later
+        isWeekend: req.query.isWeekend as string,
     };
 
     try {
