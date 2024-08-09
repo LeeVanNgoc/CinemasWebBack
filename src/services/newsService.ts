@@ -1,27 +1,28 @@
 import News from "../models/News";
 
-export const createNews = async (data: any) => {
+export const createNews = async (data: { title: string; content: string; image: string, link: string }) => {
   try {
     const existingIds = await News.findAll({
-      attributes: ["postId"],
-      order: [["postId", "ASC"]],
+      attributes: ["newsId"],
+      order: [["newsId", "ASC"]],
       raw: true,
     });
 
     let newId = 1;
     for (let i = 0; i < existingIds.length; i++) {
-      if (existingIds[i].postId !== newId) {
+      if (existingIds[i].newsId !== newId) {
         break;
       }
       newId++;
     }
 
     const newNews = await News.create({
-      postId: newId,
+      newsId: newId,
       title: data.title,
       content: data.content,
       postDate: new Date(),
       image: data.image,
+      link: data.link
     });
 
     return {
@@ -37,9 +38,9 @@ export const createNews = async (data: any) => {
   }
 };
 
-export const deleteNews = async (postId: number) => {
+export const deleteNews = async (newsId: number) => {
   try {
-    const news = await News.findOne({ where: { postId: postId } });
+    const news = await News.findOne({ where: { newsId: newsId } });
     if (!news) {
       return { errCode: 1, message: "News not found" };
     } else {
@@ -54,30 +55,19 @@ export const deleteNews = async (postId: number) => {
   }
 };
 
-export const editNews = async (data: any) => {
+export const editNews = async (data: { newsId: number; title: string; content: string; image: string, link: string }) => {
   try {
-    const { id, title, content } = data;
-    if (!id) {
-      return { errCode: 4, message: "Missing required parameters: id" };
-    }
-
-    const news = await News.findOne({ where: { postId: id } });
+    const news = await News.findOne({ where: { newsId: data.newsId } });
     if (!news) {
-      return { errCode: 1, message: "News not found!" };
+      return { errCode: 1, message: "News not found" };
     }
 
-    if (title) {
-      news.title = title;
-    }
-    if (content) {
-      news.content = content;
-    }
-
+    Object.assign(news, data);
     await news.save();
 
     return {
       errCode: 0,
-      message: "Update the news succeeds!",
+      message: "News updated successfully",
       news,
     };
   } catch (error) {
@@ -91,7 +81,7 @@ export const editNews = async (data: any) => {
 export const getAllNews = async () => {
   try {
     const news = await News.findAll({
-      attributes: ["postId", "title", "content", "postDate", "image"],
+      attributes: ["newsId", "title", "content", "postDate", "image", "link"],
       raw: true,
     });
     return {
@@ -107,11 +97,11 @@ export const getAllNews = async () => {
   }
 };
 
-export const getNewsById = async (postId: number) => {
+export const getNewsById = async (newsId: number) => {
   try {
     const news = await News.findOne({
-      where: { postId: postId },
-      attributes: ["postId", "title", "content", "postDate", "image"],
+      where: { newsId: newsId },
+      attributes: ["newsId", "title", "content", "postDate", "image", "link"],
       raw: true,
     });
     if (!news) {

@@ -22,8 +22,8 @@ const planScreenMovieRoutes = (app: Application) => {
     planScreenMovieController.handleGetPlanScreenMovieById
   );
   router.post(
-    "/create-plan-screen-with-movie",
-    planScreenMovieController.handleCreatePlanScreenWithMovie
+    "/create-plan-screen-movie",
+    planScreenMovieController.handleCreatePlanScreenMovie
   );
   router.get(
     "/get-all-plan-screen-id-for-create-ticket",

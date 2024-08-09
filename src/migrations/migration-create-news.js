@@ -22,6 +22,9 @@ module.exports = {
       image: {
         type : Sequelize.STRING
       },
+      link: {
+        type : Sequelize.STRING
+      },
     });
   },
 

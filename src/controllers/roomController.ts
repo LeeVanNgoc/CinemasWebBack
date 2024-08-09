@@ -2,7 +2,19 @@ import { Request, Response } from 'express';
 import { createRoom, deleteRoom, editRoom, getAllRooms, getRoomById } from '../services/roomService';
 
 const handleCreateRoom = async (req: Request, res: Response) => {
-  const data = req.query;
+  const { theaterId, type, numberSeats, isAvailable } = req.query;
+
+  if (!theaterId || !type || !numberSeats) {
+    return res.status(400).json({ errCode: 4, error: 'Missing required parameters!' });
+  }
+
+  const data = {
+    theaterId: Number(theaterId),
+    type: type as string,
+    numberSeats: Number(numberSeats),
+    isAvailable: isAvailable === 'true', // Convert isAvailable to boolean
+  };
+
   try {
     const result = await createRoom(data);
     if (result.errCode !== 0) {
@@ -35,7 +47,15 @@ const handleEditRoom = async (req: Request, res: Response) => {
   if (isNaN(roomId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid room ID' });
   }
-  const data = req.query
+
+  const data = {
+    roomId,
+    theaterId: req.query.theaterId ? Number(req.query.theaterId) : undefined,
+    type: req.query.type as string,
+    numberSeats: req.query.numberSeats ? Number(req.query.numberSeats) : undefined,
+    isAvailable: req.query.isAvailable === 'true', // Convert isAvailable to boolean
+  };
+
   try {
     const result = await editRoom(data);
     if (result.errCode !== 0) {

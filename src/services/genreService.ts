@@ -1,7 +1,7 @@
 import Genre from '../models/Genres';
 import { Op } from 'sequelize';
 
-export const createGenre = async (data: any) => {
+export const createGenre = async ({ name, description }: { name: string, description: string }) => {
   try {
     const existingIds = await Genre.findAll({
       attributes: ['genreId'],
@@ -17,8 +17,8 @@ export const createGenre = async (data: any) => {
 
     const newGenre = await Genre.create({
       genreId: newId,
-      name: data.name,
-      description: data.description,
+      name,
+      description,
     });
 
     return {
@@ -51,8 +51,7 @@ export const deleteGenre = async (genreId: number) => {
   }
 };
 
-export const editGenre = async (data: any) => {
-  const genreId = data.genreId;
+export const editGenre = async ({ genreId, name, description }: { genreId: number, name: string, description: string }) => {
   try {
     if (!genreId) {
       return { errCode: 4, message: 'Missing required parameters!' };
@@ -63,7 +62,8 @@ export const editGenre = async (data: any) => {
       return { errCode: 1, message: 'Genre not found!' };
     }
 
-    Object.assign(genre, data);
+    genre.name = name;
+    genre.description = description;
     await genre.save();
 
     return {

@@ -4,7 +4,7 @@ export const createRoom = async (data: any) => {
   try {
     const existingIds = await Room.findAll({
       attributes: ['roomId'],
-      order: [['roomId', 'ASC']]
+      order: [['roomId', 'ASC']],
     });
 
     const ids = existingIds.map(room => room.roomId);
@@ -19,24 +19,25 @@ export const createRoom = async (data: any) => {
       theaterId: data.theaterId,
       type: data.type,
       numberSeats: data.numberSeats,
-      isAvailable: data.isAvailable,
+      isAvailable: data.isAvailable !== undefined ? data.isAvailable : true,
     });
+
     if (newRoom) {
       return {
         errCode: 0,
         message: 'Room created successfully',
-        room: newRoom
+        room: newRoom,
       };
     } else {
       return {
         errCode: 1,
-        message: 'Failed to create room'
+        message: 'Failed to create room',
       };
     }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error creating room: ${error}`
+      message: `Error creating room: ${error}`,
     };
   }
 };
@@ -70,19 +71,21 @@ export const editRoom = async (data: any) => {
       return { errCode: 1, message: 'Room not found!' };
     }
 
-    room.type = data.type || room.type;
-    room.isAvailable = data.isAvailable || room.isAvailable;
+    if (data.type !== undefined) room.type = data.type;
+    if (data.numberSeats !== undefined) room.numberSeats = data.numberSeats;
+    if (data.isAvailable !== undefined) room.isAvailable = data.isAvailable;
+
     await room.save();
 
     return {
       errCode: 0,
       message: 'Update the room succeeds!',
-      room
+      room,
     };
   } catch (error) {
     return {
       errCode: 2,
-      message: `Error updating room: ${error}`
+      message: `Error updating room: ${error}`,
     };
   }
 };
