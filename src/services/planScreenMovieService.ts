@@ -270,16 +270,15 @@ export const getStartTime = async (data: any) => {
         movieId: data.movieId,
         dateScreen: data.dateScreen,
       },
-      attributes: ["startTime"],
+      attributes: ["roomId", "startTime"],
       raw: true,
     });
 
     if (startTimePlan.length > 0) {
-      const startTimePlanScreen = startTimePlan.map((item) => item.startTime);
       return {
         errCode: 0,
         message: "Get PlanScreenMovieId success",
-        startTimePlanScreen,
+        startTimePlanScreen: startTimePlan,
       };
     } else {
       return {

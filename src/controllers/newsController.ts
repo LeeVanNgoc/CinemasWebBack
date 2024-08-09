@@ -11,13 +11,14 @@ const handleCreateNews = async (req: Request, res: Response) => {
   const title = req.query.title as string;
   const content = req.query.content as string;
   const image = req.query.image as string;
+  const link = req.query.link as string;
 
-  if (!title || !content || !image) {
+  if (!title || !content || !image || !link) {
     return res.status(400).json({ errCode: 2, error: 'Missing required parameters' });
   }
   
   try {
-    const result = await createNews({ title, content, image });
+    const result = await createNews({ title, content, image, link });
     if (result.errCode !== 0) {
       return res.status(400).json({ errCode: result.errCode, error: result.message });
     }
@@ -28,12 +29,12 @@ const handleCreateNews = async (req: Request, res: Response) => {
 };
 
 const handleDeleteNews = async (req: Request, res: Response) => {
-  const postId = parseInt(req.query.postId as string);
-  if (isNaN(postId)) {
+  const newsId = parseInt(req.query.newsId as string);
+  if (isNaN(newsId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID' });
   }
   try {
-    const result = await deleteNews(postId);
+    const result = await deleteNews(newsId);
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
@@ -44,17 +45,18 @@ const handleDeleteNews = async (req: Request, res: Response) => {
 };
 
 const handleEditNews = async (req: Request, res: Response) => {
-  const postId = Number(req.query.postId);
+  const newsId = Number(req.query.newsId);
   const title = req.query.title as string;
   const content = req.query.content as string;
   const image = req.query.image as string;
+  const link = req.query.link as string;
 
-  if (isNaN(postId) || !title || !content || !image) {
+  if (isNaN(newsId) || !title || !content || !image || !link) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID or missing parameters' });
   }
 
   try {
-    const result = await editNews({ postId, title, content, image });
+    const result = await editNews({ newsId, title, content, image, link });
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
@@ -77,12 +79,12 @@ const handleGetAllNews = async (req: Request, res: Response) => {
 };
 
 const handleGetNewsById = async (req: Request, res: Response) => {
-  const postId = Number(req.query.postId);
-  if (isNaN(postId)) {
+  const newsId = Number(req.query.newsId);
+  if (isNaN(newsId)) {
     return res.status(400).json({ errCode: 2, error: 'Invalid news ID' });
   }
   try {
-    const result = await getNewsById(postId);
+    const result = await getNewsById(newsId);
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
