@@ -2,6 +2,7 @@ import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
 import sequelize from '../config/connectDB';
 import Room from './Room';
 import Movie from './Movie';
+import Tickets from './Tickets';
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;
@@ -62,6 +63,11 @@ PlanScreenMovie.init({
   modelName: 'PlanScreenMovie',
   tableName: 'planscreenmovie',
   timestamps: false,
+});
+
+PlanScreenMovie.hasMany(Tickets, {
+  foreignKey: 'planScreenMovieId',
+  as: 'tickets'
 });
 
 export default PlanScreenMovie;

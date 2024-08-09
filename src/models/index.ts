@@ -1,6 +1,5 @@
 import { Sequelize } from 'sequelize';
 
-
 import Genres from './Genres';
 import Movie from './Movie';
 import PlanScreenMovie from './PlanScreenMovie';

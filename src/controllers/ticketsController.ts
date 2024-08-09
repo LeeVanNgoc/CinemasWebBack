@@ -5,7 +5,8 @@ import {
 	editTicket,
 	getTicketById,
 	getListTicket,
-	getTicketByUserId
+	getTicketByUserId,
+	getTicketDetailsById
 } from '../services/ticketsService';
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -116,6 +117,32 @@ const handleGetTicketByUserId = async (req: Request, res: Response) => {
 	}
 }
 
+const handleGetTicketDetailsById = async (req: Request, res: Response) => {
+	const ticketId = Number(req.query.ticketId);
+  
+	if (isNaN(ticketId)) {
+	  return res.status(400).json({ message: 'Invalid ticket ID' });
+	}
+  
+	try {
+	  const result = await getTicketDetailsById(ticketId);
+	  if (result.errCode === 0) {
+		res.status(200).json({
+		  errCode: result.errCode,
+		  message: result.message,
+		  ticket: result.ticket,
+		});
+	  } else {
+		res.status(404).json({
+		  errCode: result.errCode,
+		  message: result.message,
+		});
+	  }
+	} catch (error) {
+	  res.status(500).json({ error: `Something went wrong in getting ticket details: ${error}` });
+	}
+  }
+
 export default {
 	handleCreateTicket,
 	handleDeleteTicket,
@@ -123,4 +150,5 @@ export default {
 	handleGetTicketById,
 	handleGetListTicket,
 	handleGetTicketByUserId,
+	handleGetTicketDetailsById
 }

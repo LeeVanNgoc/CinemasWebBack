@@ -11,6 +11,7 @@ const ticketRoutes = (app: Application) => {
 	router.get('/get-tickets', ticketsController.handleGetTicketById);
 	router.get('/get-list-tickets', ticketsController.handleGetListTicket);
 	router.get('/get-ticket-by-user-id', ticketsController.handleGetTicketByUserId);
+	router.get('/get-ticket-details', ticketsController.handleGetTicketDetailsById);
 
 	return app.use('/api/ticket', router);
 }
