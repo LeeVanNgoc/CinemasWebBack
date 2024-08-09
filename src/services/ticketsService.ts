@@ -222,11 +222,11 @@ export const getTicketDetailsById = async (ticketId: number) => {
   try {
     const ticket = await Tickets.findOne({
       where: { ticketId },
-      attributes: ["ticketId", "userId", "seats", "bank", "totalPrice"],
+      attributes: ["ticketId", "userId", "seats", "bank", "totalPrice", "planScreenMovieId"],
       include: [{
         model: PlanScreenMovie,
         as: "planScreenMovie",
-        attributes: ["planScreenMovieId", "roomId", "movieId", "startTime", "endTime", "dateScreen"]
+        attributes: ["roomId", "movieId", "startTime", "endTime", "dateScreen"]
       }],
     });
 
@@ -242,9 +242,10 @@ export const getTicketDetailsById = async (ticketId: number) => {
       message: "Get ticket details successfully",
     };
   } catch (error) {
+    console.error("Error in getTicketDetailsById:", error);
     return {
       errCode: 3,
-      message: `Error retrieving ticket details ${error}`,
+      message: `Error retrieving ticket details: ${error}`,
     };
   }
 };
