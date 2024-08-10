@@ -323,13 +323,22 @@ Quy tặc gán errCode:
 7. roomRoutes
     API tạo mới phòng:
         - 	router.post('/create-new-room');
-        - 	Input : + theaterId (number)
+        - 	Input : + theaterId (number)s
                  	+ type (text)
                  	+ numberSeats (number)
 					+ isAvailable (0/1)
-        - 	Output: + errCode: 0 (tạo thành công)
+        - 	Output: + errCode: 0 (tạo thành công) + result ("room": {
+																"roomId": 2,
+																"roomCode": "P002",
+																"theaterId": 3,
+																"type": "3D",
+																"numberSeats": 202,
+																"isAvailable": false
+															})
+					+ errCode: 1 (Tạo phòng thất bại)
                   	+ errCode: 3 (lỗi khi tạo)
-	e.g: http://localhost:6060/api/room/create-new-room?theaterId=1&type=2D&numberSeats=72&isAvailable=true
+		Cập nhật mới : Mã phòng : roomCode , được tạo tự động theo Id, ko cần nhập liệu
+	e.g: http://localhost:6060/api/room/create-new-room?roomId=111&theaterId=3&type=3D&numberSeats=202&isAvailable=0
 
     API xoá phòng:
         - 	router.delete('/delete-room');
@@ -365,6 +374,19 @@ Quy tặc gán errCode:
                   	+ errCode: 1 (không tìm thấy phòng)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 
+	API lấy thông tin phòng theo rạp :
+		-	router.get("/get-room-in-theater");
+		-	Input : + theaterId (number)
+		-	Output : + errCode: 0 (lấy thành công) && danh sách  "rooms": [
+																		{
+																			"roomCode": "P001",
+																			"theaterCode": "R003",
+																			"type": "3D",
+																			"numberSeats": 72,
+																			"isAvailable": true
+																		},]
+					 + errCode: 1 (không tìm thấy phòng)
+					 + errCode: 3 (lỗi khi lấy dữ liệu)
     Liên kết đường dẫn:
         - 	app.use('/api/room', router);
 
@@ -491,6 +513,8 @@ Quy tặc gán errCode:
 		- Output:
 				+ errCode : 0 (Tạo thành công) && (thông tin của rạp)
 				+ errCode : 3 (Lỗi khi tạo rạp)
+
+		Cập nhật mới : Mã rạp (R...) : theaterCode : sinh tự động
 	API lấy tất cả rạp chiếu :
 		router.get("/get-theater);
 		-	Input : 

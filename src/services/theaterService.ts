@@ -5,26 +5,48 @@ import Theater from "../models/Theater";
 export const createTheater = async (data: any) => {
   try {
     const existingIds = await Theater.findAll({
-      attributes: ['theaterId'],
-      order: [['theaterId', 'ASC']]
+      attributes: ["theaterId"],
+      order: [["theaterId", "ASC"]],
     });
 
-    const ids = existingIds.map(theater => theater.theaterId);
+    const ids = existingIds.map((theater) => theater.theaterId);
 
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
     }
+
+    const existingCodes = await Theater.findAll({
+      attributes: ["theaterCode"],
+      order: [["theaterCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((theater) => theater.theaterCode);
+    let newCode = "R001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "R00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "R0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "R" + newId;
+      }
+    }
     const newTheater = await Theater.create({
       threadId: newId,
+      theaterCode: newCode,
       name: data.name,
       address: data.address,
-      city: data.city
+      city: data.city,
     });
     return {
       newTheater,
       errCode: 0,
-      message: 'Create theater successfuly',
+      message: "Create theater successfuly",
     };
   } catch (error) {
     return {
@@ -41,7 +63,7 @@ export const getAllTheaters = async () => {
     return {
       theaters,
       errCode: 0,
-      message: 'Get all theaters successfuly',
+      message: "Get all theaters successfuly",
     };
   } catch (error) {
     return {
@@ -58,13 +80,13 @@ export const getTheaterById = async (theaterID: number) => {
     if (!theater) {
       return {
         errCode: 1,
-        message: 'Theater not found',
+        message: "Theater not found",
       };
     }
     return {
       theater,
       errCode: 0,
-      message: 'Get theater successfuly',
+      message: "Get theater successfuly",
     };
   } catch (error) {
     return {
@@ -81,13 +103,13 @@ export const getTheatersByCity = async (city: string) => {
     if (!theaters.length) {
       return {
         errCode: 1,
-        message: 'No theaters found in this city',
+        message: "No theaters found in this city",
       };
     }
     return {
       theaters,
       errCode: 0,
-      message: 'Get theaters successfuly',
+      message: "Get theaters successfuly",
     };
   } catch (error) {
     return {
@@ -95,18 +117,18 @@ export const getTheatersByCity = async (city: string) => {
       message: `Error get theaters by city ${error}`,
     };
   }
-}
+};
 
 // Update a specific theater
 export const updateTheater = async (data: any) => {
   try {
     const theater = await Theater.findOne({
-      where: { theaterId: data.theaterId }
+      where: { theaterId: data.theaterId },
     });
     if (!theater) {
       return {
         errCode: 1,
-        message: 'Theater not found',
+        message: "Theater not found",
       };
     }
     theater.name = data.name || theater.name;
@@ -115,7 +137,7 @@ export const updateTheater = async (data: any) => {
     return {
       theater,
       errCode: 0,
-      message: 'Update theater successfuly',
+      message: "Update theater successfuly",
     };
   } catch (error) {
     return {
@@ -132,18 +154,45 @@ export const deleteTheater = async (id: number) => {
     if (!theater) {
       return {
         errCode: 1,
-        message: 'Theater not found',
+        message: "Theater not found",
       };
     }
     await theater.destroy();
     return {
       errCode: 0,
-      message: 'Delete theater successfuly',
+      message: "Delete theater successfuly",
     };
   } catch (error) {
     return {
       errCode: 3,
       message: `Error delete theater by id ${error}`,
+    };
+  }
+};
+
+// Get theaterCode by theaterId
+export const getTheaterCodeById = async (theaterId: number) => {
+  try {
+    const theater = await Theater.findOne({
+      where: { theaterId: theaterId },
+      attributes: ["theaterCode"],
+      raw: true,
+    });
+    if (!theater) {
+      return {
+        errCode: 1,
+        message: "Theater not found",
+      };
+    }
+    return {
+      theaterCode: theater.theaterCode,
+      errCode: 0,
+      message: "Get theaterCode successfuly",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error get theaterCode by id ${error}`,
     };
   }
 };
