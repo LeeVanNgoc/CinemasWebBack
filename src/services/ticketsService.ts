@@ -1,4 +1,5 @@
 import Tickets from "../models/Tickets";
+import PlanScreenMovie from "../models/PlanScreenMovie";
 
 export const createTickets = async (data: any) => {
   try {
@@ -213,6 +214,38 @@ export const getTicketByUserId = async (userId: number) => {
     return {
       errCode: 3,
       message: `Error getting ticketId: ${error}`,
+    };
+  }
+};
+
+export const getTicketDetailsById = async (ticketId: number) => {
+  try {
+    const ticket = await Tickets.findOne({
+      where: { ticketId },
+      attributes: ["ticketId", "userId", "seats", "bank", "totalPrice", "planScreenMovieId"],
+      include: [{
+        model: PlanScreenMovie,
+        as: "planScreenMovie",
+        attributes: ["roomId", "movieId", "startTime", "endTime", "dateScreen"]
+      }],
+    });
+
+    if (!ticket) {
+      return {
+        errCode: 1,
+        message: "Ticket not found",
+      };
+    }
+    return {
+      ticket,
+      errCode: 0,
+      message: "Get ticket details successfully",
+    };
+  } catch (error) {
+    console.error("Error in getTicketDetailsById:", error);
+    return {
+      errCode: 3,
+      message: `Error retrieving ticket details: ${error}`,
     };
   }
 };

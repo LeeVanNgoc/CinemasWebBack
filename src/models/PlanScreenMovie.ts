@@ -1,7 +1,8 @@
-import { Model, DataTypes, DateOnlyDataType } from "sequelize";
-import sequelize from "../config/connectDB";
-import Room from "./Room";
-import Movie from "./Movie";
+import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
+import sequelize from '../config/connectDB';
+import Room from './Room';
+import Movie from './Movie';
+import Tickets from './Tickets';
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;

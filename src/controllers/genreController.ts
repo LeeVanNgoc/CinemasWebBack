@@ -5,7 +5,10 @@ const handleCreateGenre = async (req: Request, res: Response) => {
   const name = req.query.name as string;
   const description = req.query.description as string;
 
-  if (!name || !description) {
+  if (!name) {
+    return res.status(400).json({ errCode: 2, message: 'Missing name parameter' });
+  }
+  if (!description) {
     return res.status(400).json({ errCode: 2, message: 'Missing name or description' });
   }
   try {
@@ -36,8 +39,14 @@ const handleEditGenre = async (req: Request, res: Response) => {
   const genreId = Number(req.query.genreId);
   const name = req.query.name as string;
   const description = req.query.description as string;
-  if (isNaN(genreId) || !name || !description) {
-    return res.status(400).json({ errCode: 2, message: 'Invalid genre ID or missing parameters' });
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, message: 'Missing genreId parameter' });
+  }
+  if (!name) {
+    return res.status(400).json({ errCode: 2, message: 'Missing name parameter' });
+  }
+  if (!description) {
+    return res.status(400).json({ errCode: 2, message: 'Missing name or description' });
   }
   try {
     const result = await editGenre({ genreId, name, description });

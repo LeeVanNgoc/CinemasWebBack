@@ -453,6 +453,7 @@ Quy tặc gán errCode:
 				+ errCode : 3 (Lỗi khi lấy ghế)
 
 	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
+	
 	Liên kết đường dẫn : 
     	app.use('/api/seats', router);
 
@@ -610,6 +611,15 @@ Quy tặc gán errCode:
 				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
 				+ errCode : 1 (Không tồn tại vé)
 				+ errCode : 3 (Lỗi khi lấy vé)
+	API lấy vé để tạo bill
+		router.get('/get-ticket-details);
+		-	Input :
+				+ ticketId : Id của Vé
+		-	Output:
+				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
+				+ errCode : 1 (Không tồn tại vé)
+				+ errCode : 3 (Lỗi khi lấy vé)
+	
 	app.use('/api/ticket', router);
 
 12. trailerRoutes

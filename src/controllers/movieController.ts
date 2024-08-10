@@ -9,8 +9,27 @@ const handleCreateMovie = async (req: Request, res: Response) => {
   const genreId = Number(req.query.genreId);
   const releaseDate = req.query.releaseDate as string;
   const image = req.query.image as string;
-  if (!title || !description || !releaseDate || !duration || !country || !genreId || !image) {
-    return res.status(400).json({ errCode: 2, error: 'Missing required parameters' });
+
+  if (!title) {
+    return res.status(400).json({ errCode: 2, error: 'Missing title parameter' });
+  }
+  if (!description) {
+    return res.status(400).json({ errCode: 2, error: 'Missing description parameter' });
+  }
+  if (!releaseDate) {
+    return res.status(400).json({ errCode: 2, error: 'Missing releaseDate parameter' });
+  }
+  if (!duration) {
+    return res.status(400).json({ errCode: 2, error: 'Missing duration parameter' });
+  }
+  if (!country) {
+    return res.status(400).json({ errCode: 2, error: 'Missing country parameter' });
+  }
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, error: 'Missing genreId parameter' });
+  }
+  if (!image) {
+    return res.status(400).json({ errCode: 2, error: 'Missing image parameter' });
   }
 
   try {
@@ -50,8 +69,29 @@ const handleEditMovie = async (req: Request, res: Response) => {
   const releaseDate = req.query.releaseDate as string;
   const image = req.query.image as string;
 
-  if (isNaN(movieId) || !title || !description || !releaseDate || !duration || !country || !genreId || !image) {
-    return res.status(400).json({ errCode: 2, error: 'Invalid movie ID or missing parameters' });
+  if (isNaN(movieId)) {
+    return res.status(400).json({ errCode: 2, error: 'Missing movieId parameter' });
+  }
+  if (!title) {
+    return res.status(400).json({ errCode: 2, error: 'Missing title parameter' });
+  }
+  if (!description) {
+    return res.status(400).json({ errCode: 2, error: 'Missing description parameter' });
+  }
+  if (!releaseDate) {
+    return res.status(400).json({ errCode: 2, error: 'Missing releaseDate parameter' });
+  }
+  if (!duration) {
+    return res.status(400).json({ errCode: 2, error: 'Missing duration parameter' });
+  }
+  if (!country) {
+    return res.status(400).json({ errCode: 2, error: 'Missing country parameter' });
+  }
+  if (isNaN(genreId)) {
+    return res.status(400).json({ errCode: 2, error: 'Missing genreId parameter' });
+  }
+  if (!image) {
+    return res.status(400).json({ errCode: 2, error: 'Missing image parameter' });
   }
 
   try {

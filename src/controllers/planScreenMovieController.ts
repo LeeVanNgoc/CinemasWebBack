@@ -40,9 +40,19 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const times = req.query.times as string;
 
   if (isNaN(planScreenMovieId)) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Invalid PlanScreenMovie ID" });
+    return res.status(400).json({ errCode: 2, error: "Invalid PlanScreenMovie ID" });
+  }
+  if (!roomId) {
+    return res.status(400).json({ errCode: 2, error: 'Missing roomId parameters' });
+  }
+  if (!movieId) {
+    return res.status(400).json({ errCode: 2, error: 'Missing movieId parameter' });
+  }
+  if (!dateScreen) {
+    return res.status(400).json({ errCode: 2, error: 'Missing dateScreen parameter' });
+  }
+  if (times.length === 0) {
+    return res.status(400).json({ errCode: 2, error: 'Missing times parameter' });
   }
 
   let startTime, endTime;
@@ -102,16 +112,12 @@ const handleGetAllPlanScreenMovies = async (req: Request, res: Response) => {
 const handleGetPlanScreenMovieById = async (req: Request, res: Response) => {
   const planScreenMovieId = Number(req.query.planScreenMovieId);
   if (isNaN(planScreenMovieId)) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Invalid PlanScreenMovie ID" });
+    return res.status(400).json({ errCode: 2, error: "Invalid PlanScreenMovie ID" });
   }
   try {
     const result = await getPlanScreenMovieById(planScreenMovieId);
     if (result.errCode !== 0) {
-      return res
-        .status(404)
-        .json({ errCode: result.errCode, error: result.message });
+      return res.status(404).json({ errCode: result.errCode, error: result.message });
     }
     res.status(200).json({
       errCode: result.errCode,
@@ -133,9 +139,16 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   const times = (req.query.times as string).split(",");
 
   if (!roomId || !movieId || !dateScreen || times.length === 0) {
-    return res
-      .status(400)
-      .json({ errCode: 2, message: "Missing required parameters" });
+    return res.status(400).json({ errCode: 2, message: "Missing roomId parameter" });
+  }
+  if (!movieId) {
+    return res.status(400).json({ errCode: 2, error: 'Missing movieId parameter' });
+  }
+  if (!dateScreen) {
+    return res.status(400).json({ errCode: 2, error: 'Missing dateScreen parameter' });
+  }
+  if (times.length === 0) {
+    return res.status(400).json({ errCode: 2, error: 'Missing times parameter' });
   }
 
   try {
