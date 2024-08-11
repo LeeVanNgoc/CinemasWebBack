@@ -9,6 +9,7 @@ import {
   numberSeatInRoom,
   getRowAndColumnInRoom,
   getSeatInRoom,
+  createMultipleSeat
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -32,6 +33,7 @@ const handleCreateSeat = async (req: Request, res: Response) => {
       .json({ message: `Something went wrong in creating new seat ${error}` });
   }
 };
+
 
 const handleGetAllSeats = async (req: Request, res: Response) => {
   try {
@@ -128,7 +130,7 @@ const handleDeleteSeat = async (req: Request, res: Response) => {
 
 const handleAutoCreateSeats = async (req: Request, res: Response) => {
   const { roomId, vipRows, regularRows, doubleRows, columns } = req.query;
-  
+
   try {
     const result = await autoCreateSeats(
       roomId as string,
@@ -226,6 +228,46 @@ const handleGetSeatInOneRoom = async (req: Request, res: Response) => {
     });
   }
 };
+
+const handleCreateMultipleSeat = async (req: Request, res: Response) => {
+  try {
+    const { rows } = req.body;
+
+    if (!Array.isArray(rows)) {
+      return res.status(400).json({
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      });
+    }
+
+    const seatCreationResults = [];
+    for (const row of rows) {
+      const result = await createMultipleSeat({ rows: [row] });
+      seatCreationResults.push(result);
+    }
+
+    const errors = seatCreationResults.filter((result) => result.errCode !== 0);
+
+    if (errors.length > 0) {
+      return res.status(207).json({
+        errCode: 1,
+        message: "Some seats could not be created",
+        errors,
+      });
+    }
+
+    res.status(201).json({
+      errCode: 0,
+      message: "All seats created successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      message: `Internal server error: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateSeat,
   handleGetAllSeats,
@@ -236,4 +278,5 @@ export default {
   handleGetNumberSeatInRoom,
   handleGetNumberRowAndRow,
   handleGetSeatInOneRoom,
+  handleCreateMultipleSeat
 };

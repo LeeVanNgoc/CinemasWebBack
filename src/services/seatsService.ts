@@ -26,7 +26,6 @@ export const checkSeat = async (data: any) => {
   }
 };
 
-// Create new Seat
 export const createSeat = async (data: any) => {
   try {
     const existingIds = await Seat.findAll({
@@ -68,7 +67,6 @@ export const createSeat = async (data: any) => {
   }
 };
 
-// Get all seat
 export const getAllSeats = async () => {
   try {
     const seats = await Seat.findAll();
@@ -243,7 +241,7 @@ export const autoCreateSeats = async (
 ) => {
   try {
     const newSeats: Seat[] = [];
-    
+
     const createSeatIfNotExist = async (
       row: string,
       col: number,
@@ -310,6 +308,77 @@ export const getSeatInRoom = async (roomId: number) => {
     return {
       errCode: 3,
       message: `Error get seats in room ${error}`,
+    };
+  }
+};
+
+export const createMultipleSeat = async (data: any) => {
+  try {
+    const { rows } = data;
+
+    if (!Array.isArray(rows)) {
+      return {
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      };
+    }
+
+    const createdSeats = [];
+    for (const rowData of rows) {
+      const { id: row, columns } = rowData;
+
+      for (const colData of columns) {
+        const { col, roomId, type, isAvailable } = colData;
+
+        const existingSeat = await Seat.findOne({
+          where: { row, col, roomId },
+        });
+
+        if (existingSeat) {
+          continue;
+        }
+
+        const existingIds = await Seat.findAll({
+          attributes: ["seatId"],
+          order: [["seatId", "ASC"]],
+        });
+        const ids = existingIds.map((seat) => seat.seatId);
+
+        let newId = 1;
+        while (ids.includes(newId)) {
+          newId++;
+        }
+
+        const newSeat = await Seat.create({
+          seatId: newId,
+          row,
+          col,
+          type,
+          roomId,
+          isAvailable,
+          seatCode: Seat.generateSeatCode(newId, row),
+        });
+
+        createdSeats.push(newSeat);
+      }
+    }
+
+    if (createdSeats.length === 0) {
+      return {
+        errCode: 1,
+        message: "No new seats created, they may already exist",
+      };
+    }
+
+    return {
+      createdSeats,
+      errCode: 0,
+      message: "Seats created successfully",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Create seats failed: ${error}`,
     };
   }
 };

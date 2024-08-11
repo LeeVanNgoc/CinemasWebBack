@@ -21,7 +21,7 @@ module.exports = {
         type: Sequelize.STRING
       },
       releaseDate: {
-        type: Sequelize.DATE
+        type: Sequelize.DATEONLY
       },
       image: {
         type: Sequelize.STRING
