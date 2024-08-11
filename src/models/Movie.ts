@@ -44,7 +44,7 @@ Movie.init({
     },
   },
   releaseDate: {
-    type: DataTypes.DATE,
+    type: DataTypes.DATEONLY,
     allowNull: false,
   },
   image: {

@@ -4,11 +4,16 @@ import Room from './Room';
 
 class Seat extends Model {
   public seatId!: number;
+  public seatCode!: string;
   public type!: string;
   public roomId!: string;
-  public row!: number;
+  public row!: string;
   public col!: number;
   public isAvailable!: boolean;
+
+  static generateSeatCode(id: number, row: string): string {
+    return `${row}${id}`;
+  }
 }
 
 Seat.init({
@@ -16,6 +21,10 @@ Seat.init({
     type: DataTypes.INTEGER,
     autoIncrement: true,
     primaryKey: true,
+  },
+  seatCode: {
+    type: DataTypes.STRING,
+    allowNull: false,
   },
   type: {
     type: DataTypes.STRING,
@@ -45,6 +54,11 @@ Seat.init({
   sequelize,
   modelName: 'Seat',
   timestamps: false,
+  hooks: {
+    beforeCreate: (seat, options) => {
+      seat.seatCode = Seat.generateSeatCode(seat.seatId, seat.row);
+    },
+  },
 });
 
 export default Seat;
