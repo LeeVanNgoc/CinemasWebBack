@@ -1,4 +1,4 @@
-import Promotion from '../models/Promotion';
+import Promotion from "../models/Promotion";
 
 interface PromotionData {
   description: string;
@@ -10,19 +10,41 @@ interface PromotionData {
 export const createPromotion = async (data: PromotionData) => {
   try {
     const existingIds = await Promotion.findAll({
-      attributes: ['promoId'],
-      order: [['promoId', 'ASC']],
+      attributes: ["promoId"],
+      order: [["promoId", "ASC"]],
     });
 
-    const ids = existingIds.map(promo => promo.promoId);
+    const ids = existingIds.map((promo) => promo.promoId);
 
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
     }
 
+    const existingCodes = await Promotion.findAll({
+      attributes: ["promoCode"],
+      order: [["promoCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((promo) => promo.promoCode);
+    let newCode = "PM001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "PM00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "PM0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "PM" + newId;
+      }
+    }
+
     const newPromotion = await Promotion.create({
       promoId: newId,
+      promoCode: newCode,
       description: data.description,
       discount: data.discount,
       startDate: data.startDate,
@@ -31,7 +53,7 @@ export const createPromotion = async (data: PromotionData) => {
 
     return {
       errCode: 0,
-      message: 'Promotion created successfully',
+      message: "Promotion created successfully",
       promotion: newPromotion,
     };
   } catch (error) {
@@ -54,22 +76,22 @@ export const deletePromotion = async (promoId: number) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error deleting promotion: ${error}`
+      message: `Error deleting promotion: ${error}`,
     };
   }
 };
 
 export const editPromotion = async (data: any) => {
   const { promoId, description, discount, startDate, endDate } = data;
-  
+
   try {
     if (!promoId) {
-      return { errCode: 4, message: 'Missing required parameters!' };
+      return { errCode: 4, message: "Missing required parameters!" };
     }
 
     const promotion = await Promotion.findOne({ where: { promoId } });
     if (!promotion) {
-      return { errCode: 1, message: 'Promotion not found!' };
+      return { errCode: 1, message: "Promotion not found!" };
     }
 
     if (description !== undefined) promotion.description = description;
@@ -81,7 +103,7 @@ export const editPromotion = async (data: any) => {
 
     return {
       errCode: 0,
-      message: 'Update the promotion succeeds!',
+      message: "Update the promotion succeeds!",
       promotion,
     };
   } catch (error) {
@@ -97,13 +119,13 @@ export const getAllPromotions = async () => {
     const promotions = await Promotion.findAll();
     return {
       errCode: 0,
-      message: 'Get all promotions success',
-      promotions
+      message: "Get all promotions success",
+      promotions,
     };
   } catch (error) {
     return {
       errCode: 1,
-      message: `Error getting promotions: ${error}`
+      message: `Error getting promotions: ${error}`,
     };
   }
 };
@@ -114,18 +136,18 @@ export const getPromotionById = async (promoId: number) => {
     if (!promotion) {
       return {
         errCode: 1,
-        message: 'Promotion not found'
+        message: "Promotion not found",
       };
     }
     return {
       errCode: 0,
-      message: 'Get promotion success',
-      promotion
+      message: "Get promotion success",
+      promotion,
     };
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error getting promotion: ${error}`
+      message: `Error getting promotion: ${error}`,
     };
   }
 };

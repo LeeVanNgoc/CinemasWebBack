@@ -153,6 +153,29 @@ export const createPlanScreenMovie = async (
       newId++;
     }
 
+    const existingCodes = await PlanScreenMovie.findAll({
+      attributes: ["planScreenCode"],
+      order: [["planScreenCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map(
+      (planScreenMovie) => planScreenMovie.planScreenCode
+    );
+    let newCode = "PSM001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "PSM00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "PSM0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "PSM" + newId;
+      }
+    }
+
     const newPlanScreenMovies = [];
 
     const existingSchedules = await PlanScreenMovie.findAll({
@@ -194,6 +217,7 @@ export const createPlanScreenMovie = async (
       // Tạo PlanScreenMovie với giá trị mới
       const newPlanScreen = await PlanScreenMovie.create({
         planScreenMovieId: newId,
+        planScreenCode: newCode,
         roomId,
         movieId,
         startTime,

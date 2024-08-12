@@ -9,6 +9,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      planScreenMovieCode: {
+        type: Sequelize.STRING,
+      },
       roomId: {
         type: Sequelize.INTEGER,
       },

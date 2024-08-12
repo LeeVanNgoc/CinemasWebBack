@@ -5,6 +5,7 @@ import PlanScreenMovie from "./PlanScreenMovie";
 
 class BookedSeat extends Model {
   public bookedSeatId!: number;
+  public bookedSeatCode!: string;
   public planScreenMovieId!: number;
   public roomId!: number;
   public row!: string;
@@ -17,6 +18,10 @@ BookedSeat.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+    },
+    bookedSeatCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
     planScreenMovieId: {
       type: DataTypes.INTEGER,

@@ -4,18 +4,41 @@ import Price from "../models/Price";
 export const createPrice = async (data: any) => {
   try {
     const existingIds = await Price.findAll({
-      attributes: ['priceId'],
-      order: [['priceId', 'ASC']]
+      attributes: ["priceId"],
+      order: [["priceId", "ASC"]],
     });
 
-    const ids = existingIds.map(prices => prices.priceId);
+    const ids = existingIds.map((prices) => prices.priceId);
 
     let newId = 1;
     while (ids.includes(newId)) {
       newId++;
     }
+
+    const existingCodes = await Price.findAll({
+      attributes: ["priceCode"],
+      order: [["priceCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((price) => price.priceCode);
+    let newCode = "PR001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "PR00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "PR0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "PR" + newId;
+      }
+    }
+
     const newPrice = await Price.create({
       priceId: newId,
+      priceCode: newCode,
       cost: data.cost,
       roomType: data.roomType,
       seatType: data.seatType,
@@ -24,13 +47,13 @@ export const createPrice = async (data: any) => {
     if (!newPrice) {
       return {
         errCode: 1,
-        message: 'False to create price record',
-      }
+        message: "False to create price record",
+      };
     }
     return {
       newPrice,
       errCode: 0,
-      message: 'Price created successfully',
+      message: "Price created successfully",
     };
   } catch (error) {
     return {
@@ -38,7 +61,7 @@ export const createPrice = async (data: any) => {
       message: `Error in creating by ${error}`,
     };
   }
-}
+};
 
 // Get all price records
 export const getAllPrices = async () => {
@@ -47,13 +70,13 @@ export const getAllPrices = async () => {
     if (!prices) {
       return {
         errCode: 1,
-        message: 'No prices found',
-      }
+        message: "No prices found",
+      };
     }
     return {
       prices,
       errCode: 0,
-      message: 'Prices fetched successfully',
+      message: "Prices fetched successfully",
     };
   } catch (error) {
     return {
@@ -61,7 +84,7 @@ export const getAllPrices = async () => {
       message: `Error in getting prices by ${error}`,
     };
   }
-}
+};
 
 // Get a specific price record
 export const getPriceById = async (priceId: number) => {
@@ -73,14 +96,14 @@ export const getPriceById = async (priceId: number) => {
     if (!price) {
       return {
         errCode: 1,
-        message: 'Price not found',
-      }
+        message: "Price not found",
+      };
     }
 
     return {
       price,
       errCode: 0,
-      message: 'Price fetched successfully',
+      message: "Price fetched successfully",
     };
   } catch (error) {
     return {
@@ -88,7 +111,7 @@ export const getPriceById = async (priceId: number) => {
       message: `Error in getting price by id ${error}`,
     };
   }
-}
+};
 
 // Update a specific price record
 export const updatePrice = async (data: any) => {
@@ -96,22 +119,22 @@ export const updatePrice = async (data: any) => {
   try {
     const price = await Price.findOne({
       where: { priceId: priceId },
-    })
+    });
     if (!price) {
       return {
         errCode: 1,
-        message: 'Price not found',
-      }
+        message: "Price not found",
+      };
     }
-    price.cost = data.cost || price.cost
-    price.roomType = data.roomType || price.roomType
-    price.seatType = data.seatType || price.seatType
-    price.isWeekend = data.isWeekend || price.isWeekend
+    price.cost = data.cost || price.cost;
+    price.roomType = data.roomType || price.roomType;
+    price.seatType = data.seatType || price.seatType;
+    price.isWeekend = data.isWeekend || price.isWeekend;
     await price.save();
     return {
       price: price,
       errCode: 0,
-      message: 'Price updated successfully',
+      message: "Price updated successfully",
     };
   } catch (error) {
     return {
@@ -119,7 +142,7 @@ export const updatePrice = async (data: any) => {
       message: `Error in updating price by id ${error}`,
     };
   }
-}
+};
 
 // Delete a specific price record
 export const deletePrice = async (priceId: number) => {
@@ -130,13 +153,13 @@ export const deletePrice = async (priceId: number) => {
     if (!price) {
       return {
         errCode: 1,
-        message: 'Price not found',
-      }
+        message: "Price not found",
+      };
     } else {
       await price.destroy();
       return {
         errCode: 0,
-        message: 'Price deleted successfully',
+        message: "Price deleted successfully",
       };
     }
   } catch (error) {
@@ -145,14 +168,18 @@ export const deletePrice = async (priceId: number) => {
       message: `Error in deleting price by id ${error}`,
     };
   }
-}
+};
 
 export const getCost = async (data: any) => {
   try {
-    if (!data.roomType || !data.seatType || typeof data.isWeekend === 'undefined') {
+    if (
+      !data.roomType ||
+      !data.seatType ||
+      typeof data.isWeekend === "undefined"
+    ) {
       return {
         errCode: 2,
-        message: 'Missing required parameters',
+        message: "Missing required parameters",
       };
     }
 
@@ -164,25 +191,25 @@ export const getCost = async (data: any) => {
         seatType: data.seatType,
         isWeekend: isWeekendValue,
       },
-      attributes: ['cost'],
-      raw: true
+      attributes: ["cost"],
+      raw: true,
     });
 
     if (costs.length > 0) {
-      const costOutput = costs.map(item => item.cost);
+      const costOutput = costs.map((item) => item.cost);
       return {
         errCode: 0,
-        message: 'Get cost success',
+        message: "Get cost success",
         costOutput,
       };
     } else {
       return {
         errCode: 1,
-        message: 'No cost found',
+        message: "No cost found",
       };
     }
   } catch (error) {
-    console.error('Error in getting cost:', error);
+    console.error("Error in getting cost:", error);
     return {
       errCode: 3,
       message: `Error getting cost: ${error}`,

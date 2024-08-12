@@ -1,9 +1,10 @@
-import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
-import sequelize from '../config/connectDB';
-import Genres from './Genres';
+import { Model, DataTypes, DateOnlyDataType } from "sequelize";
+import sequelize from "../config/connectDB";
+import Genres from "./Genres";
 
 class Movie extends Model {
   public movieId!: number;
+  public movieCode!: string;
   public title!: string;
   public description!: string;
   public duration!: number;
@@ -13,48 +14,55 @@ class Movie extends Model {
   public image!: string;
 }
 
-Movie.init({
-  movieId: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    allowNull: false,
-  },
-  title: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-  },
-  duration: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  country: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  genreId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: {
-      model: Genres,
-      key: 'genreId',
+Movie.init(
+  {
+    movieId: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      allowNull: false,
+    },
+    movieCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+    },
+    duration: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    genreCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Genres,
+        key: "genreCode",
+      },
+    },
+    releaseDate: {
+      type: DataTypes.DATEONLY,
+      allowNull: false,
+    },
+    image: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
   },
-  releaseDate: {
-    type: DataTypes.DATEONLY,
-    allowNull: false,
-  },
-  image: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-}, {
-  sequelize,
-  modelName: 'Movie',
-  timestamps: false,
-});
+  {
+    sequelize,
+    modelName: "Movie",
+    timestamps: false,
+  }
+);
 
 export default Movie;
