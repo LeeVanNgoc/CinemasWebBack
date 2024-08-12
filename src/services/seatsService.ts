@@ -356,7 +356,7 @@ export const createMultipleSeat = async (data: any) => {
           type,
           roomId,
           isAvailable,
-          seatCode: Seat.generateSeatCode(newId, row),
+          seatCode: Seat.generateSeatCode(col, row),
         });
 
         createdSeats.push(newSeat);
@@ -379,6 +379,67 @@ export const createMultipleSeat = async (data: any) => {
     return {
       errCode: 3,
       message: `Create seats failed: ${error}`,
+    };
+  }
+};
+
+export const editMultipleSeat = async (data: any) => {
+  try {
+    const { rows } = data;
+
+    if (!Array.isArray(rows)) {
+      return {
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      };
+    }
+
+    const updatedSeats = [];
+    for (const rowData of rows) {
+      const { id: row, columns } = rowData;
+
+      for (const colData of columns) {
+        const { col, roomId, type, isAvailable } = colData;
+
+        // Check if seat exists
+        const existingSeat = await Seat.findOne({
+          where: { row, col, roomId },
+        });
+
+        if (!existingSeat) {
+          return {
+            errCode: 1,
+            message: `Seat at row ${row}, col ${col}, room ${roomId} does not exist`,
+          };
+        }
+
+        // Update the seat with the new values
+        await existingSeat.update({
+          type,
+          isAvailable,
+          seatCode: Seat.generateSeatCode(col, row),
+        });
+
+        updatedSeats.push(existingSeat);
+      }
+    }
+
+    if (updatedSeats.length === 0) {
+      return {
+        errCode: 1,
+        message: "No seats were updated, they may not exist",
+      };
+    }
+
+    return {
+      updatedSeats,
+      errCode: 0,
+      message: "Seats updated successfully",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Edit seats failed: ${error}`,
     };
   }
 };

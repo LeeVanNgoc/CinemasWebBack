@@ -451,7 +451,8 @@ Quy tặc gán errCode:
 				+ errCode : 0 (Lấy thành công) && (bản ghi của ghế)
 				+ errCode : 1 (Ko tìm thấy ghế theo id)
 				+ errCode : 3 (Lỗi khi lấy ghế)
-
+	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
+	
 	API lấy ghế theo phòng
 		router.get("/get-seats-in-one-room", seatsController.handleGetSeatInOneRoom);
 		-	Input :
@@ -461,7 +462,58 @@ Quy tặc gán errCode:
 				+ errCode : 1 , ko tìm thấy ghế theo id
 				+ errCode : 3 , Có lỗi xảy ra ( error)
 
-	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
+	API tạo hàng loạt ghế (2):
+    	router.post('/create-multiple-seat);
+
+	JSON body:
+	{
+  "rows": [
+    {
+      "id": "A",
+      "columns": [
+        {
+          "col": 1,
+          "isAvailable": true,
+          "roomId": 22,
+          "type": "Reg"
+        },
+        {
+          "col": 2,
+          "isAvailable": true,
+          "roomId": 22,
+          "type": "VI"
+        }
+      ]
+    }
+  ]
+}
+
+	
+	API sửa hàng loạt ghế:
+    	router.put('/edit-multiple-seat);
+
+	JSON body:
+	{
+  "rows": [
+    {
+      "id": "A",
+      "columns": [
+        {
+          "col": 1,
+          "isAvailable": true,
+          "roomId": 22,
+          "type": "Reg"
+        },
+        {
+          "col": 2,
+          "isAvailable": true,
+          "roomId": 22,
+          "type": "VI"
+        }
+      ]
+    }
+  ]
+}
 	
 	Liên kết đường dẫn : 
     	app.use('/api/seats', router);

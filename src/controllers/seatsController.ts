@@ -9,7 +9,8 @@ import {
   numberSeatInRoom,
   getRowAndColumnInRoom,
   getSeatInRoom,
-  createMultipleSeat
+  createMultipleSeat,
+  editMultipleSeat
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -268,6 +269,45 @@ const handleCreateMultipleSeat = async (req: Request, res: Response) => {
   }
 };
 
+const handleEditMultipleSeat = async (req: Request, res: Response) => {
+  try {
+    const { rows } = req.body;
+
+    if (!Array.isArray(rows)) {
+      return res.status(400).json({
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      });
+    }
+
+    const seatUpdateResults = [];
+    for (const row of rows) {
+      const result = await editMultipleSeat({ rows: [row] });
+      seatUpdateResults.push(result);
+    }
+
+    const errors = seatUpdateResults.filter((result) => result.errCode !== 0);
+
+    if (errors.length > 0) {
+      return res.status(207).json({
+        errCode: 1,
+        message: "Some seats could not be updated",
+        errors,
+      });
+    }
+
+    res.status(200).json({
+      errCode: 0,
+      message: "All seats updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      message: `Internal server error: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateSeat,
   handleGetAllSeats,
@@ -278,5 +318,6 @@ export default {
   handleGetNumberSeatInRoom,
   handleGetNumberRowAndRow,
   handleGetSeatInOneRoom,
-  handleCreateMultipleSeat
+  handleCreateMultipleSeat,
+  handleEditMultipleSeat
 };

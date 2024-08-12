@@ -11,8 +11,8 @@ class Seat extends Model {
   public col!: number;
   public isAvailable!: boolean;
 
-  static generateSeatCode(id: number, row: string): string {
-    return `${row}${id}`;
+  static generateSeatCode(col: number, row: string): string {
+    return `${row}${col}`;
   }
 }
 
@@ -56,7 +56,7 @@ Seat.init({
   timestamps: false,
   hooks: {
     beforeCreate: (seat, options) => {
-      seat.seatCode = Seat.generateSeatCode(seat.seatId, seat.row);
+      seat.seatCode = Seat.generateSeatCode(seat.col, seat.row);
     },
   },
 });
