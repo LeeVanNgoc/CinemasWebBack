@@ -1,5 +1,5 @@
-import User from '../models/User';
-import bcrypt from 'bcryptjs';
+import User from "../models/User";
+import bcrypt from "bcryptjs";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -8,30 +8,30 @@ const hashUserPassword = async (password: string) => {
     const hashPassword = await bcrypt.hash(password, salt);
     return hashPassword;
   } catch (error) {
-    throw new Error('Hashing failed');
+    throw new Error("Hashing failed");
   }
-}
+};
 
 const setDecentralization = async (role: string) => {
   try {
-    if (role !== 'admin') {
-      role = 'user';
+    if (role !== "admin") {
+      role = "user";
     }
     return role;
   } catch (error) {
-    console.error('Error setting decentralization:', error);
+    console.error("Error setting decentralization:", error);
     throw error;
   }
-}
+};
 
 export const createUser = async (data: any) => {
   try {
     const existingIds = await User.findAll({
-      attributes: ['userId'],
-      order: [['userId', 'ASC']]
+      attributes: ["userId"],
+      order: [["userId", "ASC"]],
     });
 
-    const ids = existingIds.map(user => user.userId);
+    const ids = existingIds.map((user) => user.userId);
 
     let newId = 1;
     while (ids.includes(newId)) {
@@ -39,16 +39,38 @@ export const createUser = async (data: any) => {
     }
     const existingUser = await User.findOne({ where: { email: data.email } });
 
+    const existingCodes = await User.findAll({
+      attributes: ["userCode"],
+      order: [["userCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((user) => user.userCode);
+    let newCode = "US001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "US00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "US0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "US" + newId;
+      }
+    }
+
     if (existingUser) {
       return {
         errCode: 4,
-        message: 'Email already exists'
+        message: "Email already exists",
       };
     } else {
       const hashPassword = await hashUserPassword(data.password);
       const role = await setDecentralization(data.role);
       const newUser = await User.create({
         userId: newId,
+        userCode: newCode,
         email: data.email,
         password: hashPassword,
         firstName: data.firstName,
@@ -64,19 +86,19 @@ export const createUser = async (data: any) => {
         return {
           user: newUser,
           errCode: 0,
-          message: 'User created successfully'
+          message: "User created successfully",
         };
       } else {
         return {
           errCode: 2,
-          message: 'Failed to create user'
+          message: "Failed to create user",
         };
       }
     }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error creating user ${error}`
+      message: `Error creating user ${error}`,
     };
   }
 };
@@ -84,27 +106,27 @@ export const createUser = async (data: any) => {
 export const deleteUser = async (userId: number) => {
   try {
     const user = await User.findOne({
-      where: { userId: userId }
+      where: { userId: userId },
     });
 
     if (!user) {
-      return ({
+      return {
         errorCode: 1,
-        errorMessage: "Not found user"
-      })
+        errorMessage: "Not found user",
+      };
     } else {
       await user.destroy();
 
-      return ({
+      return {
         errorCode: 0,
-        errorMessage: "User deleted successfully"
-      })
+        errorMessage: "User deleted successfully",
+      };
     }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error delete user: ${error}`
-    }
+      message: `Error delete user: ${error}`,
+    };
   }
 };
 
@@ -112,19 +134,19 @@ export const editUser = async (data: any) => {
   const userId = data.userId;
   try {
     if (!userId) {
-      return ({
+      return {
         errCode: 4,
-        message: 'Missing required parameters!'
-      });
+        message: "Missing required parameters!",
+      };
     }
 
     const user = await User.findOne({ where: { userId: userId } });
 
     if (!user) {
-      return ({
+      return {
         errorCode: 1,
-        message: 'User not found!'
-      });
+        message: "User not found!",
+      };
     }
     user.firstName = data.firstName || user.firstName;
     user.lastName = data.lastName || user.lastName;
@@ -132,11 +154,11 @@ export const editUser = async (data: any) => {
     user.phonenumber = data.phonenumber || user.phonenumber;
     user.birthYear = data.birthYear || user.birthYear;
     await user.save();
-    return ({
+    return {
       errorCode: 0,
-      message: 'Update user successfully',
-      user: user
-    });
+      message: "Update user successfully",
+      user: user,
+    };
   } catch (error) {
     return {
       errCode: 3,
@@ -147,7 +169,7 @@ export const editUser = async (data: any) => {
 };
 
 export const getUserById = async (userId: number) => {
-  let users: any = '';
+  let users: any = "";
   try {
     users = await User.findOne({
       where: {
@@ -166,13 +188,13 @@ export const getUserById = async (userId: number) => {
     });
     return {
       errCode: 0,
-      message: 'Get user success',
-      users: users
+      message: "Get user success",
+      users: users,
     };
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error went get user ${error}`
+      message: `Error went get user ${error}`,
     };
   }
 };
@@ -193,13 +215,13 @@ export const getAllUsers = async () => {
     });
     return {
       errCode: 0,
-      message: 'Get all users success',
-      users: users
+      message: "Get all users success",
+      users: users,
     };
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error went get user ${error}`
+      message: `Error went get user ${error}`,
     };
   }
 };
@@ -223,7 +245,7 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
 
     if (isExists) {
       const user = await User.findOne({
-        attributes: ['email', 'password', 'role', 'userId'],
+        attributes: ["email", "password", "role", "userId"],
         where: { email: userEmail },
         raw: true,
       });
@@ -235,29 +257,30 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
           // Xóa password để tránh bảo mật thông tin
           delete userData.password;
           userData.user = user;
-          return ({
+          return {
             userId: user.userId,
             role: user.role,
             errCode: 0,
-            message: 'Login success',
-          });
+            message: "Login success",
+          };
         } else {
-          return ({
+          return {
             errCode: 5,
-            message: 'Password is incorrect',
-          });
+            message: "Password is incorrect",
+          };
         }
       } else {
-        return ({
+        return {
           errCode: 1,
-          message: 'User not found',
-        });
+          message: "User not found",
+        };
       }
     } else {
-      return ({
+      return {
         errCode: 2,
-        message: 'Your email does not exist in the system. Please try another email',
-      });
+        message:
+          "Your email does not exist in the system. Please try another email",
+      };
     }
   } catch (error) {
     return {

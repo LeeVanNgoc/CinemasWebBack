@@ -452,6 +452,15 @@ Quy tặc gán errCode:
 				+ errCode : 1 (Ko tìm thấy ghế theo id)
 				+ errCode : 3 (Lỗi khi lấy ghế)
 
+	API lấy ghế theo phòng
+		router.get("/get-seats-in-one-room", seatsController.handleGetSeatInOneRoom);
+		-	Input :
+				+ roomId (number)
+		-	Output:
+				+ errCode : 0 , lấy thành công
+				+ errCode : 1 , ko tìm thấy ghế theo id
+				+ errCode : 3 , Có lỗi xảy ra ( error)
+
 	e.g: http://localhost:6060/api/seats/auto-create-seats?roomId=9&vipRows=D,E,F,G,H,I&regularRows=A,B,C,J,K&doubleRows=L&columns=18
 	
 	Liên kết đường dẫn : 

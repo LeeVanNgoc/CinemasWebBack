@@ -119,6 +119,27 @@ export const createNewBookedSeat = async (data: any) => {
     while (ids.includes(newId)) {
       newId++;
     }
+
+    const existingCodes = await BookedSeat.findAll({
+      attributes: ["bookedSeatCode"],
+      order: [["bookedSeatCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((bookedSeat) => bookedSeat.bookedSeatCode);
+    let newCode = "BS001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "BS00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "BS0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "BS" + newId;
+      }
+    }
     const ticket = await getRowAndColOfSeats(data);
 
     if (ticket.errCode === 0) {
@@ -128,7 +149,8 @@ export const createNewBookedSeat = async (data: any) => {
       const room = await getRoomInPlanScreen(planScreenMovieId);
       const bookedSeats = rows.map((row: string, index: number) => {
         return {
-          bookedSeatId: newId + index, // Cung cấp ID duy nhất cho từng bản ghi
+          bookedSeatId: newId + index,
+          bookedSeatCode: newCode + index,
           planScreenMovieId: planScreenMovieId,
           row: row,
           col: cols[index],

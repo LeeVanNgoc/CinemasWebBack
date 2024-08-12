@@ -1,11 +1,12 @@
-import { Model, DataTypes, DateOnlyDataType } from 'sequelize';
-import sequelize from '../config/connectDB';
-import Room from './Room';
-import Movie from './Movie';
-import Tickets from './Tickets';
+import { Model, DataTypes, DateOnlyDataType } from "sequelize";
+import sequelize from "../config/connectDB";
+import Room from "./Room";
+import Movie from "./Movie";
+import Tickets from "./Tickets";
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;
+  public planScreenCode!: string;
   public roomId!: number;
   public movieId!: number;
   public startTime!: TimeRanges;
@@ -19,6 +20,10 @@ PlanScreenMovie.init(
       type: DataTypes.INTEGER,
       autoIncrement: false,
       primaryKey: true,
+      allowNull: false,
+    },
+    planScreenCode: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     roomId: {

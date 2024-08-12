@@ -15,8 +15,30 @@ export const createTickets = async (data: any) => {
       newId++;
     }
 
+    const existingCodes = await Tickets.findAll({
+      attributes: ["ticketCode"],
+      order: [["ticketCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((ticket) => ticket.ticketCode);
+    let newCode = "TK001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "TK00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "TK0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "TK" + newId;
+      }
+    }
+
     const newTicket = await Tickets.create({
       ticketId: newId,
+      ticketCode: newCode,
       userId: data.userId,
       planScreenMovieId: data.planScreenMovieId,
       seats: data.seats,
@@ -222,12 +244,27 @@ export const getTicketDetailsById = async (ticketId: number) => {
   try {
     const ticket = await Tickets.findOne({
       where: { ticketId },
-      attributes: ["ticketId", "userId", "seats", "bank", "totalPrice", "planScreenMovieId"],
-      include: [{
-        model: PlanScreenMovie,
-        as: "planScreenMovie",
-        attributes: ["roomId", "movieId", "startTime", "endTime", "dateScreen"]
-      }],
+      attributes: [
+        "ticketId",
+        "userId",
+        "seats",
+        "bank",
+        "totalPrice",
+        "planScreenMovieId",
+      ],
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [
+            "roomId",
+            "movieId",
+            "startTime",
+            "endTime",
+            "dateScreen",
+          ],
+        },
+      ],
     });
 
     if (!ticket) {

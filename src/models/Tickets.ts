@@ -5,6 +5,7 @@ import PlanScreenMovie from "./PlanScreenMovie";
 
 class Tickets extends Model {
   public ticketId!: number;
+  public ticketCode!: string;
   public userId!: number;
   public planScreenMovieId!: number;
   public seats!: string;
@@ -19,6 +20,10 @@ Tickets.init(
       type: DataTypes.INTEGER,
       autoIncrement: true,
       primaryKey: true,
+      allowNull: false,
+    },
+    ticketCode: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
     userId: {
@@ -62,6 +67,9 @@ Tickets.init(
 );
 
 Tickets.belongsTo(User, { foreignKey: "userId" });
-Tickets.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieId", as: "planScreenMovie" });
+Tickets.belongsTo(PlanScreenMovie, {
+  foreignKey: "planScreenMovieId",
+  as: "planScreenMovie",
+});
 
 export default Tickets;
