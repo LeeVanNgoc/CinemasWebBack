@@ -22,7 +22,7 @@ PlanScreenMovie.init(
       primaryKey: true,
       allowNull: false,
     },
-    planScreenCode: {
+    planScreenMovieCode: {
       type: DataTypes.STRING,
       allowNull: false,
     },
