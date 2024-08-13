@@ -14,7 +14,7 @@ const seatRouter = (app: Application) => {
   router.post("/auto-create-seats", seatsController.handleAutoCreateSeats);
   router.get("/get-seats-in-one-room", seatsController.handleGetSeatInOneRoom);
   router.post("/create-multiple-seat", seatsController.handleCreateMultipleSeat);
-
+  router.put("/edit-multiple-seat", seatsController.handleEditMultipleSeat);
 
   app.use("/api/seats", router);
 };

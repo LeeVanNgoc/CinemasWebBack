@@ -5,7 +5,7 @@ import Seat from "../models/Seat";
 export const checkSeat = async (data: any) => {
   try {
     const seats = await Seat.findOne({
-      where: { row: data.row, col: data.col, roomId: data.roomId },
+      where: { row: data.row, col: data.col, roomCode: data.roomCode },
     });
     if (!seats) {
       return {
@@ -51,7 +51,7 @@ export const createSeat = async (data: any) => {
       row: data.row,
       col: data.col,
       type: data.type,
-      roomId: data.roomId,
+      roomCode: data.roomCode,
       isAvailable: data.isAvailable,
     });
     return {
@@ -180,9 +180,9 @@ export const numberSeatInRoom = async (roomCode: string) => {
 };
 
 //Get row and column of one room
-export const getRowAndColumnInRoom = async (roomId: number) => {
+export const getRowAndColumnInRoom = async (roomCode: string) => {
   try {
-    const seats = await Seat.findAll({ where: { roomId: roomId } });
+    const seats = await Seat.findAll({ where: { roomCode: roomCode } });
     let numberCol = 0;
     for (let index = 0; index < seats.length; index++) {
       const maxCol = seats[index].col;
@@ -233,7 +233,7 @@ const findSmallestAvailableId = async () => {
 };
 
 export const autoCreateSeats = async (
-  roomId: string,
+  roomCode: string,
   vipRows: string[],
   regularRows: string[],
   doubleRows: string[],
@@ -247,7 +247,7 @@ export const autoCreateSeats = async (
       col: number,
       type: string
     ) => {
-      const data = { row, col, type, roomId, isAvailable: true };
+      const data = { row, col, type, roomCode, isAvailable: true };
       const existingSeat = await checkSeat(data);
       if (existingSeat.errCode === 0) {
         return {
@@ -288,9 +288,9 @@ export const autoCreateSeats = async (
   }
 };
 
-export const getSeatInRoom = async (roomId: number) => {
+export const getSeatInRoom = async (roomCode: string) => {
   try {
-    const seats = await Seat.findAll({ where: { roomId: roomId } });
+    const seats = await Seat.findAll({ where: { roomCode: roomCode } });
     if (seats) {
       return {
         seats,
@@ -327,10 +327,10 @@ export const createMultipleSeat = async (data: any) => {
       const { id: row, columns } = rowData;
 
       for (const colData of columns) {
-        const { col, roomId, type, isAvailable } = colData;
+        const { col, roomCode, type, isAvailable } = colData;
 
         const existingSeat = await Seat.findOne({
-          where: { row, col, roomId },
+          where: { row, col, roomCode },
         });
 
         if (existingSeat) {
@@ -353,9 +353,9 @@ export const createMultipleSeat = async (data: any) => {
           row,
           col,
           type,
-          roomId,
+          roomCode,
           isAvailable,
-          seatCode: Seat.generateSeatCode(newId, row),
+          seatCode: Seat.generateSeatCode(col, row),
         });
 
         createdSeats.push(newSeat);
@@ -378,6 +378,66 @@ export const createMultipleSeat = async (data: any) => {
     return {
       errCode: 3,
       message: `Create seats failed: ${error}`,
+    };
+  }
+};
+export const editMultipleSeat = async (data: any) => {
+  try {
+    const { rows } = data;
+
+    if (!Array.isArray(rows)) {
+      return {
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      };
+    }
+
+    const updatedSeats = [];
+    for (const rowData of rows) {
+      const { id: row, columns } = rowData;
+
+      for (const colData of columns) {
+        const { col, roomCode, type, isAvailable } = colData;
+
+        // Check if seat exists
+        const existingSeat = await Seat.findOne({
+          where: { row, col, roomCode },
+        });
+
+        if (!existingSeat) {
+          return {
+            errCode: 1,
+            message: `Seat at row ${row}, col ${col}, room ${roomCode} does not exist`,
+          };
+        }
+
+        // Update the seat with the new values
+        await existingSeat.update({
+          type,
+          isAvailable,
+          seatCode: Seat.generateSeatCode(col, row),
+        });
+
+        updatedSeats.push(existingSeat);
+      }
+    }
+
+    if (updatedSeats.length === 0) {
+      return {
+        errCode: 1,
+        message: "No seats were updated, they may not exist",
+      };
+    }
+
+    return {
+      updatedSeats,
+      errCode: 0,
+      message: "Seats updated successfully",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Edit seats failed: ${error}`,
     };
   }
 };

@@ -10,6 +10,7 @@ import {
   getRowAndColumnInRoom,
   getSeatInRoom,
   createMultipleSeat,
+  editMultipleSeat,
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -181,9 +182,9 @@ const handleGetNumberSeatInRoom = async (req: Request, res: Response) => {
 };
 
 const handleGetNumberRowAndRow = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
+  const roomCode = req.query.roomCode as string;
   try {
-    const getNumberRowAndRow = await getRowAndColumnInRoom(roomId);
+    const getNumberRowAndRow = await getRowAndColumnInRoom(roomCode);
     if (getNumberRowAndRow.errCode === 0) {
       res.status(200).json({
         errCode: getNumberRowAndRow.errCode,
@@ -205,10 +206,10 @@ const handleGetNumberRowAndRow = async (req: Request, res: Response) => {
 };
 
 const handleGetSeatInOneRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
-  console.log("Check roomId in handle get Seat in room : ", roomId);
+  const roomCode = req.query.roomCode as string;
+  console.log("Check roomCode in handle get Seat in room : ", roomCode);
   try {
-    const seatInOneRoom = await getSeatInRoom(roomId);
+    const seatInOneRoom = await getSeatInRoom(roomCode);
     if (seatInOneRoom.errCode === 0) {
       res.status(200).json({
         errCode: seatInOneRoom.errCode,
@@ -267,6 +268,45 @@ const handleCreateMultipleSeat = async (req: Request, res: Response) => {
   }
 };
 
+const handleEditMultipleSeat = async (req: Request, res: Response) => {
+  try {
+    const { rows } = req.body;
+
+    if (!Array.isArray(rows)) {
+      return res.status(400).json({
+        errCode: 2,
+        message: "Invalid input: rows array is required",
+      });
+    }
+
+    const seatUpdateResults = [];
+    for (const row of rows) {
+      const result = await editMultipleSeat({ rows: [row] });
+      seatUpdateResults.push(result);
+    }
+
+    const errors = seatUpdateResults.filter((result) => result.errCode !== 0);
+
+    if (errors.length > 0) {
+      return res.status(207).json({
+        errCode: 1,
+        message: "Some seats could not be updated",
+        errors,
+      });
+    }
+
+    res.status(200).json({
+      errCode: 0,
+      message: "All seats updated successfully",
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      message: `Internal server error: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateSeat,
   handleGetAllSeats,
@@ -278,4 +318,5 @@ export default {
   handleGetNumberRowAndRow,
   handleGetSeatInOneRoom,
   handleCreateMultipleSeat,
+  handleEditMultipleSeat,
 };
