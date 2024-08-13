@@ -12,7 +12,7 @@ module.exports = {
       roomCode: {
         type: Sequelize.STRING,
       },
-      theaterId: {
+      theaterCode: {
         type: Sequelize.STRING,
       },
       type: {

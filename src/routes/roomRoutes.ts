@@ -11,6 +11,10 @@ const roomRoutes = (app: Application) => {
   router.get("/get-all-rooms", roomController.handleGetAllRooms);
   router.get("/get-room-by-id", roomController.handleGetRoomById);
   router.get("/get-room-in-theater", roomController.handleGetRoomInTheater);
+  router.get(
+    "/update-number-seat-in-room",
+    roomController.handleUpdateNumberSeatInRoom
+  );
 
   return app.use("/api/room", router);
 };

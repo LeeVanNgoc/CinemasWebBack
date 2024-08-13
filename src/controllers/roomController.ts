@@ -6,19 +6,21 @@ import {
   getAllRooms,
   getRoomById,
   getRoomInTheater,
+  updateNumberSeatInRoom,
 } from "../services/roomService";
 
 const handleCreateRoom = async (req: Request, res: Response) => {
-  const { theaterId, type, numberSeats, isAvailable } = req.query;
+  const { theaterCode, type, numberSeats, isAvailable } = req.query;
+  console.log(theaterCode);
 
-  if (!theaterId || !type || !numberSeats) {
+  if (!theaterCode || !type || !numberSeats) {
     return res
       .status(400)
       .json({ errCode: 4, error: "Missing required parameters!" });
   }
 
   const data = {
-    theaterId: Number(theaterId),
+    theaterCode: theaterCode,
     type: type as string,
     numberSeats: Number(numberSeats),
     isAvailable: isAvailable === "true", // Convert isAvailable to boolean
@@ -148,12 +150,12 @@ const handleGetRoomById = async (req: Request, res: Response) => {
 };
 
 const handleGetRoomInTheater = async (req: Request, res: Response) => {
-  const theaterId = Number(req.query.theaterId);
-  if (isNaN(theaterId)) {
+  const theaterCode = req.query.theaterCode as string;
+  if (!theaterCode) {
     return res.status(400).json({ errCode: 2, error: "Invalid theater ID" });
   }
   try {
-    const result = await getRoomInTheater(theaterId);
+    const result = await getRoomInTheater(theaterCode);
     if (result.errCode !== 0) {
       return res.status(404).json({
         errCode: result.errCode,
@@ -173,6 +175,34 @@ const handleGetRoomInTheater = async (req: Request, res: Response) => {
   }
 };
 
+const handleUpdateNumberSeatInRoom = async (req: Request, res: Response) => {
+  const roomCode = req.query.roomCode as string;
+  console.log(roomCode);
+
+  try {
+    if (!roomCode) {
+      return res
+        .status(400)
+        .json({ errCode: 2, error: "Missing required parameters!" });
+    }
+    const result = await updateNumberSeatInRoom(roomCode);
+    if (result.errCode !== 0) {
+      return res
+        .status(404)
+        .json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({
+      romm: result.room,
+      errCode: result.errCode,
+      message: result.message,
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in updating room: ${error}`,
+    });
+  }
+};
 export default {
   handleCreateRoom,
   handleDeleteRoom,
@@ -180,4 +210,5 @@ export default {
   handleGetAllRooms,
   handleGetRoomById,
   handleGetRoomInTheater,
+  handleUpdateNumberSeatInRoom,
 };

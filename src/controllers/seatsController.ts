@@ -10,7 +10,7 @@ import {
   getRowAndColumnInRoom,
   getSeatInRoom,
   createMultipleSeat,
-  editMultipleSeat
+  editMultipleSeat,
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -34,7 +34,6 @@ const handleCreateSeat = async (req: Request, res: Response) => {
       .json({ message: `Something went wrong in creating new seat ${error}` });
   }
 };
-
 
 const handleGetAllSeats = async (req: Request, res: Response) => {
   try {
@@ -135,9 +134,9 @@ const handleAutoCreateSeats = async (req: Request, res: Response) => {
   try {
     const result = await autoCreateSeats(
       roomId as string,
-      (vipRows as string).split(','),
-      (regularRows as string).split(','),
-      (doubleRows as string).split(','),
+      (vipRows as string).split(","),
+      (regularRows as string).split(","),
+      (doubleRows as string).split(","),
       Number(columns)
     );
 
@@ -160,9 +159,9 @@ const handleAutoCreateSeats = async (req: Request, res: Response) => {
 };
 
 const handleGetNumberSeatInRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
+  const roomCode = req.query.roomCode as string;
   try {
-    const getNumberSeatInRoom = await numberSeatInRoom(roomId);
+    const getNumberSeatInRoom = await numberSeatInRoom(roomCode);
     if (getNumberSeatInRoom.errCode === 0) {
       res.status(200).json({
         errCode: getNumberSeatInRoom.errCode,
@@ -183,9 +182,9 @@ const handleGetNumberSeatInRoom = async (req: Request, res: Response) => {
 };
 
 const handleGetNumberRowAndRow = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
+  const roomCode = req.query.roomCode as string;
   try {
-    const getNumberRowAndRow = await getRowAndColumnInRoom(roomId);
+    const getNumberRowAndRow = await getRowAndColumnInRoom(roomCode);
     if (getNumberRowAndRow.errCode === 0) {
       res.status(200).json({
         errCode: getNumberRowAndRow.errCode,
@@ -207,10 +206,10 @@ const handleGetNumberRowAndRow = async (req: Request, res: Response) => {
 };
 
 const handleGetSeatInOneRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
-  console.log("Check roomId in handle get Seat in room : ", roomId);
+  const roomCode = req.query.roomCode as string;
+  console.log("Check roomCode in handle get Seat in room : ", roomCode);
   try {
-    const seatInOneRoom = await getSeatInRoom(roomId);
+    const seatInOneRoom = await getSeatInRoom(roomCode);
     if (seatInOneRoom.errCode === 0) {
       res.status(200).json({
         errCode: seatInOneRoom.errCode,
@@ -319,5 +318,5 @@ export default {
   handleGetNumberRowAndRow,
   handleGetSeatInOneRoom,
   handleCreateMultipleSeat,
-  handleEditMultipleSeat
+  handleEditMultipleSeat,
 };

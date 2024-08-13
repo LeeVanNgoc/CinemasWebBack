@@ -1,5 +1,6 @@
 import User from "../models/User";
 import bcrypt from "bcryptjs";
+import { Op } from "sequelize";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -14,7 +15,7 @@ const hashUserPassword = async (password: string) => {
 
 const setDecentralization = async (role: string) => {
   try {
-    if (role !== "admin") {
+    if (role !== "admin" && role !== "staff" && role !== "headquaters") {
       role = "user";
     }
     return role;
@@ -79,6 +80,7 @@ export const createUser = async (data: any) => {
         birthYear: data.birthYear,
         phonenumber: data.phonenumber,
         role: role,
+        city: data.city,
         createdAt: new Date(),
         updatedAt: new Date(),
       });
@@ -103,10 +105,10 @@ export const createUser = async (data: any) => {
   }
 };
 
-export const deleteUser = async (userId: number) => {
+export const deleteUser = async (userCode: string) => {
   try {
     const user = await User.findOne({
-      where: { userId: userId },
+      where: { userCode: userCode },
     });
 
     if (!user) {
@@ -131,16 +133,16 @@ export const deleteUser = async (userId: number) => {
 };
 
 export const editUser = async (data: any) => {
-  const userId = data.userId;
+  const userCode = data.userCode;
   try {
-    if (!userId) {
+    if (!userCode) {
       return {
         errCode: 4,
         message: "Missing required parameters!",
       };
     }
 
-    const user = await User.findOne({ where: { userId: userId } });
+    const user = await User.findOne({ where: { userCode: userCode } });
 
     if (!user) {
       return {
@@ -168,15 +170,15 @@ export const editUser = async (data: any) => {
   }
 };
 
-export const getUserById = async (userId: number) => {
+export const getUserById = async (userCode: string) => {
   let users: any = "";
   try {
     users = await User.findOne({
       where: {
-        userId: userId,
+        userCode: userCode,
       },
       attributes: [
-        "userId",
+        "userCode",
         "email",
         "firstName",
         "lastName",
@@ -286,6 +288,44 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
     return {
       errCode: 3,
       message: `Error login: ${error}`,
+    };
+  }
+};
+
+export const getUserByCity = async (city: string) => {
+  try {
+    const users = await User.findAll({
+      where: {
+        [Op.and]: [
+          {
+            [Op.or]: [
+              { city: city },
+              { city: { [Op.is]: null } },
+              { city: { [Op.eq]: "" } },
+            ],
+          },
+          { role: { [Op.ne]: "headquaters" } }, // Loại bỏ role là 'headquaters'
+        ],
+      },
+      attributes: [
+        "userCode",
+        "email",
+        "birthYear",
+        "userName",
+        "role",
+        "phonenumber",
+      ],
+      raw: true,
+    });
+    return {
+      errCode: 0,
+      message: "Get users by city success",
+      users: users,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error get users by city: ${error}`,
     };
   }
 };

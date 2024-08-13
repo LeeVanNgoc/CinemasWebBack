@@ -4,7 +4,7 @@ import Theater from "./Theater";
 class Room extends Model {
   public roomId!: number;
   public roomCode!: string;
-  public theaterId!: number;
+  public theaterCode!: string;
   public ticketId!: number;
   public numberSeats!: number;
   public type!: string;
@@ -23,12 +23,12 @@ Room.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    theaterId: {
-      type: DataTypes.INTEGER,
+    theaterCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Theater,
-        key: "theaterId",
+        key: "theaterCode",
       },
     },
     type: {

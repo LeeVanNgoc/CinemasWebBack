@@ -1,5 +1,5 @@
-import { threadId } from "worker_threads";
 import Theater from "../models/Theater";
+import { getUserByCity } from "./userService";
 
 // Create a new theater
 export const createTheater = async (data: any) => {
@@ -69,29 +69,6 @@ export const getAllTheaters = async () => {
     return {
       errCode: 3,
       message: `Error get all theaters ${error}`,
-    };
-  }
-};
-
-// Get a specific theater
-export const getTheaterById = async (theaterID: number) => {
-  try {
-    const theater = await Theater.findByPk(theaterID);
-    if (!theater) {
-      return {
-        errCode: 1,
-        message: "Theater not found",
-      };
-    }
-    return {
-      theater,
-      errCode: 0,
-      message: "Get theater successfuly",
-    };
-  } catch (error) {
-    return {
-      errCode: 3,
-      message: `Error get theater by id ${error}`,
     };
   }
 };
@@ -170,11 +147,11 @@ export const deleteTheater = async (id: number) => {
   }
 };
 
-// Get theaterCode by theaterId
-export const getTheaterCodeById = async (theaterId: number) => {
+// Get theater by theaterCode
+export const getTheaterByCode = async (theaterCode: string) => {
   try {
     const theater = await Theater.findOne({
-      where: { theaterId: theaterId },
+      where: { theaterCode: theaterCode },
       attributes: ["theaterCode"],
       raw: true,
     });
@@ -185,7 +162,7 @@ export const getTheaterCodeById = async (theaterId: number) => {
       };
     }
     return {
-      theaterCode: theater.theaterCode,
+      theater: theater,
       errCode: 0,
       message: "Get theaterCode successfuly",
     };
@@ -193,6 +170,41 @@ export const getTheaterCodeById = async (theaterId: number) => {
     return {
       errCode: 3,
       message: `Error get theaterCode by id ${error}`,
+    };
+  }
+};
+
+export const getUserByTheaterCity = async (name: string) => {
+  try {
+    const theaterCity = await Theater.findOne({
+      where: { name: name },
+      attributes: ["city"],
+      raw: true,
+    });
+    if (theaterCity) {
+      const city = theaterCity.city;
+      const users = await getUserByCity(city);
+      if (users) {
+        return {
+          users,
+          errCode: 0,
+          message: "Get users by theater city successfuly",
+        };
+      } else {
+        return {
+          errCode: 1,
+          message: "No users found in this city",
+        };
+      }
+    }
+    return {
+      errCode: 1,
+      message: "Theater not found",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error get users by theater city ${error}`,
     };
   }
 };

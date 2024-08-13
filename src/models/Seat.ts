@@ -1,10 +1,10 @@
-import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/connectDB';
-import Room from './Room';
+import { Model, DataTypes } from "sequelize";
+import sequelize from "../config/connectDB";
+import Room from "./Room";
 
 class Seat extends Model {
   public seatId!: number;
-  public seatCode!: string;
+  // public seatCode!: string;
   public type!: string;
   public roomId!: string;
   public row!: string;
@@ -16,49 +16,47 @@ class Seat extends Model {
   }
 }
 
-Seat.init({
-  seatId: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-  },
-  seatCode: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  type: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  roomId: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    references: {
-      model: Room,
-      key: 'roomId',
+Seat.init(
+  {
+    seatId: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
+    },
+    // seatCode: {
+    //   type: DataTypes.STRING,
+    //   allowNull: false,
+    // },
+    type: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    roomCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Room,
+        key: "roomCode",
+      },
+    },
+    row: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    col: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    isAvailable: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
     },
   },
-  row: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  col: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  isAvailable: {
-    type: DataTypes.BOOLEAN,
-    allowNull: false,
-  },
-}, {
-  sequelize,
-  modelName: 'Seat',
-  timestamps: false,
-  hooks: {
-    beforeCreate: (seat, options) => {
-      seat.seatCode = Seat.generateSeatCode(seat.col, seat.row);
-    },
-  },
-});
+  {
+    sequelize,
+    modelName: "Seat",
+    timestamps: false,
+  }
+);
 
 export default Seat;
