@@ -2,13 +2,12 @@ import { Request, Response } from "express";
 import {
   createTheater,
   getAllTheaters,
-  getTheaterById,
+  getTheaterByCode,
   deleteTheater,
   updateTheater,
   getTheatersByCity,
-  getTheaterCodeById,
+  getUserByTheaterCity,
 } from "../services/theaterService";
-import { Theater } from "../models";
 
 const handleCreateTheater = async (req: Request, res: Response) => {
   const data = req.query;
@@ -77,10 +76,15 @@ const handleDeleteTheater = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetTheaterById = async (req: Request, res: Response) => {
-  const theaterId = Number(req.query.theaterId);
+const handleGetTheaterByCode = async (req: Request, res: Response) => {
+  const theaterCode = req.query.theaterCode as string;
+  if (!theaterCode) {
+    return res
+      .status(400)
+      .json({ errCode: 2, message: "Invalid theater code" });
+  }
   try {
-    const result = await getTheaterById(theaterId);
+    const result = await getTheaterByCode(theaterCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -145,15 +149,15 @@ const handleUpdateTheater = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetTheaterCodeById = async (req: Request, res: Response) => {
-  const theaterId = Number(req.query.theaterId);
+const handleGetUserInTheater = async (req: Request, res: Response) => {
+  const name = req.query.name as string;
   try {
-    const result = await getTheaterCodeById(theaterId);
+    const result = await getUserByTheaterCity(name);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
         message: result.message,
-        theaterCode: result.theaterCode,
+        users: result.users,
       });
     } else {
       res.status(400).json({
@@ -163,7 +167,7 @@ const handleGetTheaterCodeById = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      error: `Something went wrong in getting theater code by id ${error}`,
+      error: `Something went wrong in getting user in theater ${error}`,
     });
   }
 };
@@ -172,8 +176,8 @@ export default {
   handleCreateTheater,
   handleGetAllTheaters,
   handleDeleteTheater,
-  handleGetTheaterById,
+  handleGetTheaterByCode,
   handleUpdateTheater,
   handleGetTheaterByCity,
-  handleGetTheaterCodeById,
+  handleGetUserInTheater,
 };

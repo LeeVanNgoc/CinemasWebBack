@@ -9,7 +9,7 @@ import {
   numberSeatInRoom,
   getRowAndColumnInRoom,
   getSeatInRoom,
-  createMultipleSeat
+  createMultipleSeat,
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -33,7 +33,6 @@ const handleCreateSeat = async (req: Request, res: Response) => {
       .json({ message: `Something went wrong in creating new seat ${error}` });
   }
 };
-
 
 const handleGetAllSeats = async (req: Request, res: Response) => {
   try {
@@ -134,9 +133,9 @@ const handleAutoCreateSeats = async (req: Request, res: Response) => {
   try {
     const result = await autoCreateSeats(
       roomId as string,
-      (vipRows as string).split(','),
-      (regularRows as string).split(','),
-      (doubleRows as string).split(','),
+      (vipRows as string).split(","),
+      (regularRows as string).split(","),
+      (doubleRows as string).split(","),
       Number(columns)
     );
 
@@ -159,9 +158,9 @@ const handleAutoCreateSeats = async (req: Request, res: Response) => {
 };
 
 const handleGetNumberSeatInRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
+  const roomCode = req.query.roomCode as string;
   try {
-    const getNumberSeatInRoom = await numberSeatInRoom(roomId);
+    const getNumberSeatInRoom = await numberSeatInRoom(roomCode);
     if (getNumberSeatInRoom.errCode === 0) {
       res.status(200).json({
         errCode: getNumberSeatInRoom.errCode,
@@ -278,5 +277,5 @@ export default {
   handleGetNumberSeatInRoom,
   handleGetNumberRowAndRow,
   handleGetSeatInOneRoom,
-  handleCreateMultipleSeat
+  handleCreateMultipleSeat,
 };

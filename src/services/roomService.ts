@@ -1,5 +1,8 @@
+import { error, log } from "console";
 import Room from "../models/Room";
-import { getTheaterCodeById } from "../services/theaterService";
+import { getTheaterByCode } from "../services/theaterService";
+import { numberSeatInRoom } from "../services/seatsService";
+
 export const createRoom = async (data: any) => {
   try {
     const existingIds = await Room.findAll({
@@ -38,7 +41,7 @@ export const createRoom = async (data: any) => {
     const newRoom = await Room.create({
       roomId: newId,
       roomCode: newCode,
-      theaterId: data.theaterId,
+      theaterCode: data.theaterCode,
       type: data.type,
       numberSeats: data.numberSeats,
       isAvailable: data.isAvailable !== undefined ? data.isAvailable : true,
@@ -60,6 +63,44 @@ export const createRoom = async (data: any) => {
     return {
       errCode: 3,
       message: `Error creating room: ${error}`,
+    };
+  }
+};
+
+export const updateNumberSeatInRoom = async (roomCode: string) => {
+  try {
+    const seats = await numberSeatInRoom(roomCode);
+    const numberSeat = seats.numberSeat;
+    console.log(numberSeat);
+
+    const room = await Room.findOne({
+      where: { roomCode: roomCode },
+    });
+
+    if (!room) {
+      return {
+        errCode: 1,
+        message: "Room not found",
+      };
+    }
+    if (numberSeat === 0) {
+      return {
+        errCode: 2,
+        message: "Room has no seats",
+      };
+    } else {
+      room.numberSeats = numberSeat || room.numberSeats;
+      await room.save();
+      return {
+        room,
+        errCode: 0,
+        message: "update complete number seats",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting number of seats in room by code ${error}`,
     };
   }
 };
@@ -150,30 +191,32 @@ export const getRoomById = async (roomId: number) => {
   }
 };
 
-export const getRoomInTheater = async (theaterId: number) => {
+export const getRoomInTheater = async (theaterCode: string) => {
   try {
+    console.log(theaterCode);
+
     const roomsCheck = await Room.findAll({
-      where: { theaterId: theaterId },
+      where: { theaterCode: theaterCode },
       raw: true,
       attributes: [
         "roomCode",
-        "theaterId",
+        "theaterCode",
         "type",
         "numberSeats",
         "isAvailable",
       ],
     });
+
     if (roomsCheck.length > 0) {
       let temporaryRooms: any[] = [];
       for (const room of roomsCheck) {
-        const theaterId: number = room.theaterId;
+        const theaterCode: string = room.theaterCode;
 
-        const theaterCode = await getTheaterCodeById(theaterId);
-
-        if (theaterCode) {
+        const theater = await getTheaterByCode(theaterCode);
+        if (theater) {
           temporaryRooms.push({
             roomCode: room.roomCode,
-            theaterCode: theaterCode.theaterCode,
+            theaterCode: theater.theater?.theaterCode,
             type: room.type,
             numberSeats: room.numberSeats,
             isAvailable: true,

@@ -4,14 +4,15 @@ import sequelize from "../config/connectDB";
 class User extends Model {
   public userId!: number;
   public userCode!: string;
+  public email!: string;
+  public password!: string;
   public firstName!: string;
   public lastName!: string;
   public userName!: string;
-  public email!: string;
-  public password!: string;
+  public phonenumber!: string;
   public birthYear!: number;
   public role!: string;
-  public phonenumber!: string;
+  public city!: string;
 }
 
 User.init(
@@ -55,6 +56,10 @@ User.init(
       allowNull: false,
     },
     role: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    city: {
       type: DataTypes.STRING,
       allowNull: false,
     },

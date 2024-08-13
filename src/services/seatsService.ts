@@ -62,7 +62,7 @@ export const createSeat = async (data: any) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: "Create seat failed",
+      message: `Create seat failed by error ${error}`,
     };
   }
 };
@@ -163,9 +163,9 @@ export const deleteSeat = async (seatId: number) => {
 };
 
 //Get number seat of one room
-export const numberSeatInRoom = async (roomId: number) => {
+export const numberSeatInRoom = async (roomCode: string) => {
   try {
-    const seats = await Seat.findAll({ where: { roomId: roomId } });
+    const seats = await Seat.findAll({ where: { roomCode: roomCode } });
     return {
       numberSeat: seats.length,
       errCode: 0,
@@ -287,7 +287,6 @@ export const autoCreateSeats = async (
     };
   }
 };
-
 
 export const getSeatInRoom = async (roomId: number) => {
   try {
