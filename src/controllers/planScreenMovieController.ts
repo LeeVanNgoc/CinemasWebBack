@@ -34,7 +34,7 @@ const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
 
 const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const planScreenMovieCode = req.query.planScreenMovieCode as string;
-  const roomCode = req.query.roomCode  as string;
+  const roomCode = req.query.roomCode as string;
   const movieCode = req.query.movieCode as String;
   const dateScreen = req.query.dateScreen as string;
   const times = req.query.times as string;
@@ -189,13 +189,10 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetplanScreenMovieCodeForCreateTicket = async (
-  req: Request,
-  res: Response
-) => {
+const handleGetplanScreenMovieCodeForCreateTicket = async (req: Request, res: Response) => {
   const data = {
     roomCode: req.query.roomCode as string,
-    movieCode: req.query.movieId as string,
+    movieCode: req.query.movieCode as string,
     startTime: req.query.startTime as string,
     dateScreen: req.query.dateScreen as string,
   };
@@ -216,7 +213,7 @@ const handleGetplanScreenMovieCodeForCreateTicket = async (
     }
   } catch (error) {
     res.status(500).json({
-      message: `Error in handle get plan screen movie id for create ticket ${error}`,
+      message: `Error in handle get plan screen movie code for create ticket ${error}`,
     });
   }
 };

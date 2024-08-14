@@ -205,7 +205,7 @@ Quy tặc gán errCode:
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 
 	API lấy id lịch chiếu để tạo vé:
-        - 	router.get('/get-all-plan-screen-id-for-create-ticket');
+        - 	router.get('/get-all-plan-screen-code-for-create-ticket');
         - 	Input : + roomId
 					+ movieId
 					+ startTime
