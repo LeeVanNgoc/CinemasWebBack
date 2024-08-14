@@ -10,7 +10,7 @@ class Movie extends Model {
   public duration!: number;
   public country!: string;
   public releaseDate!: DateOnlyDataType;
-  public genreId!: number;
+  public genreCode!: number;
   public image!: string;
 }
 

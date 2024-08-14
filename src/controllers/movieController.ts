@@ -4,7 +4,8 @@ import {
   deleteMovie,
   editMovie,
   getAllMovies,
-  getMovieById,
+  getMovieByCode,
+  getMovieByTitle,
 } from "../services/movieService";
 
 const handleCreateMovie = async (req: Request, res: Response) => {
@@ -67,30 +68,26 @@ const handleCreateMovie = async (req: Request, res: Response) => {
         .status(400)
         .json({ errCode: result.errCode, error: result.message });
     }
-    res
-      .status(201)
-      .json({
-        errCode: result.errCode,
-        message: result.message,
-        movie: result.movie,
-      });
+    res.status(201).json({
+      errCode: result.errCode,
+      message: result.message,
+      movie: result.movie,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        errCode: 3,
-        error: `Something went wrong in creating movies: ${error}`,
-      });
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in creating movies: ${error}`,
+    });
   }
 };
 
 const handleDeleteMovie = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieId);
-  if (isNaN(movieId)) {
+  const movieCode = req.query.movieCode as string;
+  if (!movieCode) {
     return res.status(400).json({ errCode: 2, error: "Invalid movie ID" });
   }
   try {
-    const result = await deleteMovie(movieId);
+    const result = await deleteMovie(movieCode);
     if (result.errCode !== 0) {
       return res
         .status(401)
@@ -98,17 +95,15 @@ const handleDeleteMovie = async (req: Request, res: Response) => {
     }
     res.status(200).json({ errCode: result.errCode, message: result.message });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        errCode: 3,
-        error: `Something went wrong in deleting movies: ${error}`,
-      });
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in deleting movies: ${error}`,
+    });
   }
 };
 
 const handleEditMovie = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieId);
+  const movieCode = req.query.movieCode as string;
   const title = req.query.title as string;
   const description = req.query.description as string;
   const duration = req.query.duration as string;
@@ -117,10 +112,10 @@ const handleEditMovie = async (req: Request, res: Response) => {
   const releaseDate = req.query.releaseDate as string;
   const image = req.query.image as string;
 
-  if (isNaN(movieId)) {
+  if (!movieCode) {
     return res
       .status(400)
-      .json({ errCode: 2, error: "Missing movieId parameter" });
+      .json({ errCode: 2, error: "Missing movieCode parameter" });
   }
   if (!title) {
     return res
@@ -160,7 +155,7 @@ const handleEditMovie = async (req: Request, res: Response) => {
 
   try {
     const result = await editMovie({
-      movieId,
+      movieCode,
       title,
       description,
       releaseDate,
@@ -174,20 +169,16 @@ const handleEditMovie = async (req: Request, res: Response) => {
         .status(404)
         .json({ errCode: result.errCode, error: result.message });
     }
-    res
-      .status(200)
-      .json({
-        errCode: result.errCode,
-        message: result.message,
-        movie: result.movie,
-      });
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      movie: result.movie,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        errCode: 3,
-        error: `Something went wrong in editing movies: ${error}`,
-      });
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in editing movies: ${error}`,
+    });
   }
 };
 
@@ -199,49 +190,69 @@ const handleGetAllMovies = async (req: Request, res: Response) => {
         .status(400)
         .json({ errCode: result.errCode, error: result.message });
     }
-    res
-      .status(200)
-      .json({
-        errCode: result.errCode,
-        message: result.message,
-        movies: result.movies,
-      });
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      movies: result.movies,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        errCode: 3,
-        error: `Something went wrong in getting movies: ${error}`,
-      });
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting movies: ${error}`,
+    });
   }
 };
 
-const handleGetMovieById = async (req: Request, res: Response) => {
-  const movieId = Number(req.query.movieId);
-  if (isNaN(movieId)) {
-    return res.status(400).json({ errCode: 2, error: "Invalid movie ID" });
+const handleGetMovieByCode = async (req: Request, res: Response) => {
+  const movieCode = req.query.movieCode as string;
+  if (!movieCode) {
+    return res.status(400).json({
+      errCode: 2,
+      error: `Invalid movie Code, movieCode is ${movieCode}`,
+    });
   }
   try {
-    const result = await getMovieById(movieId);
+    const result = await getMovieByCode(movieCode);
     if (result.errCode !== 0) {
       return res
         .status(404)
         .json({ errCode: result.errCode, error: result.message });
     }
-    res
-      .status(200)
-      .json({
-        errCode: result.errCode,
-        message: result.message,
-        movie: result.movie,
-      });
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      movie: result.movie,
+    });
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        errCode: 3,
-        error: `Something went wrong in getting movie: ${error}`,
-      });
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting movie: ${error}`,
+    });
+  }
+};
+
+const handleGetMovieByTitle = async (req: Request, res: Response) => {
+  const title = req.query.title as string;
+  if (title) {
+    return res.status(400).json({ errCode: 2, error: "Invalid movie ID" });
+  }
+  try {
+    const result = await getMovieByTitle(title);
+    if (result.errCode !== 0) {
+      return res
+        .status(404)
+        .json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      movie: result.movie,
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting movie: ${error}`,
+    });
   }
 };
 
@@ -250,5 +261,6 @@ export default {
   handleDeleteMovie,
   handleEditMovie,
   handleGetAllMovies,
-  handleGetMovieById,
+  handleGetMovieByCode,
+  handleGetMovieByTitle,
 };

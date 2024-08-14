@@ -94,12 +94,18 @@ Quy tặc gán errCode:
         - 	Output: + errCode: 0 (lấy thành công) && tất cả bản ghi phim
                   	+ errCode: 1 (không tìm thấy phim nào)
 
-    API lấy phim theo id:
-        - 	router.get('/get-movie-by-id');
-        - 	Input : + movieId (number)
+    API lấy phim theo mã phim:
+        - 	router.get('/get-movie-by-code');
+        - 	Input : + movieCode (string)
         - 	Output: + errCode: 0 (lấy thành công) && bản ghi phim
                   	+ errCode: 1 (không tìm thấy phim)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
+	API lấy phim theo tên:
+		-	router.get("/get-movie-by-title", movieController.handleGetMovieByTitle);
+		-	Input : + title (string)
+		-	Output: + errCode: 0 (lấy thành công) && bản ghi
+					+ errCode: 1 (không tìm thấy phim)
+					+ errCode: 3 (lỗi khi lấy dữ liệu) + lỗi
 
     Liên kết đường dẫn:
         - 	app.use('/api/movie', router);
@@ -387,6 +393,18 @@ Quy tặc gán errCode:
 																		},]
 					 + errCode: 1 (không tìm thấy phòng)
 					 + errCode: 3 (lỗi khi lấy dữ liệu)
+
+	API tự động update số lượng ghế được tạo
+		-	router.get(
+    "/update-number-seat-in-room",
+    roomController.handleUpdateNumberSeatInRoom
+  );
+		-	Input : roomCode (string)
+		-	Output:
+				+ errCode: 0 (cập nhật thành công) + dữ liệu phòng
+				+ errCode: 1 (Ko tìm thấy phòng)
+				+ errCode: 2 (Phòng ko có ghế)
+				+ errCode: 3 (Lỗi khi cập nhật )+ lỗi
     Liên kết đường dẫn:
         - 	app.use('/api/room', router);
 
