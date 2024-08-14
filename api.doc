@@ -171,14 +171,14 @@ Quy tặc gán errCode:
 
     API xoá lịch chiếu:
         - 	router.delete('/delete-plan-screen-movie');
-        - 	Input : + planScreenMovieId (number)
+        - 	Input : + planScreenMovieCode (string)
         - 	Output: + errCode: 0 (xoá thành công)
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi xoá)
 
     API cập nhật lịch chiếu:
         - 	router.put('/edit-plan-screen-movie');
-        - 	Input : + planScreenMovieId (number)
+        - 	Input : + planScreenMovieCode (string)
 					+ roomId: id phòng chiếu (number)
                  	+ movieId (number) 
 					+ dateScreen (YYYY-MM-DD)
@@ -197,12 +197,9 @@ Quy tặc gán errCode:
                   	+ errCode: 1 (không tìm thấy lịch chiếu nào)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 
-    API lấy lịch chiếu theo id:
-        - 	router.get('/get-plan-screen-movie-by-id');
-        - 	Input : + roomId
-					+ movieId
-					+ startTime
-					+ dateScreen
+    API lấy lịch chiếu theo code:
+        - 	router.get('/get-plan-screen-movie-by-code');
+        - 	Input : + planScreenMovieCode (string)
         - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)

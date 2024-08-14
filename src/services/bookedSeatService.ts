@@ -8,11 +8,11 @@ const getRoomInPlanScreen = async (planScreenMovieId: number) => {
   try {
     const room = await PlanScreenMovie.findOne({
       where: { planSCreenMovieId: planScreenMovieId },
-      attributes: ["roomId"],
+      attributes: ["roomCode"],
     });
     if (room) {
       return {
-        roomId: room.roomId,
+        roomCode: room.roomCode,
         errCode: 0,
         message: "Get room successfuly",
       };
@@ -78,7 +78,7 @@ export const checkExistSeatWasBooked = async (data: any) => {
         planSCreenMovieId: data.planSCreenMovieId,
         row: data.row,
         col: data.col,
-        roomId: data.roomId,
+        roomCode: data.roomCode,
       },
     });
     if (bookedSeat) {
@@ -154,7 +154,7 @@ export const createNewBookedSeat = async (data: any) => {
           planScreenMovieId: planScreenMovieId,
           row: row,
           col: cols[index],
-          roomId: data.roomId,
+          roomCode: data.roomCode,
         };
       });
       const newBookedSeat = await BookedSeat.bulkCreate(bookedSeats);
