@@ -87,10 +87,10 @@ export const getAllPrices = async () => {
 };
 
 // Get a specific price record
-export const getPriceById = async (priceId: number) => {
+export const getPriceByCode = async (priceCode: string) => {
   try {
     const price = await Price.findOne({
-      where: { priceId: priceId },
+      where: { priceCode: priceCode },
       raw: true,
     });
     if (!price) {
@@ -115,10 +115,10 @@ export const getPriceById = async (priceId: number) => {
 
 // Update a specific price record
 export const updatePrice = async (data: any) => {
-  const priceId = data.priceId;
+  const priceCode = data.priceCode;
   try {
     const price = await Price.findOne({
-      where: { priceId: priceId },
+      where: { priceCode: priceCode },
     });
     if (!price) {
       return {
@@ -145,10 +145,10 @@ export const updatePrice = async (data: any) => {
 };
 
 // Delete a specific price record
-export const deletePrice = async (priceId: number) => {
+export const deletePrice = async (priceCode: string) => {
   try {
     const price = await Price.findOne({
-      where: { priceId },
+      where: { priceCode: priceCode },
     });
     if (!price) {
       return {

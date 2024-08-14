@@ -37,7 +37,7 @@ export const createTrailer = async (data: any) => {
     const newTrailer = await Trailer.create({
       trailerId: newId,
       trailerCode: newCode,
-      movieId: data.movieId,
+      movieCode: data.movieCode,
       link: data.link,
     });
     return {
@@ -52,10 +52,10 @@ export const createTrailer = async (data: any) => {
   }
 };
 
-export const getTrailerById = async (trailerId: number) => {
+export const getTrailerByCode = async (trailerCode: string) => {
   try {
     const trailer = await Trailer.findOne({
-      where: { trailerId: trailerId },
+      where: { trailerCode: trailerCode },
       raw: true,
     });
 
@@ -78,10 +78,10 @@ export const getTrailerById = async (trailerId: number) => {
   }
 };
 
-export const getTrailerByMovieId = async (movieId: number) => {
+export const getTrailerByMovieCode = async (movieCode: string) => {
   try {
     const trailer = await Trailer.findAll({
-      where: { movieId: movieId },
+      where: { movieCode: movieCode },
       raw: true,
     });
 
@@ -107,7 +107,7 @@ export const getTrailerByMovieId = async (movieId: number) => {
 export const getAllTrailer = async () => {
   try {
     const trailers = await Trailer.findAll({
-      attributes: ["trailerId", "movieId", "link"],
+      attributes: ["trailerCode", "movieCode", "link"],
       raw: true,
     });
 
@@ -132,10 +132,10 @@ export const getAllTrailer = async () => {
   }
 };
 
-export const deleteTrailer = async (trailerId: number) => {
+export const deleteTrailer = async (trailerCode: string) => {
   try {
     const trailer = await Trailer.findOne({
-      where: { trailerId: trailerId },
+      where: { trailerCode: trailerCode },
       raw: true,
     });
     if (!trailer) {
@@ -163,16 +163,16 @@ export const deleteTrailer = async (trailerId: number) => {
 };
 
 export const updateTrailer = async (data: any) => {
-  const trailerId = data.trailerId;
+  const trailerCode = data.trailerCode;
   try {
-    if (!trailerId) {
+    if (!trailerCode) {
       return {
         errCode: 2,
         message: "Missing required parameters!",
       };
     }
     const trailer = await Trailer.findOne({
-      where: { trailerId: trailerId },
+      where: { trailerCode: trailerCode },
     });
     if (!trailer) {
       return {
@@ -180,7 +180,7 @@ export const updateTrailer = async (data: any) => {
         message: "Trailer not found",
       };
     }
-    trailer.movieId = data.movieId || trailer.movieId;
+    trailer.movieCode = data.movieCode || trailer.movieCode;
     trailer.link = data.link || trailer.link;
     await trailer.save();
     return {
