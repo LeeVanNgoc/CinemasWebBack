@@ -80,7 +80,7 @@ export const checkExistSeatWasBooked = async (data: any) => {
         planSCreenMovieId: data.planSCreenMovieId,
         row: data.row,
         col: data.col,
-        roomId: data.roomId,
+        roomCode: data.roomCode,
       },
     });
     if (bookedSeat) {
@@ -156,7 +156,7 @@ export const createNewBookedSeat = async (data: any) => {
           planScreenMovieCode: planScreenMovieCode,
           row: row,
           col: cols[index],
-          roomId: data.roomId,
+          roomCode: data.roomCode,
         };
       });
       const newBookedSeat = await BookedSeat.bulkCreate(bookedSeats);
