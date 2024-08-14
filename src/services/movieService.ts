@@ -68,9 +68,9 @@ export const createMovie = async (data: {
   }
 };
 
-export const deleteMovie = async (movieId: number) => {
+export const deleteMovie = async (movieCode: string) => {
   try {
-    const movie = await Movie.findOne({ where: { movieId } });
+    const movie = await Movie.findOne({ where: { movieCode: movieCode } });
     if (!movie) {
       return { errCode: 1, message: "Movie not found" };
     } else {
@@ -86,7 +86,7 @@ export const deleteMovie = async (movieId: number) => {
 };
 
 export const editMovie = async (data: {
-  movieId: number;
+  movieCode: string;
   title: string;
   description: string;
   releaseDate: string;
@@ -96,7 +96,7 @@ export const editMovie = async (data: {
   image: string;
 }) => {
   try {
-    const movie = await Movie.findOne({ where: { movieId: data.movieId } });
+    const movie = await Movie.findOne({ where: { movieCode: data.movieCode } });
     if (!movie) {
       return { errCode: 1, message: "Movie not found" };
     }
@@ -133,9 +133,31 @@ export const getAllMovies = async () => {
   }
 };
 
-export const getMovieById = async (movieId: number) => {
+export const getMovieByCode = async (movieCode: string) => {
   try {
-    const movie = await Movie.findOne({ where: { movieId } });
+    const movie = await Movie.findOne({ where: { movieCode: movieCode } });
+    if (!movie) {
+      return {
+        errCode: 1,
+        message: "Movie not found",
+      };
+    }
+    return {
+      errCode: 0,
+      message: "Get movie success",
+      movie,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting movie: ${error}`,
+    };
+  }
+};
+
+export const getMovieByTitle = async (title: string) => {
+  try {
+    const movie = await Movie.findOne({ where: { title: title } });
     if (!movie) {
       return {
         errCode: 1,
