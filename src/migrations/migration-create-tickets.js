@@ -14,8 +14,8 @@ module.exports = {
       userCode: {
         type: Sequelize.STRING,
       },
-      planScreenMovieId: {
-        type: Sequelize.INTEGER,
+      planScreenMovieCode: {
+        type: Sequelize.STRING,
       },
       seats: {
         type: Sequelize.TEXT,

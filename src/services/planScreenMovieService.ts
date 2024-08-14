@@ -31,7 +31,7 @@ export const checkplanScreenMovieCode = async (planScreenMovieCode: number) => {
 export const deletePlanScreenMovie = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieCode },
+      where: { planScreenMovieCode: planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found" };
@@ -50,7 +50,6 @@ export const deletePlanScreenMovie = async (planScreenMovieCode: string) => {
 export const editPlanScreenMovie = async (data: any) => {
   const { planScreenMovieCode, roomCode, movieCode, startTime, endTime, dateScreen } =
     data;
-
   try {
     if (!planScreenMovieCode) {
       return { errCode: 4, message: "Missing required parameters!" };
@@ -114,7 +113,7 @@ export const getAllPlanScreenMovies = async () => {
 export const getPlanScreenMovieByCode = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieCode },
+      where: { planScreenMovieCode: planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return {
@@ -336,6 +335,7 @@ export const getStartTime = async (data: any) => {
     return {
       errCode: 3,
       message: `Error getting startTime: ${error}`,
+
     };
   }
 };

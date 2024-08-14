@@ -5,7 +5,6 @@ class Room extends Model {
   public roomId!: number;
   public roomCode!: string;
   public theaterCode!: string;
-  public ticketId!: number;
   public numberSeats!: number;
   public type!: string;
   public isAvailable!: boolean;

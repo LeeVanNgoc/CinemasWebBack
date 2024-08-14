@@ -6,8 +6,8 @@ import PlanScreenMovie from "./PlanScreenMovie";
 class BookedSeat extends Model {
   public bookedSeatId!: number;
   public bookedSeatCode!: string;
-  public planScreenMovieId!: number;
-  public roomId!: number;
+  public planScreenMovieCode!: string;
+  public roomCode!: string;
   public row!: string;
   public col!: number;
 }
@@ -23,20 +23,20 @@ BookedSeat.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    planScreenMovieId: {
-      type: DataTypes.INTEGER,
+    planScreenMovieCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: "PlanScreenMovie",
-        key: "planScreenMovieId",
+        key: "planScreenMovieCode",
       },
     },
-    roomId: {
-      type: DataTypes.INTEGER,
+    roomCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Room,
-        key: "roomId",
+        key: "roomCode",
       },
     },
     row: {
@@ -55,6 +55,6 @@ BookedSeat.init(
   }
 );
 
-BookedSeat.belongsTo(Room, { foreignKey: "roomId" });
-BookedSeat.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieId" });
+BookedSeat.belongsTo(Room, { foreignKey: "roomCode" });
+BookedSeat.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieCode" });
 export default BookedSeat;

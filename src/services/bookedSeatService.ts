@@ -4,10 +4,10 @@ import Tickets from "../models/Tickets";
 import PlanScreenMovie from "../models/PlanScreenMovie";
 
 // Lấy phòng từ kế hoạch chiếu phim
-const getRoomInPlanScreen = async (planScreenMovieId: number) => {
+const getRoomInPlanScreen = async (planScreenMovieCode: string) => {
   try {
     const room = await PlanScreenMovie.findOne({
-      where: { planSCreenMovieId: planScreenMovieId },
+      where: { planSCreenMovieCode: planScreenMovieCode },
       attributes: ["roomCode"],
     });
     if (room) {
@@ -35,13 +35,15 @@ export const getRowAndColOfSeats = async (data: any) => {
   try {
     const ticket = await Tickets.findAll({
       where: {
-        ticketId: data.ticketId,
+        ticketCode: data.ticketCode,
       },
-      attributes: ["seats", "planScreenMovieId"],
+      attributes: ["seats", "planScreenMovieCode"],
     });
     if (ticket) {
-      const planScreenMovieIds = ticket.map((seat) => seat.planScreenMovieId);
-      const planScreenMovieId = planScreenMovieIds[0];
+      const planScreenMovieCodes = ticket.map(
+        (seat) => seat.planScreenMovieCode
+      );
+      const planScreenMovieCode = planScreenMovieCodes[0];
       const seats = ticket.map((ticket) => ticket.seats);
 
       const seatsData = seats.toString();
@@ -50,7 +52,7 @@ export const getRowAndColOfSeats = async (data: any) => {
       const rows = seatData.map((seat: string) => seat.trim()[0]);
       const cols = seatData.map((seat: string) => parseInt(seat.trim()[1]));
       return {
-        planScreenMovieId,
+        planScreenMovieCode,
         rows,
         cols,
         errCode: 0,
@@ -143,15 +145,15 @@ export const createNewBookedSeat = async (data: any) => {
     const ticket = await getRowAndColOfSeats(data);
 
     if (ticket.errCode === 0) {
-      const planScreenMovieId = Number(ticket.planScreenMovieId) || 0;
+      const planScreenMovieCode = String(ticket.planScreenMovieCode) || "";
       const rows = ticket.rows || [];
       const cols = ticket.cols || [];
-      const room = await getRoomInPlanScreen(planScreenMovieId);
+      const room = await getRoomInPlanScreen(planScreenMovieCode);
       const bookedSeats = rows.map((row: string, index: number) => {
         return {
           bookedSeatId: newId + index,
           bookedSeatCode: newCode + index,
-          planScreenMovieId: planScreenMovieId,
+          planScreenMovieCode: planScreenMovieCode,
           row: row,
           col: cols[index],
           roomCode: data.roomCode,

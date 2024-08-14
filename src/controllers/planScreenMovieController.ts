@@ -10,8 +10,8 @@ import {
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
-  const planScreenMovieCode = req.query.planScreenMovieCode as string ;
-  if (!(planScreenMovieCode)) {
+  const planScreenMovieCode = req.query.planScreenMovieCode as string;
+  if (!planScreenMovieCode) {
     return res
       .status(400)
       .json({ errCode: 2, error: "Invalid PlanScreenMovie Code" });
@@ -47,12 +47,17 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   }
   if (!movieCode) {
     return res.status(400).json({ errCode: 2, error: 'Missing movieCode parameter' });
+
   }
   if (!dateScreen) {
-    return res.status(400).json({ errCode: 2, error: 'Missing dateScreen parameter' });
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Missing dateScreen parameter" });
   }
   if (times.length === 0) {
-    return res.status(400).json({ errCode: 2, error: 'Missing times parameter' });
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Missing times parameter" });
   }
 
   let startTime, endTime;
@@ -111,13 +116,17 @@ const handleGetAllPlanScreenMovies = async (req: Request, res: Response) => {
 
 const handleGetPlanScreenMovieByCode = async (req: Request, res: Response) => {
   const planScreenMovieCode = req.query.planScreenMovieCode as string;
-  if (!(planScreenMovieCode)) {
-    return res.status(400).json({ errCode: 2, error: "Invalid PlanScreenMovie Code" });
+  if (!planScreenMovieCode) {
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Invalid PlanScreenMovie Code" });
   }
   try {
     const result = await getPlanScreenMovieByCode(planScreenMovieCode);
     if (result.errCode !== 0) {
-      return res.status(404).json({ errCode: result.errCode, error: result.message });
+      return res
+        .status(404)
+        .json({ errCode: result.errCode, error: result.message });
     }
     res.status(200).json({
       errCode: result.errCode,
@@ -133,8 +142,10 @@ const handleGetPlanScreenMovieByCode = async (req: Request, res: Response) => {
 };
 
 const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
+
   const roomCode = req.query.roomCode as string;
   const movieCode = req.query.movieCode as string;
+
   const dateScreen = req.query.dateScreen as string;
   const times = (req.query.times as string).split(",");
 
@@ -143,12 +154,13 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   }
   if (!movieCode) {
     return res.status(400).json({ errCode: 2, error: 'Missing movieCode parameter' });
+
   }
   if (!dateScreen) {
-    return res.status(400).json({ errCode: 2, error: 'Missing dateScreen parameter' });
+    return res.status(400).json({ errCode: 2, error: "Missing dateScreen parameter" });
   }
   if (times.length === 0) {
-    return res.status(400).json({ errCode: 2, error: 'Missing times parameter' });
+    return res.status(400).json({ errCode: 2, error: "Missing times parameter" });
   }
 
   try {
@@ -182,8 +194,8 @@ const handleGetplanScreenMovieCodeForCreateTicket = async (
   res: Response
 ) => {
   const data = {
-    roomCode: Number(req.query.roomCode),
-    movieCode: Number(req.query.movieCode),
+    roomCode: req.query.roomCode as string,
+    movieCode: req.query.movieId as string,
     startTime: req.query.startTime as string,
     dateScreen: req.query.dateScreen as string,
   };

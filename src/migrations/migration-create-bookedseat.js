@@ -12,11 +12,11 @@ module.exports = {
       bookedSeatCode: {
         type: Sequelize.STRING,
       },
-      planScreenMovieId: {
-        type: Sequelize.INTEGER,
+      planScreenMovieCode: {
+        type: Sequelize.STRING,
       },
-      roomId: {
-        type: Sequelize.INTEGER,
+      roomCode: {
+        type: Sequelize.STRING,
       },
       row: {
         type: Sequelize.STRING,
