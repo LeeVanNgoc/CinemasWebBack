@@ -6,7 +6,7 @@ import Seat from "./Seat";
 class Trailer extends Model {
   public trailerId!: number;
   public trailerCode!: string;
-  public movieId!: string;
+  public movieCode!: string;
   public link!: string;
 }
 
@@ -21,12 +21,12 @@ Trailer.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    movieId: {
-      type: DataTypes.INTEGER,
+    movieCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Movie,
-        key: "id",
+        key: "movieCode",
       },
     },
     link: {
