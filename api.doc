@@ -256,8 +256,8 @@ Quy tặc gán errCode:
 					+ errCode : 1 (không tìm thấy bản ghi tương ứng id)
 					+ errCode : 3 (lỗi khi cập nhật)
 	API lấy bản ghi :
-    	-	router.get('/get-price-by-id');
-		-	Input : + priceId : (id giá vé)
+    	-	router.get('/get-price-by-code');
+		-	Input : + priceCode : (mã giá vé)
 		-	Output: + errCode : 0 (Lấy thành công) && bản ghi tương ứng
 					+ errCode : 1 (Không tìm thấy bản ghi tương ứng)
 					+ errCode : 3 (Lỗi khi lấy bản ghi)
@@ -605,7 +605,7 @@ Quy tặc gán errCode:
 	API cập nhật dữ liệu rạp
 		router.put("/edit-theater);
 		-	Input :
-				+ theaterId : (number) (id của rạp)
+				+ theaterCode : (string) (Mã của rạp)
 				+ name : (string) (tên rạp)
 				+ address : (string) (địa chỉ)
 				+ city : (string) (tên thành phố)
@@ -616,15 +616,15 @@ Quy tặc gán errCode:
 	API xoá dữ liệu rạp :
 		router.delete("/delete-theater);
 		-	Input :
-				+ theaterId : (number) (id của rạp)
+				+ theaterCode : (string) (Mã của rạp)
 		-	Output:
 				+ errCode : 0 (xoá thành công)
 				+ errCode : 1 (Không tìm thấy rạp)
 				+ errCode : 3 (Lỗi khi xoá rạp)
-	API lấy rạp theo Id:
-		router.get("/get-theaters-by-id);
+	API lấy rạp theo Mã:
+		router.get("/get-theaters-by-code);
 		-	Input :
-				+ theaterId : (number) (id của rạp)
+				+ theaterCode : (string) (mã của rạp)
 		-	Output:
 				+ errCode : 0 (lấy thành công) && (bản ghi dữ liệu)
 				+ errCode : 1 (Ko tìm thấy rạp)
@@ -643,7 +643,7 @@ Quy tặc gán errCode:
 	API tạo mới vé :
 		router.post('/create-ticket);
 		-	Input :
-				+ userId : (number) (Id người dùng)
+				+ userCode : (string) (Mã người dùng)
 				+ planScreenMovieId : (number) (Id lịch chiếu)
 				+ seats : (number) (các ghế được đặt, cách nhau bởi dấu phẩy)
 				+ bank : (string) (tên ngân hàng (VCB, MB, VTB)) 
@@ -685,7 +685,7 @@ Quy tặc gán errCode:
 	API lấy vé theo Id
 		router.get('/get-list-tickets);
 		-	Input :
-				+ ticketId : Id của Vé
+				+ ticketCode : Mã của Vé
 		-	Output:
 				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
 				+ errCode : 1 (Không tồn tại vé)
@@ -693,7 +693,7 @@ Quy tặc gán errCode:
 	API lấy vé để tạo bill
 		router.get('/get-ticket-details);
 		-	Input :
-				+ ticketId : Id của Vé
+				+ ticketCode : Mã của Vé
 		-	Output:
 				+ errCode : 0 (Lấy thành công) && (bản ghi dữ liệu)
 				+ errCode : 1 (Không tồn tại vé)
@@ -705,7 +705,7 @@ Quy tặc gán errCode:
 	- API tạo trailer
 		router.post('/create-trailer);
 		-	Input :
-				+ movieId : (number) (Id film)
+				+ movieCode : (string) (Mã film)
 				+ link : (string) (Đường dẫn youtube)
 		-	Output:
 				+ errCode : 0 (Tạo thành công)
@@ -713,7 +713,7 @@ Quy tặc gán errCode:
 	- API xoá trailer:
 		router.delete('/delete-trailer);
 		-	Input :
-				+ trailerId : (number) (Id trailer)
+				+ trailerCode : (string) (Mã trailer)
 		-	Output:
 				+ errCode : 0 (Xoá thành công)
 				+ errCode : 1 (Ko tìm thấy trailer)
@@ -721,8 +721,8 @@ Quy tặc gán errCode:
 	- API cập nhật trailer:
 		router.put('/edit-trailer);
 		-	Input :
-				+ trailerId : (number) (Id trailer)
-				+ movieId : (number) (Id film)
+				+ trailerCode : (string) (Mã trailer)
+				+ movieCode : (string) (Mã film)
 				+ link : (string) (Đường dẫn youtube)
 		- 	Output:
 				+ errCode : 0 (Cập nhật thành công)
@@ -738,17 +738,17 @@ Quy tặc gán errCode:
 				+ errCode : 1 (Không tồn tại trailer)
 				+ errCode : 3 (Lỗi khi lấy trailer)
 	- API lấy trailer theo Id:
-		router.get('/get-trailer-by-id);
+		router.get('/get-trailer-by-code);
 		-	Input :
-				+ trailerId : (number) (Id trailer)
+				+ trailerCode : (string) (Mã trailer)
 		-	Output:
 				+ errCode : 0 (Lấy thành công) && (Bản ghi dữ liệu)
 				+ errCode : 1 (Không tồn tại trailer)
 				+ errCode : 3 (Lỗi khi lấy trailer)
-	- API lấy trailer theo id film
-		router.get('/get-trailer-by-movie-id);
+	- API lấy trailer theo mã film
+		router.get('/get-trailer-by-movie-code);
 		-	Input : 
-				+ movieId: (number) (Id film)
+				+ movieCode: (string) (Mã film)
 		-	Output:
 				+ errCode : 0 (Lấy thành công) && (Tất cả bản ghi)
 				+ errCode : 1 (Ko tìm thấy trailer nào)
@@ -783,7 +783,7 @@ Quy tặc gán errCode:
 	- API cập nhật người dùng
 		router.put('/edit-user);
 		-	Input:
-				+ userId : (number) (Id người dùng)
+				+ userCode : (string) (Mã người dùng)
 				+ email : (string) (Tên email)
 				+ password : (string) (Mật khẩu)
 				+ firstName : (string) (Họ người dùng)
@@ -797,10 +797,10 @@ Quy tặc gán errCode:
 				+ errCode : 1 (Không tìm thấy người dùng)
 				+ errCode : 4 (Id ko hợp lệ)
 				+ errCode : 3 (Lỗi khi cập nhật)
-	- API lấy người dùng theo Id:
-		router.get('/get-user-by-id);
+	- API lấy người dùng theo mã:
+		router.get('/get-user-by-code);
 		-	Input :
-				+ userId: (number) (Id người dùng)
+				+ userCode: (string) (M người dùng)
 		-	Output:
 				+ errCode : 0 (Lấy thành công) && (Bản ghi dữ liệu)
 				+ errCode : 3 (Lỗi khi lấy người dùng)

@@ -55,9 +55,9 @@ const handleGetAllTheaters = async (req: Request, res: Response) => {
 };
 
 const handleDeleteTheater = async (req: Request, res: Response) => {
-  const theaterId = Number(req.query.theaterId);
+  const theaterCode = req.query.theaterCode as string;
   try {
-    const result = await deleteTheater(theaterId);
+    const result = await deleteTheater(theaterCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,

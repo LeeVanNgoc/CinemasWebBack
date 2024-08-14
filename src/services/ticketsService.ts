@@ -39,7 +39,7 @@ export const createTickets = async (data: any) => {
     const newTicket = await Tickets.create({
       ticketId: newId,
       ticketCode: newCode,
-      userId: data.userId,
+      userCode: data.userCode,
       planScreenMovieId: data.planScreenMovieId,
       seats: data.seats,
       bank: data.bank,
@@ -106,7 +106,7 @@ export const editTicket = async (data: any) => {
       };
     }
 
-    ticket.userId = data.userId || ticket.userId;
+    ticket.userCode = data.userCode || ticket.userCode;
     ticket.planScreenMovieId =
       data.planScreenMovieId || ticket.planScreenMovieId;
     ticket.seats = data.seats || ticket.seats;
@@ -131,8 +131,8 @@ export const getListTicket = async () => {
   try {
     const tickets = await Tickets.findAll({
       attributes: [
-        "ticketId",
-        "userId",
+        "ticketCode",
+        "userCode",
         "planScreenMovieId",
         "seats",
         "bank",
@@ -161,19 +161,19 @@ export const getListTicket = async () => {
   }
 };
 
-export const getTicketById = async (ticketId: number) => {
+export const getTicketByCode = async (ticketCode: string) => {
   try {
-    if (!ticketId) {
+    if (!ticketCode) {
       return {
         errCode: 2,
-        message: "TicketId is required",
+        message: "TicketCode is required",
       };
     }
     const ticket = await Tickets.findOne({
-      where: { ticketId: ticketId },
+      where: { ticketCode: ticketCode },
       attributes: [
-        "ticketId",
-        "userId",
+        "ticketCode",
+        "userCode",
         "planScreenMovieId",
         "seats",
         "bank",
@@ -201,9 +201,9 @@ export const getTicketById = async (ticketId: number) => {
   }
 };
 
-export const getTicketByUserId = async (userId: number) => {
+export const getTicketByUserCode = async (userCode: string) => {
   try {
-    if (!userId) {
+    if (!userCode) {
       return {
         errCode: 2,
         message: "Missing required parameters",
@@ -212,7 +212,7 @@ export const getTicketByUserId = async (userId: number) => {
 
     const ticket = await Tickets.findAll({
       where: {
-        userId: userId,
+        userCode: userCode,
       },
       attributes: ["ticketId"],
       raw: true,
@@ -232,7 +232,7 @@ export const getTicketByUserId = async (userId: number) => {
       };
     }
   } catch (error) {
-    console.error("Error in getTicketByUserId:", error);
+    console.error("Error in getTicketByUserCode:", error);
     return {
       errCode: 3,
       message: `Error getting ticketId: ${error}`,
@@ -240,13 +240,13 @@ export const getTicketByUserId = async (userId: number) => {
   }
 };
 
-export const getTicketDetailsById = async (ticketId: number) => {
+export const getTicketDetailsById = async (ticketCode: string) => {
   try {
     const ticket = await Tickets.findOne({
-      where: { ticketId },
+      where: { ticketCode },
       attributes: [
-        "ticketId",
-        "userId",
+        "ticketCode",
+        "userCode",
         "seats",
         "bank",
         "totalPrice",

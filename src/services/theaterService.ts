@@ -100,7 +100,7 @@ export const getTheatersByCity = async (city: string) => {
 export const updateTheater = async (data: any) => {
   try {
     const theater = await Theater.findOne({
-      where: { theaterId: data.theaterId },
+      where: { theaterCode: data.theaterCode },
     });
     if (!theater) {
       return {
@@ -125,9 +125,9 @@ export const updateTheater = async (data: any) => {
 };
 
 // Delete a specific theater
-export const deleteTheater = async (id: number) => {
+export const deleteTheater = async (theaterCide: string) => {
   try {
-    const theater = await Theater.findByPk(id);
+    const theater = await Theater.findByPk(theaterCide);
     if (!theater) {
       return {
         errCode: 1,

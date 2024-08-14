@@ -11,8 +11,8 @@ module.exports = {
       ticketCode: {
         type: Sequelize.STRING,
       },
-      userId: {
-        type: Sequelize.INTEGER,
+      userCode: {
+        type: Sequelize.STRING,
       },
       planScreenMovieId: {
         type: Sequelize.INTEGER,

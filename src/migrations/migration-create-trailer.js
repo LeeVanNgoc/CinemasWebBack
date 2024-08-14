@@ -11,8 +11,8 @@ module.exports = {
       trailerCode: {
         type: Sequelize.STRING,
       },
-      movieId: {
-        type: Sequelize.INTEGER,
+      movieCode: {
+        type: Sequelize.STRING,
       },
       link: {
         type: Sequelize.TEXT,
