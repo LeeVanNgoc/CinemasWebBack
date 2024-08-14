@@ -18,8 +18,8 @@ const planScreenMovieRoutes = (app: Application) => {
     planScreenMovieController.handleGetAllPlanScreenMovies
   );
   router.get(
-    "/get-plan-screen-movie-by-id",
-    planScreenMovieController.handleGetPlanScreenMovieById
+    "/get-plan-screen-movie-by-code",
+    planScreenMovieController.handleGetPlanScreenMovieByCode
   );
   router.post(
     "/create-plan-screen-movie",

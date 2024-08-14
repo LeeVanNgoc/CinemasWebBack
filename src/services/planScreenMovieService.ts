@@ -28,10 +28,10 @@ export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
   }
 };
 
-export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
+export const deletePlanScreenMovie = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found" };
@@ -48,16 +48,16 @@ export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
 };
 
 export const editPlanScreenMovie = async (data: any) => {
-  const { planScreenMovieId, roomId, movieId, startTime, endTime, dateScreen } =
+  const { planScreenMovieCode, roomId, movieId, startTime, endTime, dateScreen } =
     data;
 
   try {
-    if (!planScreenMovieId) {
+    if (!planScreenMovieCode) {
       return { errCode: 4, message: "Missing required parameters!" };
     }
 
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found!" };
@@ -111,10 +111,10 @@ export const getAllPlanScreenMovies = async () => {
   }
 };
 
-export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
+export const getPlanScreenMovieByCode = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return {
@@ -154,12 +154,12 @@ export const createPlanScreenMovie = async (
     }
 
     const existingCodes = await PlanScreenMovie.findAll({
-      attributes: ["planScreenCode"],
-      order: [["planScreenCode", "ASC"]],
+      attributes: ["planScreenMovieCode"],
+      order: [["planScreenMovieCode", "ASC"]],
     });
 
     const codes = existingCodes.map(
-      (planScreenMovie) => planScreenMovie.planScreenCode
+      (planScreenMovie) => planScreenMovie.planScreenMovieCode
     );
     let newCode = "PSM001";
     if (newId < 10) {
@@ -217,7 +217,7 @@ export const createPlanScreenMovie = async (
       // Tạo PlanScreenMovie với giá trị mới
       const newPlanScreen = await PlanScreenMovie.create({
         planScreenMovieId: newId,
-        planScreenCode: newCode,
+        planScreenMovieCode: newCode,
         roomId,
         movieId,
         startTime,

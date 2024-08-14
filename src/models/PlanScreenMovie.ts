@@ -6,7 +6,7 @@ import Tickets from "./Tickets";
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;
-  public planScreenCode!: string;
+  public planScreenMovieCode!: string;
   public roomId!: number;
   public movieId!: number;
   public startTime!: TimeRanges;
