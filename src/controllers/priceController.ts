@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   createPrice,
   getAllPrices,
-  getPriceById,
+  getPriceByCode,
   updatePrice,
   deletePrice,
   getCost,
@@ -46,18 +46,16 @@ const handleGetAllPrices = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        message: `Something went wrong in get all price record ${error}`,
-      });
+    res.status(500).json({
+      message: `Something went wrong in get all price record ${error}`,
+    });
   }
 };
 
-const handleGetPriceById = async (req: Request, res: Response) => {
-  const priceId = Number(req.query.pricesId);
+const handleGetPriceByCode = async (req: Request, res: Response) => {
+  const priceCode = req.query.priceCode as string;
   try {
-    const result = await getPriceById(priceId);
+    const result = await getPriceByCode(priceCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -99,9 +97,9 @@ const handleUpdatePrice = async (req: Request, res: Response) => {
 };
 
 const handleDeletePrice = async (req: Request, res: Response) => {
-  const priceId = Number(req.query.id);
+  const priceCode = req.query.priceCode as string;
   try {
-    const result = await deletePrice(priceId);
+    const result = await deletePrice(priceCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -149,7 +147,7 @@ export const handleGetCost = async (req: Request, res: Response) => {
 export default {
   handleCreatePrice,
   handleGetAllPrices,
-  handleGetPriceById,
+  handleGetPriceByCode,
   handleUpdatePrice,
   handleDeletePrice,
   handleGetCost,
