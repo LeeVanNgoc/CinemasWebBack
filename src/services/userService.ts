@@ -205,7 +205,7 @@ export const getAllUsers = async () => {
   try {
     const users = await User.findAll({
       attributes: [
-        "userId",
+        "userCode",
         "email",
         "firstName",
         "lastName",
@@ -247,7 +247,7 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
 
     if (isExists) {
       const user = await User.findOne({
-        attributes: ["email", "password", "role", "userId"],
+        attributes: ["email", "password", "role", "userCode"],
         where: { email: userEmail },
         raw: true,
       });
@@ -260,7 +260,7 @@ export const loginAPI = async (userEmail: string, userPassword: string) => {
           delete userData.password;
           userData.user = user;
           return {
-            userId: user.userId,
+            userCode: user.userCode,
             role: user.role,
             errCode: 0,
             message: "Login success",

@@ -137,7 +137,7 @@ const handleLoginUser = async (req: Request, res: Response) => {
 
     if (result.errCode === 0) {
       res.status(200).json({
-        userId: result.userId,
+        userCode: result.userCode,
         role: result.role,
         errCode: result.errCode,
         message: result.message,
