@@ -11,7 +11,7 @@ const handleGetRowAndColOfSeats = async (req: Request, res: Response) => {
     const rowAndCol2 = await getRowAndColOfSeats(data);
     if (rowAndCol2.errCode === 0) {
       res.status(200).json({
-        planScreenMovieId: rowAndCol2.planScreenMovieId,
+        planScreenMovieId: rowAndCol2.planScreenMovieCode,
         rows: rowAndCol2.rows,
         cols: rowAndCol2.cols,
         errCode: rowAndCol2.errCode,

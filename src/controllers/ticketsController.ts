@@ -6,7 +6,7 @@ import {
   getTicketByCode,
   getListTicket,
   getTicketByUserCode,
-  getTicketDetailsById,
+  getTicketDetailsByCode,
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -33,13 +33,13 @@ const handleCreateTicket = async (req: Request, res: Response) => {
 };
 
 const handleDeleteTicket = async (req: Request, res: Response) => {
-  const ticketId = Number(req.query.ticketId);
+  const ticketCode = req.query.ticketCode as string;
 
-  if (isNaN(ticketId)) {
+  if (!ticketCode) {
     return res.status(400).json({ message: "Invalid ticket ID" }); // Xử lý khi ID không hợp lệ
   }
   try {
-    const result = await deleteTicket(ticketId);
+    const result = await deleteTicket(ticketCode);
     if (result.errCode === 0) {
       res.status(201).json({ message: result.message });
     } else {
@@ -93,13 +93,11 @@ const handleGetTicketByCode = async (req: Request, res: Response) => {
   try {
     const result = await getTicketByCode(ticketCode);
     if (result.errCode === 0) {
-      res
-        .status(200)
-        .json({
-          error: result.errCode,
-          message: result.message,
-          ticket: result.ticket,
-        });
+      res.status(200).json({
+        error: result.errCode,
+        message: result.message,
+        ticket: result.ticket,
+      });
     } else {
       res.status(404).json({ error: result.errCode, message: result.message });
     }
@@ -115,17 +113,17 @@ const handleGetTicketByUserCode = async (req: Request, res: Response) => {
   const userCode = req.query.userCode as string;
 
   try {
-    const ticketId = await getTicketByUserCode(userCode);
-    if (ticketId.errCode === 0) {
+    const ticketCode = await getTicketByUserCode(userCode);
+    if (ticketCode.errCode === 0) {
       res.status(200).json({
-        errCode: ticketId.errCode,
-        message: ticketId.message,
-        ticketId: ticketId.ticketIds,
+        errCode: ticketCode.errCode,
+        message: ticketCode.message,
+        ticketCode: ticketCode.ticketCodes,
       });
     } else {
       res.status(400).json({
-        errCode: ticketId.errCode,
-        message: ticketId.message,
+        errCode: ticketCode.errCode,
+        message: ticketCode.message,
       });
     }
   } catch (error) {
@@ -135,7 +133,7 @@ const handleGetTicketByUserCode = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetTicketDetailsById = async (req: Request, res: Response) => {
+const handleGetTicketDetailsByCode = async (req: Request, res: Response) => {
   const ticketCode = req.query.ticketCode as string;
 
   if (!ticketCode) {
@@ -143,7 +141,7 @@ const handleGetTicketDetailsById = async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await getTicketDetailsById(ticketCode);
+    const result = await getTicketDetailsByCode(ticketCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -157,11 +155,9 @@ const handleGetTicketDetailsById = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({
-        error: `Something went wrong in getting ticket details: ${error}`,
-      });
+    res.status(500).json({
+      error: `Something went wrong in getting ticket details: ${error}`,
+    });
   }
 };
 
@@ -172,5 +168,5 @@ export default {
   handleGetTicketByCode,
   handleGetListTicket,
   handleGetTicketByUserCode,
-  handleGetTicketDetailsById,
+  handleGetTicketDetailsByCode,
 };

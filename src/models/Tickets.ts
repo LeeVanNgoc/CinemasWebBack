@@ -7,7 +7,7 @@ class Tickets extends Model {
   public ticketId!: number;
   public ticketCode!: string;
   public userCode!: string;
-  public planScreenMovieId!: number;
+  public planScreenMovieCode!: string;
   public seats!: string;
   public bank!: string;
   public totalPrice!: number;
@@ -34,12 +34,12 @@ Tickets.init(
         key: "userCode",
       },
     },
-    planScreenMovieId: {
-      type: DataTypes.INTEGER,
+    planScreenMovieCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: PlanScreenMovie,
-        key: "planScreenMovieId",
+        key: "planScreenMovieCode",
       },
     },
     seats: {
@@ -66,9 +66,9 @@ Tickets.init(
   }
 );
 
-Tickets.belongsTo(User, { foreignKey: "userId" });
+Tickets.belongsTo(User, { foreignKey: "userCode" });
 Tickets.belongsTo(PlanScreenMovie, {
-  foreignKey: "planScreenMovieId",
+  foreignKey: "planScreenMovieCode",
   as: "planScreenMovie",
 });
 

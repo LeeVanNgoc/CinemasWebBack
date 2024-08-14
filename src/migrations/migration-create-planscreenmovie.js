@@ -12,11 +12,11 @@ module.exports = {
       planScreenMovieCode: {
         type: Sequelize.STRING,
       },
-      roomId: {
-        type: Sequelize.INTEGER,
+      roomCode: {
+        type: Sequelize.STRING,
       },
-      movieId: {
-        type: Sequelize.INTEGER,
+      movieCode: {
+        type: Sequelize.STRING,
       },
       startTime: {
         type: Sequelize.TIME,
