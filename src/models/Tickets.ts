@@ -6,7 +6,7 @@ import PlanScreenMovie from "./PlanScreenMovie";
 class Tickets extends Model {
   public ticketId!: number;
   public ticketCode!: string;
-  public userId!: number;
+  public userCode!: string;
   public planScreenMovieId!: number;
   public seats!: string;
   public bank!: string;
@@ -26,12 +26,12 @@ Tickets.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    userId: {
-      type: DataTypes.INTEGER,
+    userCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: User,
-        key: "userId",
+        key: "userCode",
       },
     },
     planScreenMovieId: {

@@ -44,7 +44,7 @@ const handleGetTrailerByCode = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      error: `Something went wrong in getting trailer by id: ${error}`,
+      error: `Something went wrong in getting trailer by code: ${error}`,
     });
   }
 };
@@ -65,7 +65,7 @@ const handleGetTrailerByMovieCode = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      error: `Something went wrong in getting trailer by movie id: ${error}`,
+      error: `Something went wrong in getting trailer by movie code: ${error}`,
     });
   }
 };
@@ -97,7 +97,7 @@ const handleGetAllTrailers = async (req: Request, res: Response) => {
 const handleDeleteTrailer = async (req: Request, res: Response) => {
   const trailerCode = req.query.trailerCode as string;
   if (!trailerCode) {
-    return res.status(400).json({ message: "Invalid trailer ID" });
+    return res.status(400).json({ message: "Invalid trailer code" });
   }
   try {
     const result = await deleteTrailer(trailerCode);
@@ -108,7 +108,7 @@ const handleDeleteTrailer = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      error: `Something went wrong in deleting trailer by id: ${error}`,
+      error: `Something went wrong in deleting trailer by code: ${error}`,
     });
   }
 };
@@ -117,7 +117,7 @@ const handleUpdateTrailer = async (req: Request, res: Response) => {
   const data = req.query;
   const trailerCode = data.trailerCode;
   if (!trailerCode) {
-    return res.status(400).json({ message: "Invalid trailer ID" });
+    return res.status(400).json({ message: "Invalid trailer code" });
   }
   try {
     const result = await updateTrailer(data);
@@ -128,7 +128,7 @@ const handleUpdateTrailer = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(500).json({
-      error: `Something went wrong in updating trailer by id: ${error}`,
+      error: `Something went wrong in updating trailer by code: ${error}`,
     });
   }
 };
