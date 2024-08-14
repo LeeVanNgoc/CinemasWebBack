@@ -40,7 +40,7 @@ export const createTickets = async (data: any) => {
       ticketId: newId,
       ticketCode: newCode,
       userCode: data.userCode,
-      planScreenMovieId: data.planScreenMovieId,
+      planScreenMovieCode: data.planScreenMovieCode,
       seats: data.seats,
       bank: data.bank,
       totalPrice: data.totalPrice,
@@ -67,10 +67,10 @@ export const createTickets = async (data: any) => {
   }
 };
 
-export const deleteTicket = async (ticketId: number) => {
+export const deleteTicket = async (ticketCode: string) => {
   try {
     const ticket = await Tickets.findOne({
-      where: { ticketId: ticketId },
+      where: { ticketCode: ticketCode },
     });
 
     if (!ticket) {
@@ -97,7 +97,7 @@ export const deleteTicket = async (ticketId: number) => {
 export const editTicket = async (data: any) => {
   try {
     const ticket = await Tickets.findOne({
-      where: { ticketId: data.ticketId },
+      where: { ticketCode: data.ticketCode },
     });
     if (!ticket) {
       return {
@@ -107,8 +107,8 @@ export const editTicket = async (data: any) => {
     }
 
     ticket.userCode = data.userCode || ticket.userCode;
-    ticket.planScreenMovieId =
-      data.planScreenMovieId || ticket.planScreenMovieId;
+    ticket.planScreenMovieCode =
+      data.planScreenMovieCode || ticket.planScreenMovieCode;
     ticket.seats = data.seats || ticket.seats;
     ticket.bank = data.bank || ticket.bank;
     ticket.totalPrice = data.totalPrice || ticket.totalPrice;
@@ -133,7 +133,7 @@ export const getListTicket = async () => {
       attributes: [
         "ticketCode",
         "userCode",
-        "planScreenMovieId",
+        "planScreenMovieCode",
         "seats",
         "bank",
         "totalPrice",
@@ -174,7 +174,7 @@ export const getTicketByCode = async (ticketCode: string) => {
       attributes: [
         "ticketCode",
         "userCode",
-        "planScreenMovieId",
+        "planScreenMovieCode",
         "seats",
         "bank",
         "totalPrice",
@@ -214,33 +214,33 @@ export const getTicketByUserCode = async (userCode: string) => {
       where: {
         userCode: userCode,
       },
-      attributes: ["ticketId"],
+      attributes: ["ticketCode"],
       raw: true,
     });
 
     if (ticket.length > 0) {
-      const ticketIds = ticket.map((item) => item.ticketId);
+      const ticketCodes = ticket.map((item) => item.ticketCode);
       return {
         errCode: 0,
-        message: "Get ticketId success",
-        ticketIds,
+        message: "Get ticketCode success",
+        ticketCodes,
       };
     } else {
       return {
         errCode: 1,
-        message: "No ticketId found",
+        message: "No ticketCode found",
       };
     }
   } catch (error) {
     console.error("Error in getTicketByUserCode:", error);
     return {
       errCode: 3,
-      message: `Error getting ticketId: ${error}`,
+      message: `Error getting ticketCode: ${error}`,
     };
   }
 };
 
-export const getTicketDetailsById = async (ticketCode: string) => {
+export const getTicketDetailsByCode = async (ticketCode: string) => {
   try {
     const ticket = await Tickets.findOne({
       where: { ticketCode },
@@ -250,15 +250,15 @@ export const getTicketDetailsById = async (ticketCode: string) => {
         "seats",
         "bank",
         "totalPrice",
-        "planScreenMovieId",
+        "planScreenMovieCode",
       ],
       include: [
         {
           model: PlanScreenMovie,
           as: "planScreenMovie",
           attributes: [
-            "roomId",
-            "movieId",
+            "roomCode",
+            "movieCode",
             "startTime",
             "endTime",
             "dateScreen",

@@ -18,16 +18,16 @@ const planScreenMovieRoutes = (app: Application) => {
     planScreenMovieController.handleGetAllPlanScreenMovies
   );
   router.get(
-    "/get-plan-screen-movie-by-id",
-    planScreenMovieController.handleGetPlanScreenMovieById
+    "/get-plan-screen-movie-by-code",
+    planScreenMovieController.handleGetPlanScreenMovieByCode
   );
   router.post(
     "/create-plan-screen-movie",
     planScreenMovieController.handleCreatePlanScreenMovie
   );
   router.get(
-    "/get-all-plan-screen-id-for-create-ticket",
-    planScreenMovieController.handleGetplanScreenMovieIdForCreateTicket
+    "/get-all-plan-screen-code-for-create-ticket",
+    planScreenMovieController.handleGetplanScreenMovieCodeForCreateTicket
   );
   router.get("/get-start-time", planScreenMovieController.handleGetStartTime);
   return app.use("/api/plan-screen-movie", router);

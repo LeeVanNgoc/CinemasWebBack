@@ -6,9 +6,9 @@ import Tickets from "./Tickets";
 
 class PlanScreenMovie extends Model {
   public planScreenMovieId!: number;
-  public planScreenCode!: string;
-  public roomId!: number;
-  public movieId!: number;
+  public planScreenMovieCode!: string;
+  public roomCode!: string;
+  public movieCode!: string;
   public startTime!: TimeRanges;
   public endTime!: TimeRanges;
   public dateScreen!: DateOnlyDataType;
@@ -26,20 +26,20 @@ PlanScreenMovie.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    roomId: {
-      type: DataTypes.INTEGER,
+    roomCode: {
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Room,
-        key: "roomId",
+        key: "roomCode",
       },
     },
-    movieId: {
+    movieCode: {
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
         model: Movie,
-        key: "movieId",
+        key: "movieCode",
       },
     },
     startTime: {

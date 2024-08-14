@@ -16,7 +16,7 @@ const ticketRoutes = (app: Application) => {
   );
   router.get(
     "/get-ticket-details",
-    ticketsController.handleGetTicketDetailsById
+    ticketsController.handleGetTicketDetailsByCode
   );
 
   return app.use("/api/ticket", router);

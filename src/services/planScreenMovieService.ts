@@ -28,10 +28,10 @@ export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
   }
 };
 
-export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
+export const deletePlanScreenMovie = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode: planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found" };
@@ -48,27 +48,33 @@ export const deletePlanScreenMovie = async (planScreenMovieId: number) => {
 };
 
 export const editPlanScreenMovie = async (data: any) => {
-  const { planScreenMovieId, roomId, movieId, startTime, endTime, dateScreen } =
-    data;
+  const {
+    planScreenMovieCode,
+    roomCode,
+    movieCode,
+    startTime,
+    endTime,
+    dateScreen,
+  } = data;
 
   try {
-    if (!planScreenMovieId) {
+    if (!planScreenMovieCode) {
       return { errCode: 4, message: "Missing required parameters!" };
     }
 
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return { errCode: 1, message: "PlanScreenMovie not found!" };
     }
 
     // Cập nhật các giá trị mới nếu có
-    if (roomId !== undefined) {
-      planScreenMovie.roomId = roomId;
+    if (roomCode !== undefined) {
+      planScreenMovie.roomCode = roomCode;
     }
-    if (movieId !== undefined) {
-      planScreenMovie.movieId = movieId;
+    if (movieCode !== undefined) {
+      planScreenMovie.movieCode = movieCode;
     }
     if (startTime) {
       planScreenMovie.startTime = startTime;
@@ -111,10 +117,10 @@ export const getAllPlanScreenMovies = async () => {
   }
 };
 
-export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
+export const getPlanScreenMovieByCode = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode: planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return {
@@ -136,8 +142,8 @@ export const getPlanScreenMovieById = async (planScreenMovieId: number) => {
 };
 
 export const createPlanScreenMovie = async (
-  roomId: number,
-  movieId: number,
+  roomCode: string,
+  movieCode: string,
   dateScreen: string,
   times: string[]
 ) => {
@@ -154,12 +160,12 @@ export const createPlanScreenMovie = async (
     }
 
     const existingCodes = await PlanScreenMovie.findAll({
-      attributes: ["planScreenCode"],
-      order: [["planScreenCode", "ASC"]],
+      attributes: ["planScreenMovieCode"],
+      order: [["planScreenMovieCode", "ASC"]],
     });
 
     const codes = existingCodes.map(
-      (planScreenMovie) => planScreenMovie.planScreenCode
+      (planScreenMovie) => planScreenMovie.planScreenMovieCode
     );
     let newCode = "PSM001";
     if (newId < 10) {
@@ -180,7 +186,7 @@ export const createPlanScreenMovie = async (
 
     const existingSchedules = await PlanScreenMovie.findAll({
       where: {
-        roomId,
+        roomCode,
         dateScreen,
       },
     });
@@ -217,9 +223,9 @@ export const createPlanScreenMovie = async (
       // Tạo PlanScreenMovie với giá trị mới
       const newPlanScreen = await PlanScreenMovie.create({
         planScreenMovieId: newId,
-        planScreenCode: newCode,
-        roomId,
-        movieId,
+        planScreenMovieCode: newCode,
+        roomCode,
+        movieCode,
         startTime,
         endTime,
         dateScreen,
@@ -249,9 +255,14 @@ export const createPlanScreenMovie = async (
   }
 };
 
-export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
+export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
   try {
-    if (!data.roomId || !data.movieId || !data.startTime || !data.dateScreen) {
+    if (
+      !data.roomCode ||
+      !data.movieCode ||
+      !data.startTime ||
+      !data.dateScreen
+    ) {
       return {
         errCode: 2,
         message: "Missing required parameters",
@@ -265,31 +276,31 @@ export const getPlanScreenMovieIdForCreateTicket = async (data: any) => {
 
     const planScreenMovies = await PlanScreenMovie.findAll({
       where: {
-        roomId: data.roomId,
-        movieId: data.movieId,
+        roomCode: data.roomCode,
+        movieCode: data.movieCode,
         startTime: data.startTime,
         dateScreen: {
           [Op.gte]: dateScreen,
           [Op.lt]: new Date(dateScreen.getTime() + 24 * 60 * 60 * 1000),
         },
       },
-      attributes: ["planScreenMovieId"],
+      attributes: ["planScreenMovieCode"],
       raw: true,
     });
 
     if (planScreenMovies.length > 0) {
-      const planScreenMovieIds = planScreenMovies.map(
+      const planScreenMovieCodes = planScreenMovies.map(
         (item) => item.planScreenMovieId
       );
       return {
         errCode: 0,
-        message: "Get planScreenMovieId success",
-        planScreenMovieIds,
+        message: "Get planScreenMovieCode success",
+        planScreenMovieCodes,
       };
     } else {
       return {
         errCode: 1,
-        message: "No planScreenMovieId found",
+        message: "No planScreenMovieCode found",
       };
     }
   } catch (error) {
@@ -305,30 +316,30 @@ export const getStartTime = async (data: any) => {
   try {
     const startTimePlan = await PlanScreenMovie.findAll({
       where: {
-        movieId: data.movieId,
+        movieCode: data.movieCode,
         dateScreen: data.dateScreen,
       },
-      attributes: ["roomId", "startTime"],
+      attributes: ["roomCode", "startTime"],
       raw: true,
     });
 
     if (startTimePlan.length > 0) {
       return {
         errCode: 0,
-        message: "Get PlanScreenMovieId success",
+        message: "Get PlanScreenMovieCode success",
         startTimePlanScreen: startTimePlan,
       };
     } else {
       return {
         errCode: 1,
-        message: "No planScreenMovieId found",
+        message: "No planScreenMovieCode found",
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieIdByMovieId:", error);
+    console.error("Error in getplanScreenMovieCodeByMovieId:", error);
     return {
       errCode: 3,
-      message: `Error getting planScreenMovieId: ${error}`,
+      message: `Error getting planScreenMovieCode: ${error}`,
     };
   }
 };
