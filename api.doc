@@ -205,7 +205,7 @@ Quy tặc gán errCode:
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 
 	API lấy id lịch chiếu để tạo vé:
-        - 	router.get('/get-all-plan-screen-id-for-create-ticket');
+        - 	router.get('/get-all-plan-screen-code-for-create-ticket');
         - 	Input : + roomId
 					+ movieId
 					+ startTime
@@ -231,24 +231,28 @@ Quy tặc gán errCode:
 	API tạo giá vé :
 		-	router.post('/create-price');
 		-	Input : + cost : giá vé (number) (120000,...)
-					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
+					+ seatType : kiểu ghế (string) (Standard, Vip, SweetBox)
+					+ roomType : kiểu phongf (string) (2D, 3D)
 					+ isWeekend : !!!ngày lễ (boolean) (True // False)
+					+ timeFrame: string (10-12,12-17, 17-23)
 		-	Output: + errCode: 0 (tạo thành công)
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi cập nhật)
     API xoá giá vé :
 		-	router.delete('/delete-price');
-		-	Input : + priceId: id (number)
+		-	Input : + priceCode (string)
 		-	Output: + errCode: 0 (xoá thành công)
 					+ errCode: 1 (Không tìm thấy vé ứng với id)
 					+ errCode: 3 (lỗi khi xoá)
 
 	API cập nhật giá vé :
     	-	router.put('/edit-price');
-		-	Input : + priceId : id bản ghi (number)
+		-	Input : + priceCode (string)
 					+ cost : giá vé (number) (120000,...)
-					+ type : kiểu ghế (string) ('Standard, Vip, SweetBox)
+					+ seatType : kiểu ghế (string) (Standard, Vip, SweetBox)
+					+ roomType : kiểu phongf (string) (2D, 3D)
 					+ isWeekend : !!!ngày lễ (boolean) (True // False)
+					+ timeFrame: string (10-12,12-17, 17-23)
 		-	Output: + errCode : 0 (cập nhật thành công)
 					+ errCode : 1 (không tìm thấy bản ghi tương ứng id)
 					+ errCode : 3 (lỗi khi cập nhật)
@@ -270,6 +274,7 @@ Quy tặc gán errCode:
 		-	Input : + roomType (number)
 					+ seatType (number)
 					+ isWeekend (0/1)
+					+ timeFrame: string (10-12,12-17, 17-23)
 		-	Output: + errCode : 0 (Lấy thành công) && Tất cả bản ghi
 					+ errCode : 1 (Ko tìm thấy bản ghi nào)
 					+ errCode : 3 (Lỗi khi lấy bản ghi)		

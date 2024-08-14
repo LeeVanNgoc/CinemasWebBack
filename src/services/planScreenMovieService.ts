@@ -257,10 +257,28 @@ export const createPlanScreenMovie = async (
 
 export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
   try {
-    if (!data.roomCode || !data.movieCode || !data.startTime || !data.dateScreen) {
+    if (!data.roomCode) {
       return {
         errCode: 2,
-        message: "Missing required parameters",
+        message: "Missing roomCode parameter",
+      };
+    }
+    if (!data.movieCode) {
+      return {
+        errCode: 2,
+        message: "Missing movieCode parameter",
+      };
+    }
+    if (!data.startTime) {
+      return {
+        errCode: 2,
+        message: "Missing startTime parameter",
+      };
+    }
+    if (!data.dateScreen) {
+      return {
+        errCode: 2,
+        message: "Missing dateScreen parameter",
       };
     }
 

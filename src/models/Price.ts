@@ -8,6 +8,8 @@ class Price extends Model {
   public roomType!: string;
   public seatType!: string;
   public isWeekend!: boolean;
+  public timeFrame!: string;
+
 }
 
 Price.init(
@@ -35,6 +37,10 @@ Price.init(
     },
     isWeekend: {
       type: DataTypes.BOOLEAN,
+      allowNull: false,
+    },
+    timeFrame: {
+      type: DataTypes.STRING,
       allowNull: false,
     },
   },
