@@ -23,10 +23,10 @@ Seat.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    // seatCode: {
-    //   type: DataTypes.STRING,
-    //   allowNull: false,
-    // },
+    seatCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     type: {
       type: DataTypes.STRING,
       allowNull: false,
