@@ -7,6 +7,7 @@ import {
   getRoomById,
   getRoomInTheater,
   updateNumberSeatInRoom,
+  getListRoomInformation,
 } from "../services/roomService";
 
 const handleCreateRoom = async (req: Request, res: Response) => {
@@ -203,6 +204,28 @@ const handleUpdateNumberSeatInRoom = async (req: Request, res: Response) => {
     });
   }
 };
+
+const handleGetListRoomInformation = async (req: Request, res: Response) => {
+  const roomCode = req.query.roomCode as string;
+  if (!roomCode) {
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Missing required parameters!" });
+  }
+  try {
+    const result = await getListRoomInformation(roomCode);
+    if (result.errCode !== 0) {
+      return res
+        .status(404)
+        .json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({
+      roomData: result.data,
+      errCode: result.errCode,
+      message: result.message,
+    });
+  } catch (error) {}
+};
 export default {
   handleCreateRoom,
   handleDeleteRoom,
@@ -211,4 +234,5 @@ export default {
   handleGetRoomById,
   handleGetRoomInTheater,
   handleUpdateNumberSeatInRoom,
+  handleGetListRoomInformation,
 };

@@ -2,7 +2,6 @@ import { DateOnlyDataType, Op } from "sequelize";
 
 import PlanScreenMovie from "../models/PlanScreenMovie";
 import { numberSeatInRoom } from "./seatsService";
-
 export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
@@ -104,6 +103,13 @@ export const editPlanScreenMovie = async (data: any) => {
 export const getAllPlanScreenMovies = async () => {
   try {
     const planScreenMovies = await PlanScreenMovie.findAll();
+    if (!planScreenMovies) {
+      return {
+        errCode: 1,
+        message: "No PlanScreenMovie found",
+      };
+    } else {
+    }
     return {
       errCode: 0,
       message: "Get all PlanScreenMovies success",

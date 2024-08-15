@@ -4,7 +4,7 @@ import Room from "./Room";
 
 class Seat extends Model {
   public seatId!: number;
-  // public seatCode!: string;
+  public seatCode!: string;
   public type!: string;
   public roomId!: string;
   public row!: string;

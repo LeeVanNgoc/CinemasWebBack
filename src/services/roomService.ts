@@ -1,5 +1,7 @@
-import { error, log } from "console";
+import sequelize from "../config/connectDB";
+
 import Room from "../models/Room";
+import Seat from "../models/Seat";
 import { getTheaterByCode } from "../services/theaterService";
 import { numberSeatInRoom } from "../services/seatsService";
 
@@ -239,6 +241,45 @@ export const getRoomInTheater = async (theaterCode: string) => {
     return {
       errCode: 3,
       message: `Error getting rooms in this theater: ${error}`,
+    };
+  }
+};
+
+export const getListRoomInformation = async (roomCode: string) => {
+  try {
+    const rooms = await Room.findAll({
+      attributes: ["roomCode", "theaterCode", "type", "isAvailable"],
+    });
+
+    // Sử dụng Promise.all để xử lý các truy vấn song song cho số ghế của từng phòng
+    const roomsWithSeats = await Promise.all(
+      rooms.map(async (room) => {
+        const numberSeat = await numberSeatInRoom(room.roomCode);
+        return {
+          roomCode: room.roomCode,
+          theaterCode: room.theaterCode,
+          type: room.type,
+          isAvailable: room.isAvailable,
+          totalSeats: numberSeat.numberSeat,
+        };
+      })
+    );
+    if (roomsWithSeats.length > 0) {
+      return {
+        errCode: 0,
+        message: "get success total seat in room",
+        data: roomsWithSeats,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "Not seat on room",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting total seats in room: ${error}`,
     };
   }
 };
