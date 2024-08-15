@@ -39,6 +39,28 @@ export const createSeat = async (data: any) => {
     while (ids.includes(newId)) {
       newId++;
     }
+
+    const existingCodes = await Seat.findAll({
+      attributes: ["seatCode"],
+      order: [["seatCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map((seat) => seat.seatCode);
+    let newCode = "S001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "S00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "S0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "S" + newId;
+      }
+    }
+
     const seat = await checkSeat(data);
     if (seat.errCode === 0) {
       return {
@@ -48,6 +70,7 @@ export const createSeat = async (data: any) => {
     }
     const newSeat = await Seat.create({
       seatId: newId,
+      seatCode: newCode,
       row: data.row,
       col: data.col,
       type: data.type,

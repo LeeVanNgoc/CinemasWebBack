@@ -1,6 +1,7 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/connectDB";
 import Theater from "./Theater";
+import Seat from "./Seat";
 class Room extends Model {
   public roomId!: number;
   public roomCode!: string;
@@ -50,5 +51,11 @@ Room.init(
     timestamps: false,
   }
 );
+
+// Room model
+Room.hasMany(Seat, {
+  foreignKey: "roomCode",
+  as: "seats", // Alias for the association
+});
 
 export default Room;

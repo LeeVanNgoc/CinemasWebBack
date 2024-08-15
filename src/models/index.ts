@@ -16,26 +16,26 @@ const sequelize = config.url
   ? new Sequelize(config.url, config)
   : new Sequelize(config.database, config.username, config.password, config);
 
-Genres.hasMany(Movie, { foreignKey: "genreId" });
-Movie.belongsTo(Genres, { foreignKey: "genreId" });
+Genres.hasMany(Movie, { foreignKey: "genreCode" });
+Movie.belongsTo(Genres, { foreignKey: "genreCode" });
 
-Movie.hasMany(PlanScreenMovie, { foreignKey: "movieId" });
-PlanScreenMovie.belongsTo(Movie, { foreignKey: "movieId" });
+Movie.hasMany(PlanScreenMovie, { foreignKey: "movieCode" });
+PlanScreenMovie.belongsTo(Movie, { foreignKey: "movieCode" });
 
-Room.hasMany(PlanScreenMovie, { foreignKey: "roomId" });
-PlanScreenMovie.belongsTo(Room, { foreignKey: "roomId" });
+Room.hasMany(PlanScreenMovie, { foreignKey: "roomCode" });
+PlanScreenMovie.belongsTo(Room, { foreignKey: "roomCode" });
 
-Theater.hasMany(Room, { foreignKey: "theaterId" });
-Room.belongsTo(Theater, { foreignKey: "theaterId" });
+Theater.hasMany(Room, { foreignKey: "theaterCode" });
+Room.belongsTo(Theater, { foreignKey: "theaterCode" });
 
-Room.hasMany(Seat, { foreignKey: "roomId" });
-Seat.belongsTo(Room, { foreignKey: "roomId" });
+Room.hasMany(Seat, { foreignKey: "roomCode" });
+Seat.belongsTo(Room, { foreignKey: "roomCode" });
 
-PlanScreenMovie.hasMany(Tickets, { foreignKey: "planScreenMovieId" });
-Tickets.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieId" });
+PlanScreenMovie.hasMany(Tickets, { foreignKey: "planScreenMovieCode" });
+Tickets.belongsTo(PlanScreenMovie, { foreignKey: "planScreenMovieCode" });
 
-User.hasMany(Tickets, { foreignKey: "userId" });
-Tickets.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Tickets, { foreignKey: "userCode" });
+Tickets.belongsTo(User, { foreignKey: "userCode" });
 
 export { Sequelize, sequelize };
 export { Movie, Genres, PlanScreenMovie, Room, Seat, Theater, Tickets, User };
