@@ -4,7 +4,7 @@ import {
   deleteRoom,
   editRoom,
   getAllRooms,
-  getRoomById,
+  getRoomByCode,
   getRoomInTheater,
   updateNumberSeatInRoom,
 } from "../services/roomService";
@@ -47,12 +47,12 @@ const handleCreateRoom = async (req: Request, res: Response) => {
 };
 
 const handleDeleteRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
-  if (isNaN(roomId)) {
-    return res.status(400).json({ errCode: 2, error: "Invalid room ID" });
+  const roomCode = req.query.roomCode as string;
+  if (!(roomCode)) {
+    return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
   try {
-    const result = await deleteRoom(roomId);
+    const result = await deleteRoom(roomCode);
     if (result.errCode !== 0) {
       return res
         .status(404)
@@ -68,14 +68,14 @@ const handleDeleteRoom = async (req: Request, res: Response) => {
 };
 
 const handleEditRoom = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
-  if (isNaN(roomId)) {
-    return res.status(400).json({ errCode: 2, error: "Invalid room ID" });
+  const roomCode = req.query.roomCode as string;
+  if (!(roomCode)) {
+    return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
 
   const data = {
-    roomId,
-    theaterId: req.query.theaterId ? Number(req.query.theaterId) : undefined,
+    roomCode,
+    theaterCode: req.query.theaterCode as string,
     type: req.query.type as string,
     numberSeats: req.query.numberSeats
       ? Number(req.query.numberSeats)
@@ -124,13 +124,13 @@ const handleGetAllRooms = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetRoomById = async (req: Request, res: Response) => {
-  const roomId = Number(req.query.roomId);
-  if (isNaN(roomId)) {
-    return res.status(400).json({ errCode: 2, error: "Invalid room ID" });
+const handleGetRoomByCode = async (req: Request, res: Response) => {
+  const roomCode = (req.query.roomCode as string);
+  if (!(roomCode)) {
+    return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
   try {
-    const result = await getRoomById(roomId);
+    const result = await getRoomByCode(roomCode);
     if (result.errCode !== 0) {
       return res
         .status(404)
@@ -152,7 +152,7 @@ const handleGetRoomById = async (req: Request, res: Response) => {
 const handleGetRoomInTheater = async (req: Request, res: Response) => {
   const theaterCode = req.query.theaterCode as string;
   if (!theaterCode) {
-    return res.status(400).json({ errCode: 2, error: "Invalid theater ID" });
+    return res.status(400).json({ errCode: 2, error: "Invalid theaterCode" });
   }
   try {
     const result = await getRoomInTheater(theaterCode);
@@ -208,7 +208,7 @@ export default {
   handleDeleteRoom,
   handleEditRoom,
   handleGetAllRooms,
-  handleGetRoomById,
+  handleGetRoomByCode,
   handleGetRoomInTheater,
   handleUpdateNumberSeatInRoom,
 };

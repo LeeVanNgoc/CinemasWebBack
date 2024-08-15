@@ -9,7 +9,7 @@ const roomRoutes = (app: Application) => {
   router.delete("/delete-room", roomController.handleDeleteRoom);
   router.put("/edit-room", roomController.handleEditRoom);
   router.get("/get-all-rooms", roomController.handleGetAllRooms);
-  router.get("/get-room-by-id", roomController.handleGetRoomById);
+  router.get("/get-room-by-code", roomController.handleGetRoomByCode);
   router.get("/get-room-in-theater", roomController.handleGetRoomInTheater);
   router.get(
     "/update-number-seat-in-room",
