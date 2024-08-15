@@ -330,7 +330,7 @@ Quy tặc gán errCode:
 7. roomRoutes
     API tạo mới phòng:
         - 	router.post('/create-new-room');
-        - 	Input : + theaterId (number)s
+        - 	Input : + theatercode (string)
                  	+ type (text)
                  	+ numberSeats (number)
 					+ isAvailable (0/1)
@@ -349,15 +349,15 @@ Quy tặc gán errCode:
 
     API xoá phòng:
         - 	router.delete('/delete-room');
-        - 	Input : + roomId: id phòng (number)
+        - 	Input : + roomCode: code phòng (string)
         - 	Output: + errCode: 0 (xoá thành công)
                   	+ errCode: 1 (không tìm thấy phòng)
                   	+ errCode: 3 (lỗi khi xoá)
 
     API cập nhật phòng:
         - 	router.put('/edit-room');
-        - 	Input : + roomId: id phòng (number)
-					+ theaterId (number)
+        - 	Input : + roomCode: code phòng (string)
+					+ theatercode (string)
                  	+ type (text)
                  	+ numberSeats (number)
 					+ isAvailable (0/1)
@@ -374,16 +374,16 @@ Quy tặc gán errCode:
         - 	Output: + errCode: 0 (lấy thành công) && tất cả bản ghi phòng
                   	+ errCode: 1 (không tìm thấy phòng nào)
 
-    API lấy phim theo id:
-        - 	router.get('/get-room-by-id');
-        - 	Input : + roomId (number)
+    API lấy phim theo code:
+        - 	router.get('/get-room-by-code');
+        - 	Input : + roomCode (string)
         - 	Output: + errCode: 0 (lấy thành công) && bản ghi phòng
                   	+ errCode: 1 (không tìm thấy phòng)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 
 	API lấy thông tin phòng theo rạp :
 		-	router.get("/get-room-in-theater");
-		-	Input : + theaterId (number)
+		-	Input : + theaterCode (string)
 		-	Output : + errCode: 0 (lấy thành công) && danh sách  "rooms": [
 																		{
 																			"roomCode": "P001",

@@ -107,9 +107,9 @@ export const updateNumberSeatInRoom = async (roomCode: string) => {
   }
 };
 
-export const deleteRoom = async (roomId: number) => {
+export const deleteRoom = async (roomCode: string) => {
   try {
-    const room = await Room.findOne({ where: { roomId } });
+    const room = await Room.findOne({ where: { roomCode } });
     if (!room) {
       return { errCode: 1, message: "Room not found" };
     } else {
@@ -125,13 +125,13 @@ export const deleteRoom = async (roomId: number) => {
 };
 
 export const editRoom = async (data: any) => {
-  const roomId = data.roomId;
+  const roomCode = data.roomCode;
   try {
-    if (!roomId) {
-      return { errCode: 4, message: "Missing required parameters!" };
+    if (!roomCode) {
+      return { errCode: 4, message: "Missing roomCode!" };
     }
 
-    const room = await Room.findOne({ where: { roomId } });
+    const room = await Room.findOne({ where: { roomCode } });
     if (!room) {
       return { errCode: 1, message: "Room not found!" };
     }
@@ -171,9 +171,9 @@ export const getAllRooms = async () => {
   }
 };
 
-export const getRoomById = async (roomId: number) => {
+export const getRoomByCode = async (roomCode: string) => {
   try {
-    const room = await Room.findOne({ where: { roomId } });
+    const room = await Room.findOne({ where: { roomCode } });
     if (!room) {
       return {
         errCode: 1,
