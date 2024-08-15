@@ -206,14 +206,8 @@ const handleUpdateNumberSeatInRoom = async (req: Request, res: Response) => {
 };
 
 const handleGetListRoomInformation = async (req: Request, res: Response) => {
-  const roomCode = req.query.roomCode as string;
-  if (!roomCode) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing required parameters!" });
-  }
   try {
-    const result = await getListRoomInformation(roomCode);
+    const result = await getListRoomInformation();
     if (result.errCode !== 0) {
       return res
         .status(404)

@@ -245,7 +245,7 @@ export const getRoomInTheater = async (theaterCode: string) => {
   }
 };
 
-export const getListRoomInformation = async (roomCode: string) => {
+export const getListRoomInformation = async () => {
   try {
     const rooms = await Room.findAll({
       attributes: ["roomCode", "theaterCode", "type", "isAvailable"],

@@ -30,6 +30,10 @@ const planScreenMovieRoutes = (app: Application) => {
     planScreenMovieController.handleGetplanScreenMovieCodeForCreateTicket
   );
   router.get("/get-start-time", planScreenMovieController.handleGetStartTime);
+  router.get(
+    "/get-list-plan-information",
+    planScreenMovieController.handleGetListPlanScreenInformation
+  );
   return app.use("/api/plan-screen-movie", router);
 };
 export default planScreenMovieRoutes;

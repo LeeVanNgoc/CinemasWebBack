@@ -1,7 +1,7 @@
 import { DateOnlyDataType, Op } from "sequelize";
 
 import PlanScreenMovie from "../models/PlanScreenMovie";
-import { numberSeatInRoom } from "./seatsService";
+import { getMovieByCode } from "./movieService";
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -115,6 +115,53 @@ export const getAllPlanScreenMovies = async () => {
       message: "Get all PlanScreenMovies success",
       planScreenMovies,
     };
+  } catch (error) {
+    return {
+      errCode: 1,
+      message: `Error getting PlanScreenMovies: ${error}`,
+    };
+  }
+};
+
+export const getListPlanScreenInformation = async () => {
+  try {
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      attributes: [
+        "planScreenMovieCode",
+        "roomCode",
+        "movieCode",
+        "startTime",
+        "endTime",
+        "dateScreen",
+      ],
+    });
+
+    const planScreenMovieData = await Promise.all(
+      planScreenMovies.map(async (planScreenMovie) => {
+        const movie = await getMovieByCode(planScreenMovie.movieCode);
+        return {
+          planScreenMovieCode: planScreenMovie.planScreenMovieCode,
+          roomCode: planScreenMovie.roomCode,
+          movieTitle: movie.movie?.title,
+          startTime: planScreenMovie.startTime,
+          endTime: planScreenMovie.endTime,
+          dateScreen: planScreenMovie.dateScreen,
+        };
+      })
+    );
+
+    if (!planScreenMovies) {
+      return {
+        errCode: 1,
+        message: "No PlanScreenMovie found",
+      };
+    } else {
+      return {
+        errCode: 0,
+        message: "Get all PlanScreenMovies success",
+        data: planScreenMovieData,
+      };
+    }
   } catch (error) {
     return {
       errCode: 1,
