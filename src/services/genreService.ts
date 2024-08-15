@@ -62,9 +62,9 @@ export const createGenre = async ({
   }
 };
 
-export const deleteGenre = async (genreId: number) => {
+export const deleteGenre = async (genreCode: string) => {
   try {
-    const genre = await Genre.findOne({ where: { genreId } });
+    const genre = await Genre.findOne({ where: { genreCode } });
     if (!genre) {
       return { errCode: 1, message: "Genre not found" };
     } else {
@@ -80,20 +80,20 @@ export const deleteGenre = async (genreId: number) => {
 };
 
 export const editGenre = async ({
-  genreId,
+  genreCode,
   name,
   description,
 }: {
-  genreId: number;
+  genreCode: string;
   name: string;
   description: string;
 }) => {
   try {
-    if (!genreId) {
+    if (!genreCode) {
       return { errCode: 4, message: "Missing required parameters!" };
     }
 
-    const genre = await Genre.findOne({ where: { genreId } });
+    const genre = await Genre.findOne({ where: { genreCode } });
     if (!genre) {
       return { errCode: 1, message: "Genre not found!" };
     }
@@ -131,9 +131,9 @@ export const getAllGenres = async () => {
   }
 };
 
-export const getGenreById = async (genreId: number) => {
+export const getGenreByCode = async (genreCode: string) => {
   try {
-    const genre = await Genre.findOne({ where: { genreId } });
+    const genre = await Genre.findOne({ where: { genreCode } });
     if (!genre) {
       return {
         errCode: 1,

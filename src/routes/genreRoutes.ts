@@ -9,7 +9,7 @@ const genreRoutes = (app: Application) => {
   router.delete('/delete-genre', genreController.handleDeleteGenre);
   router.put('/edit-genre', genreController.handleEditGenre);
   router.get('/get-all-genres', genreController.handleGetAllGenres);
-  router.get('/get-genre-by-id', genreController.handleGetGenreById);
+  router.get('/get-genre-by-code', genreController.handleGetGenreByCode);
 
   return app.use('/api/genre', router);
 };

@@ -6,7 +6,6 @@ Quy tặc gán errCode:
 	-	errCode : 4 : Missing required parameters
 	-	errCode : 5 : Something incorrect
 
-
 1. genreRoutes
     API tạo mới thể loại:
         - 	router.post('/create-new-genre');
@@ -18,20 +17,20 @@ Quy tặc gán errCode:
 
     API xoá thể loại:
         - 	router.delete('/delete-genre');
-        - 	Input : + genreId: id thể loại (number)
+        - 	Input : + genreCode: code thể loại (number)
         - 	Output: + errCode: 0 (xoá thành công)
                   	+ errCode: 1 (không tìm thấy thể loại)
                   	+ errCode: 3 (lỗi khi xoá)
 
     API cập nhật thể loại:
         - 	router.put('/edit-genre');
-        - 	Input : + genreId: id thể loại (number)
+        - 	Input : + genreCode: code thể loại (number)
 					+ name (string)
 					+ description (text)
         - 	Output: + errCode: 0 (cập nhật thành công)
                   	+ errCode: 1 (không tìm thấy thể loại)
                   	+ errCode: 3 (lỗi khi cập nhật)
-					+ errCode: 4 (thiếu ID thể loại cần cập nhật)
+					+ errCode: 4 (thiếu code thể loại cần cập nhật)
 
     API lấy tất cả thể loại:
         - 	router.get('/get-all-genres');
@@ -39,9 +38,9 @@ Quy tặc gán errCode:
         - 	Output: + errCode: 0 (lấy thành công)
                   	+ errCode: 1 (không tìm thấy thể loại nào)
 
-    API lấy thể loại theo id:
-        - 	router.get('/get-genre-by-id');
-        - 	Input : + genreId: id thể loại (number)
+    API lấy thể loại theo code:
+        - 	router.get('/get-genre-by-code');
+        - 	Input : + genreCode: code thể loại (number)
         - 	Output: + errCode: 0 (lấy thành công)
                    	+ errCode: 1 (không tìm thấy thể loại)
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
