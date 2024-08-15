@@ -2,10 +2,11 @@ import { DateOnlyDataType, Op } from "sequelize";
 
 import PlanScreenMovie from "../models/PlanScreenMovie";
 import { numberSeatInRoom } from "./seatsService";
-export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
+
+export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
     const planScreenMovie = await PlanScreenMovie.findOne({
-      where: { planScreenMovieId },
+      where: { planScreenMovieCode },
     });
     if (!planScreenMovie) {
       return {
@@ -16,13 +17,13 @@ export const checkplanScreenMovieId = async (planScreenMovieId: number) => {
       return {
         errCode: 0,
         message: "PlanScreenMovie found",
-        planScreenMovieId: planScreenMovie.planScreenMovieId,
+        planScreenMovieCode: planScreenMovie.planScreenMovieCode,
       };
     }
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error checking planScreenMovieId: ${error}`,
+      message: `Error checking planScreenMovieCode: ${error}`,
     };
   }
 };
@@ -55,7 +56,6 @@ export const editPlanScreenMovie = async (data: any) => {
     endTime,
     dateScreen,
   } = data;
-
   try {
     if (!planScreenMovieCode) {
       return { errCode: 4, message: "Missing required parameters!" };
@@ -208,6 +208,13 @@ export const createPlanScreenMovie = async (
         };
       }
 
+      if (startTime < "10:00" || endTime > "23:00") {
+        return {
+          errCode: 4,
+          message: `Invalid time format for time ${time}. Please provide start and end times between 10:00-23:00`,
+        };
+      }
+
       const hasConflict = existingSchedules.some((schedule) => {
         const existingStartTime = schedule.getDataValue("startTime");
         const existingEndTime = schedule.getDataValue("endTime");
@@ -263,15 +270,28 @@ export const createPlanScreenMovie = async (
 
 export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
   try {
-    if (
-      !data.roomCode ||
-      !data.movieCode ||
-      !data.startTime ||
-      !data.dateScreen
-    ) {
+    if (!data.roomCode) {
       return {
         errCode: 2,
-        message: "Missing required parameters",
+        message: "Missing roomCode parameter",
+      };
+    }
+    if (!data.movieCode) {
+      return {
+        errCode: 2,
+        message: "Missing movieCode parameter",
+      };
+    }
+    if (!data.startTime) {
+      return {
+        errCode: 2,
+        message: "Missing startTime parameter",
+      };
+    }
+    if (!data.dateScreen) {
+      return {
+        errCode: 2,
+        message: "Missing dateScreen parameter",
       };
     }
 
@@ -296,7 +316,7 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
 
     if (planScreenMovies.length > 0) {
       const planScreenMovieCodes = planScreenMovies.map(
-        (item) => item.planScreenMovieId
+        (item) => item.planScreenMovieCode
       );
       return {
         errCode: 0,
@@ -310,10 +330,10 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieIdForCreateTicket:", error);
+    console.error("Error in getplanScreenMovieCodeForCreateTicket:", error);
     return {
       errCode: 3,
-      message: `Error getting planScreenMovieId: ${error}`,
+      message: `Error getting planScreenMovieCode: ${error}`,
     };
   }
 };
@@ -332,20 +352,20 @@ export const getStartTime = async (data: any) => {
     if (startTimePlan.length > 0) {
       return {
         errCode: 0,
-        message: "Get PlanScreenMovieCode success",
+        message: "Get startTime success",
         startTimePlanScreen: startTimePlan,
       };
     } else {
       return {
         errCode: 1,
-        message: "No planScreenMovieCode found",
+        message: "No startTime found",
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieCodeByMovieId:", error);
+    console.error("Error in startTime:", error);
     return {
       errCode: 3,
-      message: `Error getting planScreenMovieCode: ${error}`,
+      message: `Error getting startTime: ${error}`,
     };
   }
 };

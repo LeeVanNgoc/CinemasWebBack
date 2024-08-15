@@ -43,6 +43,7 @@ export const createPrice = async (data: any) => {
       roomType: data.roomType,
       seatType: data.seatType,
       isWeekend: data.isWeekend,
+      timeFrame: data.timeFrame
     });
     if (!newPrice) {
       return {
@@ -130,6 +131,8 @@ export const updatePrice = async (data: any) => {
     price.roomType = data.roomType || price.roomType;
     price.seatType = data.seatType || price.seatType;
     price.isWeekend = data.isWeekend || price.isWeekend;
+    price.timeFrame = data.timeFrame || price.timeFrame;
+
     await price.save();
     return {
       price: price,
@@ -175,6 +178,7 @@ export const getCost = async (data: any) => {
     if (
       !data.roomType ||
       !data.seatType ||
+      !data.timeFrame ||
       typeof data.isWeekend === "undefined"
     ) {
       return {
@@ -189,6 +193,7 @@ export const getCost = async (data: any) => {
       where: {
         roomType: data.roomType,
         seatType: data.seatType,
+        timeFrame: data.timeFrame,
         isWeekend: isWeekendValue,
       },
       attributes: ["cost"],

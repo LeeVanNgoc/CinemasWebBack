@@ -24,6 +24,9 @@ module.exports = {
       isWeekend: {
         type: Sequelize.BOOLEAN,
       },
+      timeFrame: {
+        type: Sequelize.STRING,
+      },
     });
   },
   async down(queryInterface, Sequelize) {

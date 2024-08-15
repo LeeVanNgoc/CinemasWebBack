@@ -25,9 +25,7 @@ const handleCreatePrice = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `Somthing went wrong in create new price ${error}` });
+    res.status(500).json({ message: `Somthing went wrong in create new price ${error}` });
   }
 };
 
@@ -68,9 +66,7 @@ const handleGetPriceByCode = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `Something went wrong getting price by id ${error}` });
+    res.status(500).json({ message: `Something went wrong getting price by id ${error}` });
   }
 };
 
@@ -90,9 +86,7 @@ const handleUpdatePrice = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `Something went wrong updating price ${error}` });
+    res.status(500).json({ message: `Something went wrong updating price ${error}` });
   }
 };
 
@@ -112,9 +106,7 @@ const handleDeletePrice = async (req: Request, res: Response) => {
       });
     }
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: `Something went wrong deleting price by id ${error}` });
+    res.status(500).json({ message: `Something went wrong deleting price by id ${error}` });
   }
 };
 
@@ -123,6 +115,7 @@ export const handleGetCost = async (req: Request, res: Response) => {
     roomType: req.query.roomType as string,
     seatType: req.query.seatType as string,
     isWeekend: req.query.isWeekend as string,
+    timeFrame: req.query.timeFrame as string,
   };
 
   try {

@@ -34,25 +34,20 @@ const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
 
 const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const planScreenMovieCode = req.query.planScreenMovieCode as string;
-  const roomId = req.query.roomId ? Number(req.query.roomId) : undefined;
-  const movieId = req.query.movieId ? Number(req.query.movieId) : undefined;
+  const roomCode = req.query.roomCode as string;
+  const movieCode = req.query.movieCode as String;
   const dateScreen = req.query.dateScreen as string;
   const times = req.query.times as string;
 
-  if (!planScreenMovieCode) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Invalid PlanScreenMovie Code" });
+  if (!(planScreenMovieCode)) {
+    return res.status(400).json({ errCode: 2, error: "Invalid planScreenMovieCode" });
   }
-  if (!roomId) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing roomId parameters" });
+  if (!roomCode) {
+    return res.status(400).json({ errCode: 2, error: 'Missing roomCode parameters' });
   }
-  if (!movieId) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing movieId parameter" });
+  if (!movieCode) {
+    return res.status(400).json({ errCode: 2, error: 'Missing movieCode parameter' });
+
   }
   if (!dateScreen) {
     return res
@@ -72,8 +67,8 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
 
   const data = {
     planScreenMovieCode,
-    roomId,
-    movieId,
+    roomCode,
+    movieCode,
     startTime,
     endTime,
     dateScreen,
@@ -147,30 +142,25 @@ const handleGetPlanScreenMovieByCode = async (req: Request, res: Response) => {
 };
 
 const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
-  const roomCode = String(req.query.roomCode);
-  const movieCode = String(req.query.movieCode);
+
+  const roomCode = req.query.roomCode as string;
+  const movieCode = req.query.movieCode as string;
+
   const dateScreen = req.query.dateScreen as string;
   const times = (req.query.times as string).split(",");
 
   if (!roomCode || !movieCode || !dateScreen || times.length === 0) {
-    return res
-      .status(400)
-      .json({ errCode: 2, message: "Missing roomCode parameter" });
+    return res.status(400).json({ errCode: 2, message: "Missing roomCode parameter" });
   }
   if (!movieCode) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing movieCode parameter" });
+    return res.status(400).json({ errCode: 2, error: 'Missing movieCode parameter' });
+
   }
   if (!dateScreen) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing dateScreen parameter" });
+    return res.status(400).json({ errCode: 2, error: "Missing dateScreen parameter" });
   }
   if (times.length === 0) {
-    return res
-      .status(400)
-      .json({ errCode: 2, error: "Missing times parameter" });
+    return res.status(400).json({ errCode: 2, error: "Missing times parameter" });
   }
 
   try {
@@ -199,34 +189,31 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetplanScreenMovieCodeForCreateTicket = async (
-  req: Request,
-  res: Response
-) => {
+const handleGetplanScreenMovieCodeForCreateTicket = async (req: Request, res: Response) => {
   const data = {
     roomCode: req.query.roomCode as string,
-    movieCode: req.query.movieId as string,
+    movieCode: req.query.movieCode as string,
     startTime: req.query.startTime as string,
     dateScreen: req.query.dateScreen as string,
   };
 
   try {
-    const planScreenMovieId = await getPlanScreenMovieCodeForCreateTicket(data);
-    if (planScreenMovieId.errCode === 0) {
+    const planScreenMovieCode = await getPlanScreenMovieCodeForCreateTicket(data);
+    if (planScreenMovieCode.errCode === 0) {
       res.status(200).json({
-        errCode: planScreenMovieId.errCode,
-        message: planScreenMovieId.message,
-        planScreenMovieId: planScreenMovieId.planScreenMovieCodes,
+        errCode: planScreenMovieCode.errCode,
+        message: planScreenMovieCode.message,
+        planScreenMovieCode: planScreenMovieCode.planScreenMovieCodes,
       });
     } else {
       res.status(400).json({
-        errCode: planScreenMovieId.errCode,
-        message: planScreenMovieId.message,
+        errCode: planScreenMovieCode.errCode,
+        message: planScreenMovieCode.message,
       });
     }
   } catch (error) {
     res.status(500).json({
-      message: `Error in handle get plan screen movie id for create ticket ${error}`,
+      message: `Error in handle get plan screen movie code for create ticket ${error}`,
     });
   }
 };

@@ -73,7 +73,7 @@ export const getTrailerByCode = async (trailerCode: string) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error getting trailer by id: ${error}`,
+      message: `Error getting trailer by code: ${error}`,
     };
   }
 };
@@ -157,7 +157,7 @@ export const deleteTrailer = async (trailerCode: string) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error deleting trailer by id: ${error}`,
+      message: `Error deleting trailer by code: ${error}`,
     };
   }
 };
@@ -191,7 +191,7 @@ export const updateTrailer = async (data: any) => {
   } catch (error) {
     return {
       errCode: 3,
-      message: `Error updating trailer by id: ${error}`,
+      message: `Error updating trailer by code: ${error}`,
     };
   }
 };
