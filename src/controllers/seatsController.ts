@@ -11,6 +11,7 @@ import {
   getSeatInRoom,
   createMultipleSeat,
   editMultipleSeat,
+  deleteSeatInRoom,
 } from "../services/seatsService";
 
 const handleCreateSeat = async (req: Request, res: Response) => {
@@ -307,6 +308,34 @@ const handleEditMultipleSeat = async (req: Request, res: Response) => {
   }
 };
 
+const handleDeleteSeatInRoom = async (req: Request, res: Response) => {
+  const roomCode = req.query.roomCode as string;
+  if (!roomCode) {
+    return res.status(400).json({
+      errCode: 2,
+      message: "Invalid input: roomCode is required",
+    });
+  }
+  try {
+    const result = await deleteSeatInRoom(roomCode);
+    if (result.errCode === 0) {
+      res.status(200).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    } else {
+      res.status(400).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `Something went wrong in deleting seats in room: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateSeat,
   handleGetAllSeats,
@@ -319,4 +348,5 @@ export default {
   handleGetSeatInOneRoom,
   handleCreateMultipleSeat,
   handleEditMultipleSeat,
+  handleDeleteSeatInRoom,
 };
