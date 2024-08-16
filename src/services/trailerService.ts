@@ -1,4 +1,5 @@
 import Trailer from "../models/Trailer";
+import { getMovieByCode } from "./movieService";
 
 export const createTrailer = async (data: any) => {
   try {
@@ -110,8 +111,19 @@ export const getAllTrailer = async () => {
       attributes: ["trailerCode", "movieCode", "link"],
       raw: true,
     });
+    const trailersData = await Promise.all(
+      trailers.map(async (trailer) => {
+        const movie = await getMovieByCode(trailer.movieCode);
+        return {
+          trailerCode: trailer.trailerCode,
+          movieCode: trailer.movieCode,
+          movieTitle: movie.movie?.title,
+          link: trailer.link,
+        };
+      })
+    );
 
-    if (!trailers) {
+    if (!trailersData) {
       return {
         trailers: null,
         errCode: 1,
@@ -119,7 +131,7 @@ export const getAllTrailer = async () => {
       };
     }
     return {
-      trailers,
+      trailers: trailersData,
       errCode: 0,
       message: "All trailers fetched successfully",
     };

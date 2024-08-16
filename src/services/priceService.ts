@@ -43,7 +43,7 @@ export const createPrice = async (data: any) => {
       roomType: data.roomType,
       seatType: data.seatType,
       isWeekend: data.isWeekend,
-      timeFrame: data.timeFrame
+      timeFrame: data.timeFrame,
     });
     if (!newPrice) {
       return {
@@ -67,7 +67,17 @@ export const createPrice = async (data: any) => {
 // Get all price records
 export const getAllPrices = async () => {
   try {
-    const prices = await Price.findAll();
+    const prices = await Price.findAll({
+      attributes: [
+        "priceCode",
+        "cost",
+        "roomType",
+        "seatType",
+        "isWeekend",
+        "timeFrame",
+      ],
+      raw: true,
+    });
     if (!prices) {
       return {
         errCode: 1,

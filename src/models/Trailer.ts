@@ -41,6 +41,6 @@ Trailer.init(
   }
 );
 
-Trailer.belongsTo(Movie, { foreignKey: "movieId" });
+Trailer.belongsTo(Movie, { foreignKey: "movieCode" });
 
 export default Trailer;

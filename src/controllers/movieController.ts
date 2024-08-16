@@ -6,6 +6,7 @@ import {
   getAllMovies,
   getMovieByCode,
   getMovieByTitle,
+  getListMoviesTitleAndCode,
 } from "../services/movieService";
 
 const handleCreateMovie = async (req: Request, res: Response) => {
@@ -256,6 +257,27 @@ const handleGetMovieByTitle = async (req: Request, res: Response) => {
   }
 };
 
+const handleGetListMoviesTitleAndCode = async (req: Request, res: Response) => {
+  try {
+    const result = await getListMoviesTitleAndCode();
+    if (result.errCode !== 0) {
+      return res
+        .status(400)
+        .json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      movies: result.movies,
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting movie titles and codes: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateMovie,
   handleDeleteMovie,
@@ -263,4 +285,5 @@ export default {
   handleGetAllMovies,
   handleGetMovieByCode,
   handleGetMovieByTitle,
+  handleGetListMoviesTitleAndCode,
 };

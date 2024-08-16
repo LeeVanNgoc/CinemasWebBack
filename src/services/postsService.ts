@@ -114,15 +114,7 @@ export const editPost = async (data: {
 export const getAllPosts = async () => {
   try {
     const posts = await Posts.findAll({
-      attributes: [
-        "postId",
-        "postCode",
-        "title",
-        "content",
-        "postDate",
-        "image",
-        "link",
-      ],
+      attributes: ["postCode", "title", "content", "postDate", "image", "link"],
       raw: true,
     });
     return {
