@@ -284,6 +284,34 @@ const handleGetListPlanScreenInformation = async (
   }
 };
 
+// const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
+//   const dateScreen = req.query.dateScreen as string;
+
+//   if (!dateScreen) {
+//     return res.status(400).json({ message: "Invalid dateScreen" });
+//   }
+
+//   try {
+//     const result = await getMovieDetailsByDate(dateScreen);
+//     if (result.errCode === 0) {
+//       res.status(200).json({
+//         errCode: result.errCode,
+//         message: result.message,
+//         planScreenMovie: result.planScreenMovie,
+//       });
+//     } else {
+//       res.status(404).json({
+//         errCode: result.errCode,
+//         message: result.message,
+//       });
+//     }
+//   } catch (error) {
+//     res.status(500).json({
+//       error: `Something went wrong in getMovieDetailsByDate: ${error}`,
+//     });
+//   }
+// };
+
 const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
   const dateScreen = req.query.dateScreen as string;
 
@@ -297,7 +325,7 @@ const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
       res.status(200).json({
         errCode: result.errCode,
         message: result.message,
-        planScreenMovie: result.planScreenMovie,
+        movies: result.movies,
       });
     } else {
       res.status(404).json({
