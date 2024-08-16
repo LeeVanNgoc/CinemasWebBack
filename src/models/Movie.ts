@@ -1,6 +1,7 @@
-import { Model, DataTypes, DateOnlyDataType } from "sequelize";
+import { Model, DataTypes, DateOnlyDataType, Association } from "sequelize";
 import sequelize from "../config/connectDB";
 import Genres from "./Genres";
+import PlanScreenMovie from "./PlanScreenMovie";
 
 class Movie extends Model {
   public movieId!: number;
@@ -12,17 +13,24 @@ class Movie extends Model {
   public releaseDate!: DateOnlyDataType;
   public genreCode!: number;
   public image!: string;
+
+  public genre?: Genres;
+
+  public static associations: {
+    genre: Association<Movie, Genres>;
+  };
 }
 
 Movie.init(
   {
     movieId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      // primaryKey: true,
       allowNull: false,
     },
     movieCode: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     title: {
@@ -61,8 +69,20 @@ Movie.init(
   {
     sequelize,
     modelName: "Movie",
+    tableName: "movies",
     timestamps: false,
   }
 );
+
+// Movie.hasMany(PlanScreenMovie, {
+//   foreignKey: "movieCode",
+//   as: "movie",
+// });
+
+Movie.belongsTo(Genres, {
+  foreignKey: 'genreCode',
+  targetKey: 'genreCode',
+  as: 'genre'
+});
 
 export default Movie;

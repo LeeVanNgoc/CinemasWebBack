@@ -34,6 +34,10 @@ const planScreenMovieRoutes = (app: Application) => {
     "/get-list-plan-information",
     planScreenMovieController.handleGetListPlanScreenInformation
   );
+  router.get(
+    "/get-movie-details-by-date",
+    planScreenMovieController.handleGetMovieDetailsByDate
+  );
   return app.use("/api/plan-screen-movie", router);
 };
 export default planScreenMovieRoutes;

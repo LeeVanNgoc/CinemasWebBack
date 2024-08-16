@@ -1,4 +1,4 @@
-import { Model, DataTypes, DateOnlyDataType } from "sequelize";
+import { Model, DataTypes, DateOnlyDataType, Association } from "sequelize";
 import sequelize from "../config/connectDB";
 import Room from "./Room";
 import Movie from "./Movie";
@@ -12,6 +12,11 @@ class PlanScreenMovie extends Model {
   public startTime!: TimeRanges;
   public endTime!: TimeRanges;
   public dateScreen!: DateOnlyDataType;
+  public movie?: Movie;
+
+  public static associations: {
+    movie: Association<PlanScreenMovie, Movie>;
+  };
 }
 
 PlanScreenMovie.init(
@@ -35,7 +40,7 @@ PlanScreenMovie.init(
       },
     },
     movieCode: {
-      type: DataTypes.INTEGER,
+      type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: Movie,
@@ -53,15 +58,6 @@ PlanScreenMovie.init(
     dateScreen: {
       type: DataTypes.DATEONLY,
       allowNull: false,
-      // get() {
-      //   const rawDate = this.getDataValue('dateScreen');
-      //   const [year, month, day] = rawDate.split('-');
-      //   return `${day}/${month}/${year}`; // Trả về định dạng DD/MM/YYYY khi lấy từ cơ sở dữ liệu
-      // },
-      // set(value : string) {
-      //   const [day, month, year] = value.split('/');
-      //   this.setDataValue('dateScreen', `${year}-${month}-${day}`); // Lưu lại dưới dạng YYYY-MM-DD
-      // }
     },
   },
   {
@@ -71,5 +67,11 @@ PlanScreenMovie.init(
     timestamps: false,
   }
 );
+
+PlanScreenMovie.belongsTo(Movie, {
+  foreignKey: 'movieCode',
+  targetKey: 'movieCode',
+  as: 'movie'
+});
 
 export default PlanScreenMovie;
