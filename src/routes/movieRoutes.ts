@@ -11,6 +11,10 @@ const movieRoutes = (app: Application) => {
   router.get("/get-all-movies", movieController.handleGetAllMovies);
   router.get("/get-movie-by-code", movieController.handleGetMovieByCode);
   router.get("/get-movie-by-title", movieController.handleGetMovieByTitle);
+  router.get(
+    "/get-list-movies-title-and-code",
+    movieController.handleGetListMoviesTitleAndCode
+  );
 
   return app.use("/api/movie", router);
 };

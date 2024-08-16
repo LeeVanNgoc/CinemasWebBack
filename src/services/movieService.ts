@@ -178,27 +178,26 @@ export const getMovieByTitle = async (title: string) => {
   }
 };
 
-// export const getMovieTitleByCode = async (movieCode: string) => {
-//   try {
-//     const movie = await Movie.findOne({
-//       where: { movieCode: movieCode },
-//       attributes: ["title"],
-//     });
-//     if (!movie) {
-//       return {
-//         errCode: 1,
-//         message: "Movie not found",
-//       };
-//     }
-//     return {
-//       errCode: 0,
-//       message: "Get movie title success",
-//       title: movie.title,
-//     };
-//   } catch (error) {
-//     return {
-//       errCode: 3,
-//       message: `Error getting movie title: ${error}`,
-//     };
-//   }
-// };
+export const getListMoviesTitleAndCode = async () => {
+  try {
+    const movies = await Movie.findAll({
+      attributes: ["movieCode", "title"],
+    });
+    if (!movies) {
+      return {
+        errCode: 1,
+        message: "Movie not found",
+      };
+    }
+    return {
+      errCode: 0,
+      message: "Get movie title success",
+      movies: movies,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting movie title: ${error}`,
+    };
+  }
+};
