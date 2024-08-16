@@ -22,18 +22,18 @@ export const createTheater = async (data: any) => {
     });
 
     const codes = existingCodes.map((theater) => theater.theaterCode);
-    let newCode = "R001";
+    let newCode = "T001";
     if (newId < 10) {
       while (codes.includes(newCode)) {
-        newCode = "R00" + newId;
+        newCode = "T00" + newId;
       }
     } else if (newId >= 10 && newId < 100) {
       while (codes.includes(newCode)) {
-        newCode = "R0" + newId;
+        newCode = "T0" + newId;
       }
     } else {
       while (codes.includes(newCode)) {
-        newCode = "R" + newId;
+        newCode = "T" + newId;
       }
     }
     const newTheater = await Theater.create({
