@@ -464,3 +464,25 @@ export const editMultipleSeat = async (data: any) => {
     };
   }
 };
+
+export const deleteSeatInRoom = async (roomCode: string) => {
+  try {
+    const seats = await Seat.destroy({ where: { roomCode: roomCode } });
+    if (seats) {
+      return {
+        errCode: 0,
+        message: "Seats deleted successfully",
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "No seats found to delete",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error deleting seats in room ${error}`,
+    };
+  }
+};
