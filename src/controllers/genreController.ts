@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { createGenre, deleteGenre, editGenre, getAllGenres, getGenreById } from '../services/genreService';
+import { createGenre, deleteGenre, editGenre, getAllGenres, getGenreByCode } from '../services/genreService';
 
 const handleCreateGenre = async (req: Request, res: Response) => {
   const name = req.query.name as string;
@@ -20,12 +20,12 @@ const handleCreateGenre = async (req: Request, res: Response) => {
 };
 
 const handleDeleteGenre = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.query.genreId as string);
-  if (isNaN(genreId)) {
-    return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
+  const genreCode = req.query.genreCode as string;
+  if (!(genreCode)) {
+    return res.status(400).json({ errCode: 2, message: 'Invalid genreCode' });
   }
   try {
-    const result = await deleteGenre(genreId);
+    const result = await deleteGenre(genreCode);
     if (result.errCode) {
       return res.status(404).json(result);
     }
@@ -36,11 +36,11 @@ const handleDeleteGenre = async (req: Request, res: Response) => {
 };
 
 const handleEditGenre = async (req: Request, res: Response) => {
-  const genreId = Number(req.query.genreId);
+  const genreCode = req.query.genreCode as string;
   const name = req.query.name as string;
   const description = req.query.description as string;
-  if (isNaN(genreId)) {
-    return res.status(400).json({ errCode: 2, message: 'Missing genreId parameter' });
+  if (!(genreCode)) {
+    return res.status(400).json({ errCode: 2, message: 'Missing genreCode parameter' });
   }
   if (!name) {
     return res.status(400).json({ errCode: 2, message: 'Missing name parameter' });
@@ -49,7 +49,7 @@ const handleEditGenre = async (req: Request, res: Response) => {
     return res.status(400).json({ errCode: 2, message: 'Missing name or description' });
   }
   try {
-    const result = await editGenre({ genreId, name, description });
+    const result = await editGenre({ genreCode, name, description });
     if (result.errCode !== 0) {
       return res.status(404).json({ errCode: result.errCode, message: result.message });
     }
@@ -68,13 +68,13 @@ const handleGetAllGenres = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetGenreById = async (req: Request, res: Response) => {
-  const genreId = parseInt(req.query.genreId as string);
-  if (isNaN(genreId)) {
-    return res.status(400).json({ errCode: 2, message: 'Invalid genre ID' });
+const handleGetGenreByCode = async (req: Request, res: Response) => {
+  const genreCode = req.query.genreCode as string;
+  if (!(genreCode)) {
+    return res.status(400).json({ errCode: 2, message: 'Invalid genreCode' });
   }
   try {
-    const result = await getGenreById(genreId);
+    const result = await getGenreByCode(genreCode);
     if (result.errCode) {
       return res.status(404).json(result);
     }
@@ -89,5 +89,5 @@ export default {
   handleDeleteGenre,
   handleEditGenre,
   handleGetAllGenres,
-  handleGetGenreById,
+  handleGetGenreByCode,
 };
