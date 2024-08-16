@@ -25,18 +25,18 @@ export const createRoom = async (data: any) => {
     });
 
     const codes = existingCodes.map((room) => room.roomCode);
-    let newCode = "P001";
+    let newCode = "R001";
     if (newId < 10) {
       while (codes.includes(newCode)) {
-        newCode = "P00" + newId;
+        newCode = "R00" + newId;
       }
     } else if (newId >= 10 && newId < 100) {
       while (codes.includes(newCode)) {
-        newCode = "P0" + newId;
+        newCode = "R0" + newId;
       }
     } else {
       while (codes.includes(newCode)) {
-        newCode = "P" + newId;
+        newCode = "R" + newId;
       }
     }
 

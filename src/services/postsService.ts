@@ -27,18 +27,18 @@ export const createNewPost = async (data: {
     });
 
     const codes = existingCodes.map((posts) => posts.postCode);
-    let newCode = "NS001";
+    let newCode = "PS001";
     if (newId < 10) {
       while (codes.includes(newCode)) {
-        newCode = "NS00" + newId;
+        newCode = "PS00" + newId;
       }
     } else if (newId >= 10 && newId < 100) {
       while (codes.includes(newCode)) {
-        newCode = "NS0" + newId;
+        newCode = "PS0" + newId;
       }
     } else {
       while (codes.includes(newCode)) {
-        newCode = "NS " + newId;
+        newCode = "PS " + newId;
       }
     }
 
