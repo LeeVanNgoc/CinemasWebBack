@@ -12,11 +12,12 @@ Genres.init(
   {
     genreId: {
       type: DataTypes.INTEGER,
-      primaryKey: true,
+      // primaryKey: true,
       allowNull: false,
     },
     genreCode: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     name: {

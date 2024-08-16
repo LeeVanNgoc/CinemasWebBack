@@ -2,6 +2,9 @@ import { DateOnlyDataType, Op } from "sequelize";
 
 import PlanScreenMovie from "../models/PlanScreenMovie";
 import { getMovieByCode } from "./movieService";
+import Movie from "../models/Movie";
+import Genres from "../models/Genres";
+import sequelize from "../config/connectDB";
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -413,6 +416,167 @@ export const getStartTime = async (data: any) => {
     return {
       errCode: 3,
       message: `Error getting startTime: ${error}`,
+    };
+  }
+};
+
+// export const getMovieDetailsByDate = async (dateScreen: string) => {
+//   try {
+//     const planScreenMovie = await PlanScreenMovie.findAll({
+//       where: { dateScreen },
+//       attributes: [
+//         "planScreenMovieCode",
+//       ],
+//       include: [
+//         {
+//           model: Movie,
+//           as: "movie",
+//           attributes: [
+//             "title",
+//             "description",
+//             "duration",
+//             "country",
+//             "image",
+//           ],
+//           include: [
+//             {
+//               model: Genres,
+//               as: "genre",
+//               attributes: ["name"],
+//             }
+//           ]
+//         },
+//       ],
+//     });
+
+//     if (!planScreenMovie || planScreenMovie.length === 0) {
+//       return {
+//         errCode: 1,
+//         message: "Movie screening not found for the given date",
+//       };
+//     }
+
+//     // Transform the result to include genre name
+//     // const transformedResult = planScreenMovie.map(psm => ({
+//     //   ...psm.get({ plain: true }),
+//     //   movie: psm.movie ? {
+//     //     ...psm.movie.get({ plain: true }),
+//     //     genreName: psm.movie.genre ? psm.movie.genre.name : null
+//     //   } : null
+//     // }));
+
+//     const transformedResult = planScreenMovie.map(psm => ({
+//       ...psm.get({ plain: true }),
+//       movie: psm.movie ? {
+//         title: psm.movie.title,
+//         description: psm.movie.description,
+//         duration: psm.movie.duration,
+//         country: psm.movie.country,
+//         image: psm.movie.image,
+//         genreName: psm.movie.genre ? psm.movie.genre.name : null
+//       } : null
+//     }));
+
+//     return {
+//       errCode: 0,
+//       message: "Get movie details successfully",
+//       planScreenMovie: transformedResult
+//     };
+//   } catch (error) {
+//     console.error("Error in getMovieDetailsByDate:", error);
+//     return {
+//       errCode: 3,
+//       message: `Error retrieving movie details: ${error}`,
+//     };
+//   }
+// };
+
+export const getMovieDetailsByDate = async (dateScreen: string) => {
+  try {
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: { dateScreen },
+      attributes: ["planScreenMovieCode"],
+      include: [
+        {
+          model: Movie,
+          as: "movie",
+          attributes: [
+            "movieCode",
+            "title",
+            "description",
+            "duration",
+            "country",
+            "image",
+          ],
+          include: [
+            {
+              model: Genres,
+              as: "genre",
+              attributes: ["name"],
+            },
+          ],
+        },
+      ],
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      return {
+        errCode: 1,
+        message: "Movie screening not found for the given date",
+      };
+    }
+
+    const movieDetailsMap: {
+      [key: string]: {
+        movie: {
+          movieCode: string,
+          title: string;
+          description: string;
+          duration: number;
+          country: string;
+          image: string;
+          genreName: string | null;
+        };
+        planScreenMovieCodes: string[];
+      };
+    } = {};
+
+    planScreenMovies.forEach((psm) => {
+      const movie = psm.movie;
+      if (movie) {
+        const key = `${movie.title}-${movie.description}-${movie.duration}-${movie.country}-${movie.image}-${movie.genre ? movie.genre.name : null}`;
+
+        if (!movieDetailsMap[key]) {
+          movieDetailsMap[key] = {
+            movie: {
+              movieCode: movie.movieCode,
+              title: movie.title,
+              description: movie.description,
+              duration: movie.duration,
+              country: movie.country,
+              image: movie.image,
+              genreName: movie.genre ? movie.genre.name : null,
+            },
+            planScreenMovieCodes: [],
+          };
+        }
+
+        movieDetailsMap[key].planScreenMovieCodes.push(psm.planScreenMovieCode);
+      }
+    });
+
+    const transformedResult = Object.values(movieDetailsMap);
+
+    return {
+      errCode: 0,
+      message: "Get movie details successfully",
+      movies: transformedResult,
+    };
+  } catch (error) {
+    console.error("Error in getMovieDetailsByDate:", error);
+    return {
+      errCode: 3,
+      message: `Error retrieving movie details: ${error}`,
     };
   }
 };
