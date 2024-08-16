@@ -226,6 +226,14 @@ Quy tặc gán errCode:
     Liên kết đường dẫn:
         - 	app.use('/api/plan-screen-movie', router);
 
+	API lấy thông tin phim và PSMCode theo dateScreen:
+        - 	router.get('/get-movie-details-by-date');
+        - 	Input : + dateScreen (string)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+	e.g: http://localhost:6060/api/plan-screen-movie/get-movie-details-by-date?dateScreen=2024-08-18
+
 5. priceRouter 
 	API tạo giá vé :
 		-	router.post('/create-price');
