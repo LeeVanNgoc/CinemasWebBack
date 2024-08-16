@@ -38,6 +38,10 @@ const planScreenMovieRoutes = (app: Application) => {
     "/get-movie-details-by-date",
     planScreenMovieController.handleGetMovieDetailsByDate
   );
+  router.get(
+    "/get-monthly-movie-stats",
+    planScreenMovieController.handleGetMonthlyMovieStats
+  );
   return app.use("/api/plan-screen-movie", router);
 };
 export default planScreenMovieRoutes;

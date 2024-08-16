@@ -4,7 +4,7 @@ import PlanScreenMovie from "../models/PlanScreenMovie";
 import { getMovieByCode } from "./movieService";
 import Movie from "../models/Movie";
 import Genres from "../models/Genres";
-import sequelize from "../config/connectDB";
+import Sequelize from "sequelize";
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -577,6 +577,57 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
     return {
       errCode: 3,
       message: `Error retrieving movie details: ${error}`,
+    };
+  }
+};
+
+export const getMonthlyMovieStats = async (month: number, year: number) => {
+  try {
+    const startDate = new Date(year, month - 1, 1); // Bắt đầu từ ngày đầu tiên của tháng
+    const endDate = new Date(year, month, 0); // Ngày cuối cùng của tháng
+
+    const stats = await PlanScreenMovie.findAll({
+      where: {
+        dateScreen: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+      include: [
+        {
+          model: Movie,
+          as: "movie",
+          attributes: ["title"],
+        },
+      ],
+      attributes: [
+        [Sequelize.fn('COUNT', Sequelize.col('planScreenMovieCode')), 'screeningCount'],
+      ],
+      group: ['movie.title'],
+    });
+
+    if (!stats || stats.length === 0) {
+      return {
+        errCode: 1,
+        message: "No screening stats found for the given month",
+      };
+    }
+
+    // Chuyển đổi kết quả và xử lý trường hợp undefined
+    const transformedResult = stats.map((stat: any) => ({
+      movieTitle: stat.movie ? stat.movie.title : 'Unknown Movie',
+      screeningCount: stat.get('screeningCount'),
+    }));
+
+    return {
+      errCode: 0,
+      message: "Get monthly movie stats successfully",
+      stats: transformedResult,
+    };
+  } catch (error) {
+    console.error("Error in getMonthlyMovieStats:", error);
+    return {
+      errCode: 3,
+      message: `Error retrieving movie stats: ${error}`,
     };
   }
 };
