@@ -501,6 +501,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
           model: Movie,
           as: "movie",
           attributes: [
+            "movieCode",
             "title",
             "description",
             "duration",
@@ -528,6 +529,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
     const movieDetailsMap: {
       [key: string]: {
         movie: {
+          movieCode: string,
           title: string;
           description: string;
           duration: number;
@@ -547,6 +549,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
         if (!movieDetailsMap[key]) {
           movieDetailsMap[key] = {
             movie: {
+              movieCode: movie.movieCode,
               title: movie.title,
               description: movie.description,
               duration: movie.duration,

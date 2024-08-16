@@ -241,7 +241,7 @@ Quy tặc gán errCode:
 					+ seatType : kiểu ghế (string) (Standard, Vip, SweetBox)
 					+ roomType : kiểu phongf (string) (2D, 3D)
 					+ isWeekend : !!!ngày lễ (boolean) (True // False)
-					+ timeFrame: string (10-12,12-17, 17-23)
+					+ timeFrame: string (10-12, 12-17, 17-23)
 		-	Output: + errCode: 0 (tạo thành công)
                   	+ errCode: 1 (không tìm thấy lịch chiếu)
                   	+ errCode: 3 (lỗi khi cập nhật)
