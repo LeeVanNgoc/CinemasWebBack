@@ -3,6 +3,8 @@ import User from "../models/User";
 import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
 import { createJWT } from "../middlewares/jwtAction";
+import { sendOTP } from "../middlewares/mailer";
+import { generateOtp, deleteOtp, getOtpByEmail } from "./otpService";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -339,7 +341,7 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
 
     if (isExists) {
       const user = await User.findOne({
-        attributes: ["email", "password", "role", "userCode"],
+        attributes: ["email", "password", "role", "userCode", "city"],
         where: { email: userEmail },
         raw: true,
       });
@@ -355,15 +357,24 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
             userCode: user.userCode,
             userEmail: user.email,
             role: user.role,
+            city: user.city,
             expiresIn: process.env.JWT_EXPIRES_IN,
           };
           const token = await createJWT(payload);
+          const otp = await sendOTP(userEmail);
+          if (otp) {
+            console.log("OTP sent successfully:", otp);
+          } else {
+            console.log("Failed to send OTP.");
+          }
           return {
             token: token,
             data: {
               userCode: user.userCode,
               role: user.role,
+              city: user.city,
             },
+            otp: otp,
             errCode: 0,
             message: "Login success",
           };
@@ -390,6 +401,97 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
     return {
       errCode: 3,
       message: `Error login use JWT: ${error}`,
+    };
+  }
+};
+
+export const getOTPRequestPasswords = async (userEmail: string) => {
+  try {
+    const user = await User.findOne({
+      where: { email: userEmail },
+      raw: true,
+    });
+    if (user) {
+      const otpGmail = await sendOTP(userEmail);
+      if (otpGmail) {
+        console.log(otpGmail);
+        const otpCode = String(otpGmail);
+        await generateOtp(userEmail, otpCode);
+        return {
+          errCode: 0,
+          message: "OTP sent successfully",
+          otp: otpGmail,
+        };
+      } else {
+        return {
+          errCode: 4,
+          message: "Failed to send OTP",
+        };
+      }
+    } else {
+      return {
+        errCode: 1,
+        message: "User not found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error get OTP request passwords: ${error}`,
+    };
+  }
+};
+// Hàm đăng nhập
+export const requestPasswords = async (userEmail: string, otpCode: string) => {
+  try {
+    const userData: any = {};
+    const isExists = await checkUserEmail(userEmail);
+
+    if (isExists) {
+      const user = await User.findOne({
+        where: { email: userEmail },
+        attributes: ["email", "password", "role", "userCode", "city"],
+        raw: true,
+      });
+      if (user) {
+        const otpGmail = await getOtpByEmail(userEmail);
+        const otpGmailCheck = String(otpGmail.data?.otpCode);
+
+        if (otpGmailCheck === otpCode) {
+          // Xóa password để tránh bảo mật thông tin
+          delete userData.password;
+          userData.user = user;
+          let payload = {
+            userCode: user.userCode,
+            userEmail: user.email,
+            role: user.role,
+            city: user.city,
+            expiresIn: process.env.JWT_EXPIRES_IN,
+          };
+          const token = await createJWT(payload);
+          await deleteOtp(userEmail);
+          return {
+            token: token,
+            data: {
+              userCode: user.userCode,
+              role: user.role,
+              city: user.city,
+            },
+            errCode: 0,
+            message: "Login success",
+          };
+        } else {
+          return {
+            errCode: 4,
+            message: "OTP is incorrect",
+          };
+        }
+      }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error login: ${error}`,
     };
   }
 };
