@@ -234,6 +234,16 @@ Quy tặc gán errCode:
                   	+ errCode: 3 (lỗi khi lấy dữ liệu)
 	e.g: http://localhost:6060/api/plan-screen-movie/get-movie-details-by-date?dateScreen=2024-08-18
 
+	Thống kê:
+	API số suất chiếu của các phim trong tháng:
+        - 	router.get('/get-monthly-movie-stats');
+        - 	Input : + month (number)
+					+ year (number)
+        - 	Output: + errCode: 0 (lấy thành công) && bản ghi lịch chiếu
+                  	+ errCode: 1 (không tìm thấy lịch chiếu)
+                  	+ errCode: 3 (lỗi khi lấy dữ liệu)
+	e.g: http://localhost:6060/api/plan-screen-movie/get-monthly-movie-stats?month=8&year=2024
+	
 5. priceRouter 
 	API tạo giá vé :
 		-	router.post('/create-price');

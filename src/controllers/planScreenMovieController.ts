@@ -9,6 +9,7 @@ import {
   getStartTime,
   getListPlanScreenInformation,
   getMovieDetailsByDate,
+  getMonthlyMovieStats,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -343,6 +344,37 @@ const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
   }
 };
 
+const handleGetMonthlyMovieStats = async (req: Request, res: Response) => {
+  const { month, year } = req.query;
+
+  if (!month || !year) {
+    return res.status(400).json({ message: "Invalid month or year" });
+  }
+
+  try {
+    const monthNumber = parseInt(month as string);
+    const yearNumber = parseInt(year as string);
+
+    const result = await getMonthlyMovieStats(monthNumber, yearNumber);
+    if (result.errCode === 0) {
+      res.status(200).json({
+        errCode: result.errCode,
+        message: result.message,
+        stats: result.stats,
+      });
+    } else {
+      res.status(404).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Something went wrong in getMonthlyMovieStats: ${error}`,
+    });
+  }
+};
+
 export default {
   handleDeletePlanScreenMovie,
   handleEditPlanScreenMovie,
@@ -353,4 +385,5 @@ export default {
   handleGetStartTime,
   handleGetListPlanScreenInformation,
   handleGetMovieDetailsByDate,
+  handleGetMonthlyMovieStats,
 };
