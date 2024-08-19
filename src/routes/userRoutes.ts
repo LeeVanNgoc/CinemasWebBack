@@ -11,6 +11,7 @@ const userRoutes = (app: Application) => {
   router.get("/get-user-by-code", userController.handleGetUserById);
   router.get("/get-all-users", userController.handleGetAllUsers);
   router.post("/login-user", userController.handleLoginUser);
+  router.post("/login-user-with-jwt", userController.handleLoginUserWithJWT);
   return app.use("/api/user", router);
 };
 

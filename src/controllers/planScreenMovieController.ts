@@ -9,7 +9,7 @@ import {
   getStartTime,
   getListPlanScreenInformation,
   getMovieDetailsByDate,
-  getMonthlyMovieStats
+  getMonthlyMovieStats,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -41,6 +41,9 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const movieCode = req.query.movieCode as String;
   const dateScreen = req.query.dateScreen as string;
   const times = req.query.times as string;
+
+  console.log(dateScreen);
+  console.log(times);
 
   if (!planScreenMovieCode) {
     return res
@@ -382,5 +385,5 @@ export default {
   handleGetStartTime,
   handleGetListPlanScreenInformation,
   handleGetMovieDetailsByDate,
-  handleGetMonthlyMovieStats
+  handleGetMonthlyMovieStats,
 };

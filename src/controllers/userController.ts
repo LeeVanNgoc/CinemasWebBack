@@ -6,7 +6,9 @@ import {
   getUserById,
   getAllUsers,
   loginAPI,
+  loginUseJWT,
 } from "../services/userService";
+import { date } from "joi";
 
 const handleCreateUser = async (req: Request, res: Response) => {
   const data = req.query;
@@ -153,6 +155,29 @@ const handleLoginUser = async (req: Request, res: Response) => {
   }
 };
 
+const handleLoginUserWithJWT = async (req: Request, res: Response) => {
+  const userEmail = String(req.query.userEmail);
+  const userPassword = String(req.query.userPassword);
+  try {
+    const result = await loginUseJWT(userEmail, userPassword);
+    if (result.errCode === 0) {
+      res.status(200).json({
+        token: result.token,
+        data: result.data,
+        errCode: result.errCode,
+        message: result.message,
+      });
+    } else {
+      res.status(401).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: `Error went login with JWT ${error}` });
+  }
+};
+
 export default {
   handleCreateUser,
   handleDeleteUser,
@@ -160,4 +185,5 @@ export default {
   handleGetUserById,
   handleGetAllUsers,
   handleLoginUser,
+  handleLoginUserWithJWT,
 };
