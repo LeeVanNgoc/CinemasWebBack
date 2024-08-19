@@ -145,6 +145,7 @@ export const getListPlanScreenInformation = async () => {
         return {
           planScreenMovieCode: planScreenMovie.planScreenMovieCode,
           roomCode: planScreenMovie.roomCode,
+          movieCode: planScreenMovie.movieCode,
           movieTitle: movie.movie?.title,
           startTime: planScreenMovie.startTime,
           endTime: planScreenMovie.endTime,
@@ -529,7 +530,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
     const movieDetailsMap: {
       [key: string]: {
         movie: {
-          movieCode: string,
+          movieCode: string;
           title: string;
           description: string;
           duration: number;
@@ -544,7 +545,9 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
     planScreenMovies.forEach((psm) => {
       const movie = psm.movie;
       if (movie) {
-        const key = `${movie.title}-${movie.description}-${movie.duration}-${movie.country}-${movie.image}-${movie.genre ? movie.genre.name : null}`;
+        const key = `${movie.title}-${movie.description}-${movie.duration}-${
+          movie.country
+        }-${movie.image}-${movie.genre ? movie.genre.name : null}`;
 
         if (!movieDetailsMap[key]) {
           movieDetailsMap[key] = {

@@ -41,6 +41,9 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const dateScreen = req.query.dateScreen as string;
   const times = req.query.times as string;
 
+  console.log(dateScreen);
+  console.log(times);
+
   if (!planScreenMovieCode) {
     return res
       .status(400)
@@ -349,5 +352,5 @@ export default {
   handleGetplanScreenMovieCodeForCreateTicket,
   handleGetStartTime,
   handleGetListPlanScreenInformation,
-  handleGetMovieDetailsByDate
+  handleGetMovieDetailsByDate,
 };

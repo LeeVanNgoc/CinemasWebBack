@@ -1,6 +1,8 @@
+require("dotenv").config();
 import User from "../models/User";
 import bcrypt from "bcryptjs";
 import { Op } from "sequelize";
+import { createJWT } from "../middlewares/jwtAction";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -326,6 +328,68 @@ export const getUserByCity = async (city: string) => {
     return {
       errCode: 3,
       message: `Error get users by city: ${error}`,
+    };
+  }
+};
+
+export const loginUseJWT = async (userEmail: string, userPassword: string) => {
+  try {
+    const userData: any = {};
+    const isExists = await checkUserEmail(userEmail);
+
+    if (isExists) {
+      const user = await User.findOne({
+        attributes: ["email", "password", "role", "userCode"],
+        where: { email: userEmail },
+        raw: true,
+      });
+
+      if (user) {
+        const check = await bcrypt.compareSync(userPassword, user.password);
+
+        if (check) {
+          // Xóa password để tránh bảo mật thông tin
+          delete userData.password;
+          userData.user = user;
+          let payload = {
+            userCode: user.userCode,
+            userEmail: user.email,
+            role: user.role,
+            expiresIn: process.env.JWT_EXPIRES_IN,
+          };
+          const token = await createJWT(payload);
+          return {
+            token: token,
+            data: {
+              userCode: user.userCode,
+              role: user.role,
+            },
+            errCode: 0,
+            message: "Login success",
+          };
+        } else {
+          return {
+            errCode: 5,
+            message: "Password is incorrect",
+          };
+        }
+      } else {
+        return {
+          errCode: 1,
+          message: "User not found",
+        };
+      }
+    } else {
+      return {
+        errCode: 2,
+        message:
+          "Your email does not exist in the system. Please try another email",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error login use JWT: ${error}`,
     };
   }
 };
