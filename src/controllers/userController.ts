@@ -7,6 +7,8 @@ import {
   getAllUsers,
   loginAPI,
   loginUseJWT,
+  requestPasswords,
+  getOTPRequestPasswords,
 } from "../services/userService";
 import { date } from "joi";
 
@@ -164,6 +166,7 @@ const handleLoginUserWithJWT = async (req: Request, res: Response) => {
       res.status(200).json({
         token: result.token,
         data: result.data,
+        otp: result.otp,
         errCode: result.errCode,
         message: result.message,
       });
@@ -178,6 +181,50 @@ const handleLoginUserWithJWT = async (req: Request, res: Response) => {
   }
 };
 
+const handleRequestPasswords = async (req: Request, res: Response) => {
+  const userEmail = String(req.query.userEmail);
+  const otpCode = String(req.query.otpCode);
+  try {
+    const result = await requestPasswords(userEmail, otpCode);
+    if (result?.errCode === 0) {
+      res.status(200).json({
+        token: result.token,
+        data: result.data,
+        errCode: result.errCode,
+        message: result.message,
+      });
+    } else {
+      res.status(400).json({
+        errCode: result?.errCode,
+        message: result?.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: `Error went request passwords ${error}` });
+  }
+};
+
+const handleForgotPassword = async (req: Request, res: Response) => {
+  const userEmail = String(req.query.userEmail);
+  try {
+    const result = await getOTPRequestPasswords(userEmail);
+    if (result.errCode === 0) {
+      res.status(200).json({
+        otp: result.otp,
+        errCode: result.errCode,
+        message: result.message,
+      });
+    } else {
+      res.status(400).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({ error: `Error went forgot password ${error}` });
+  }
+};
+
 export default {
   handleCreateUser,
   handleDeleteUser,
@@ -186,4 +233,6 @@ export default {
   handleGetAllUsers,
   handleLoginUser,
   handleLoginUserWithJWT,
+  handleRequestPasswords,
+  handleForgotPassword,
 };
