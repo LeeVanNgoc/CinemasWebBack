@@ -11,7 +11,7 @@ const handleGetRowAndColOfSeats = async (req: Request, res: Response) => {
     const rowAndCol2 = await getRowAndColOfSeats(data);
     if (rowAndCol2.errCode === 0) {
       res.status(200).json({
-        planScreenMovieId: rowAndCol2.planScreenMovieCode,
+        planScreenMovieCode: rowAndCol2.planScreenMovieCode,
         rows: rowAndCol2.rows,
         cols: rowAndCol2.cols,
         errCode: rowAndCol2.errCode,
@@ -52,9 +52,9 @@ const handleBookSeat = async (req: Request, res: Response) => {
 };
 
 const handleGetRowAndColOfBookedSeat = async (req: Request, res: Response) => {
-  const planScreenMovieId = Number(req.query.planScreenMovieId);
+  const planScreenMovieCode = String(req.query.planScreenMovieCode);
   try {
-    const rowAndCol = await getRowAndColOfBookedSeat(planScreenMovieId);
+    const rowAndCol = await getRowAndColOfBookedSeat(planScreenMovieCode);
     if (rowAndCol.errCode === 0) {
       res.status(200).json({
         rowAndCol: rowAndCol.rowAndCol,

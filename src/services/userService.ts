@@ -216,6 +216,7 @@ export const getAllUsers = async () => {
         "birthYear",
         "userName",
         "phonenumber",
+        "city",
       ],
       raw: true,
     });

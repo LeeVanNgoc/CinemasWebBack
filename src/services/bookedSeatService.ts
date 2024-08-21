@@ -77,7 +77,7 @@ export const checkExistSeatWasBooked = async (data: any) => {
   try {
     const bookedSeat = await BookedSeat.findOne({
       where: {
-        planSCreenMovieId: data.planSCreenMovieId,
+        planSCreenMovieCode: data.planSCreenMovieCode,
         row: data.row,
         col: data.col,
         roomCode: data.roomCode,
@@ -156,7 +156,7 @@ export const createNewBookedSeat = async (data: any) => {
           planScreenMovieCode: planScreenMovieCode,
           row: row,
           col: cols[index],
-          roomCode: data.roomCode,
+          roomCode: room.roomCode,
         };
       });
       const newBookedSeat = await BookedSeat.bulkCreate(bookedSeats);
@@ -186,10 +186,10 @@ export const createNewBookedSeat = async (data: any) => {
   }
 };
 
-export const getRowAndColOfBookedSeat = async (planScreenMovieId: number) => {
+export const getRowAndColOfBookedSeat = async (planScreenMovieCode: string) => {
   try {
     const bookedSeat = await BookedSeat.findAll({
-      where: { planScreenMovieId: planScreenMovieId },
+      where: { planScreenMovieCode: planScreenMovieCode },
       attributes: ["row", "col"],
     });
     const rowAndColStrings = bookedSeat.map((seat) => `${seat.row}${seat.col}`);
@@ -200,7 +200,7 @@ export const getRowAndColOfBookedSeat = async (planScreenMovieId: number) => {
     console.log(rowAndColArray);
 
     return {
-      rowAndCol: rowAndColArray,
+      rowAndCol: rowAndColStrings,
       errCode: 0,
       message: "Get row and col of booked seat successfuly",
     };
