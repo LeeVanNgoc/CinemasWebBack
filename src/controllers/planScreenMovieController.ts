@@ -40,10 +40,8 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
   const roomCode = req.query.roomCode as string;
   const movieCode = req.query.movieCode as String;
   const dateScreen = req.query.dateScreen as string;
-  const times = req.query.times as string;
-
-  console.log(dateScreen);
-  console.log(times);
+  const startTime = req.query.startTime as string;
+  const endTime = req.query.endTime as string;
 
   if (!planScreenMovieCode) {
     return res
@@ -65,15 +63,16 @@ const handleEditPlanScreenMovie = async (req: Request, res: Response) => {
       .status(400)
       .json({ errCode: 2, error: "Missing dateScreen parameter" });
   }
-  if (times.length === 0) {
+  if (!startTime) {
     return res
       .status(400)
-      .json({ errCode: 2, error: "Missing times parameter" });
+      .json({ errCode: 2, error: "Missing start times parameter" });
   }
 
-  let startTime, endTime;
-  if (times) {
-    [startTime, endTime] = times.split("-");
+  if (!endTime) {
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Missing start times parameter" });
   }
 
   const data = {
@@ -157,9 +156,9 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   const movieCode = req.query.movieCode as string;
 
   const dateScreen = req.query.dateScreen as string;
-  const times = (req.query.times as string).split(",");
-
-  if (!roomCode || !movieCode || !dateScreen || times.length === 0) {
+  const startTime = req.query.startTime as string;
+  const endTime = req.query.endTime as string;
+  if (!roomCode || !movieCode || !dateScreen || !startTime || !endTime) {
     return res
       .status(400)
       .json({ errCode: 2, message: "Missing roomCode parameter" });
@@ -174,10 +173,15 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
       .status(400)
       .json({ errCode: 2, error: "Missing dateScreen parameter" });
   }
-  if (times.length === 0) {
+  if (!startTime) {
     return res
       .status(400)
-      .json({ errCode: 2, error: "Missing times parameter" });
+      .json({ errCode: 2, error: "Missing end time parameter" });
+  }
+  if (!endTime) {
+    return res
+      .status(400)
+      .json({ errCode: 2, error: "Missing start time parameter" });
   }
 
   try {
@@ -185,13 +189,14 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
       roomCode,
       movieCode,
       dateScreen,
-      times
+      startTime,
+      endTime
     );
     if (planScreenWithMovie.errCode === 0) {
       res.status(200).json({
         errCode: planScreenWithMovie.errCode,
         message: planScreenWithMovie.message,
-        planScreenMovies: planScreenWithMovie.planScreenMovies,
+        newPlanScreen: planScreenWithMovie.newPlanScreen,
       });
     } else {
       res.status(400).json({

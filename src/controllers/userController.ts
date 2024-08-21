@@ -166,7 +166,6 @@ const handleLoginUserWithJWT = async (req: Request, res: Response) => {
       res.status(200).json({
         token: result.token,
         data: result.data,
-        otp: result.otp,
         errCode: result.errCode,
         message: result.message,
       });
