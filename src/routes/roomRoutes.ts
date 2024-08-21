@@ -19,7 +19,9 @@ const roomRoutes = (app: Application) => {
     "/get-list-room-information",
     roomController.handleGetListRoomInformation
   );
+  router.get("/get-all-room-codes", roomController.handleGetAllRoomCodes);
   return app.use("/api/room", router);
+
 };
 
 export default roomRoutes;

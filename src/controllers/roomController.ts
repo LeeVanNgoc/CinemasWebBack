@@ -8,6 +8,7 @@ import {
   getRoomInTheater,
   updateNumberSeatInRoom,
   getListRoomInformation,
+  getAllRoomCodes
 } from "../services/roomService";
 
 const handleCreateRoom = async (req: Request, res: Response) => {
@@ -218,8 +219,28 @@ const handleGetListRoomInformation = async (req: Request, res: Response) => {
       errCode: result.errCode,
       message: result.message,
     });
-  } catch (error) {}
+  } catch (error) { }
 };
+
+const handleGetAllRoomCodes = async (req: Request, res: Response) => {
+  try {
+    const result = await getAllRoomCodes();
+    if (result.errCode !== 0) {
+      return res.status(400).json({ errCode: result.errCode, error: result.message });
+    }
+    res.status(200).json({
+      errCode: result.errCode,
+      message: result.message,
+      roomCodes: result.roomCodes,
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting room codes: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateRoom,
   handleDeleteRoom,
@@ -229,4 +250,5 @@ export default {
   handleGetRoomInTheater,
   handleUpdateNumberSeatInRoom,
   handleGetListRoomInformation,
+  handleGetAllRoomCodes
 };
