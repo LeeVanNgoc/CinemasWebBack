@@ -591,6 +591,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
             "movieCode",
             "title",
             "description",
+            "releaseDate",
             "duration",
             "country",
             "image",
@@ -619,6 +620,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
           movieCode: string;
           title: string;
           description: string;
+          releaseDate: any;
           duration: number;
           country: string;
           image: string;
@@ -642,6 +644,7 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
               title: movie.title,
               description: movie.description,
               duration: movie.duration,
+              releaseDate: movie.releaseDate,
               country: movie.country,
               image: movie.image,
               genreName: movie.genre ? movie.genre.name : null,
