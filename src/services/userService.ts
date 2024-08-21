@@ -361,12 +361,6 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
             expiresIn: process.env.JWT_EXPIRES_IN,
           };
           const token = await createJWT(payload);
-          const otp = await sendOTP(userEmail);
-          if (otp) {
-            console.log("OTP sent successfully:", otp);
-          } else {
-            console.log("Failed to send OTP.");
-          }
           return {
             token: token,
             data: {
@@ -374,7 +368,6 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
               role: user.role,
               city: user.city,
             },
-            otp: otp,
             errCode: 0,
             message: "Login success",
           };

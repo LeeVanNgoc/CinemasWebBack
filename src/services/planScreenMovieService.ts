@@ -198,7 +198,7 @@ export const getPlanScreenMovieByCode = async (planScreenMovieCode: string) => {
   }
 };
 
-export const createPlanScreenMovie = async (
+export const createPlanScreenMovie2 = async (
   roomCode: string,
   movieCode: string,
   dateScreen: string,
@@ -304,6 +304,92 @@ export const createPlanScreenMovie = async (
         errCode: 0,
         message: "PlanScreenMovies created successfully",
         planScreenMovies: newPlanScreenMovies,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "No PlanScreenMovies created",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error creating PlanScreenMovies: ${error}`,
+    };
+  }
+};
+export const createPlanScreenMovie = async (
+  roomCode: string,
+  movieCode: string,
+  dateScreen: string,
+  startTime: string,
+  endTime: string
+) => {
+  try {
+    const existingIds = await PlanScreenMovie.findAll({
+      attributes: ["planScreenMovieId"],
+      order: [["planScreenMovieId", "ASC"]],
+    });
+
+    const ids = existingIds.map((psm) => psm.planScreenMovieId);
+    let newId = 1;
+    while (ids.includes(newId)) {
+      newId++;
+    }
+
+    const existingCodes = await PlanScreenMovie.findAll({
+      attributes: ["planScreenMovieCode"],
+      order: [["planScreenMovieCode", "ASC"]],
+    });
+
+    const codes = existingCodes.map(
+      (planScreenMovie) => planScreenMovie.planScreenMovieCode
+    );
+    let newCode = "PSM001";
+    if (newId < 10) {
+      while (codes.includes(newCode)) {
+        newCode = "PSM00" + newId;
+      }
+    } else if (newId >= 10 && newId < 100) {
+      while (codes.includes(newCode)) {
+        newCode = "PSM0" + newId;
+      }
+    } else {
+      while (codes.includes(newCode)) {
+        newCode = "PSM" + newId;
+      }
+    }
+
+    const existingSchedules = await PlanScreenMovie.findAll({
+      where: {
+        roomCode,
+        dateScreen,
+        startTime,
+      },
+    });
+
+    if (existingSchedules.length > 0) {
+      return {
+        errCode: 2,
+        message: `Schedule conflict detected for date ${dateScreen}`,
+      };
+    }
+    // Tạo PlanScreenMovie với giá trị mới
+    const newPlanScreen = await PlanScreenMovie.create({
+      planScreenMovieId: newId,
+      planScreenMovieCode: newCode,
+      roomCode,
+      movieCode,
+      startTime,
+      endTime,
+      dateScreen,
+    });
+
+    if (newPlanScreen) {
+      return {
+        errCode: 0,
+        message: "PlanScreenMovies created successfully",
+        newPlanScreen: newPlanScreen,
       };
     } else {
       return {
@@ -603,9 +689,12 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
         },
       ],
       attributes: [
-        [Sequelize.fn('COUNT', Sequelize.col('planScreenMovieCode')), 'screeningCount'],
+        [
+          Sequelize.fn("COUNT", Sequelize.col("planScreenMovieCode")),
+          "screeningCount",
+        ],
       ],
-      group: ['movie.title'],
+      group: ["movie.title"],
     });
 
     if (!stats || stats.length === 0) {
@@ -617,8 +706,8 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
 
     // Chuyển đổi kết quả và xử lý trường hợp undefined
     const transformedResult = stats.map((stat: any) => ({
-      movieTitle: stat.movie ? stat.movie.title : 'Unknown Movie',
-      screeningCount: stat.get('screeningCount'),
+      movieTitle: stat.movie ? stat.movie.title : "Unknown Movie",
+      screeningCount: stat.get("screeningCount"),
     }));
 
     return {
