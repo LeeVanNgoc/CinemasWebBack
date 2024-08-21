@@ -295,7 +295,7 @@ export const getAllRoomCodes = async () => {
       return {
         errCode: 0,
         message: "Get all room codes success",
-        roomCodes: roomCodes.map(room => room.roomCode),
+        roomCodes: roomCodes,
       };
     } else {
       return {
