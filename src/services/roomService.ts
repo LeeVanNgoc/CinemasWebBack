@@ -283,3 +283,30 @@ export const getListRoomInformation = async () => {
     };
   }
 };
+
+export const getAllRoomCodes = async () => {
+  try {
+    const roomCodes = await Room.findAll({
+      attributes: ["roomCode"],
+      order: [["roomCode", "ASC"]],
+    });
+
+    if (roomCodes.length > 0) {
+      return {
+        errCode: 0,
+        message: "Get all room codes success",
+        roomCodes: roomCodes.map(room => room.roomCode),
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "No rooms found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting room codes: ${error}`,
+    };
+  }
+};
