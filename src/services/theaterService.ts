@@ -76,8 +76,11 @@ export const getAllTheaters = async () => {
 // Get theaters by city
 export const getTheatersByCity = async (city: string) => {
   try {
-    const theaters = await Theater.findAll({ where: { city } });
-    if (!theaters.length) {
+    const theaters = await Theater.findOne({
+      where: { city },
+      attributes: ["theaterCode", "name", "address"],
+    });
+    if (!theaters) {
       return {
         errCode: 1,
         message: "No theaters found in this city",

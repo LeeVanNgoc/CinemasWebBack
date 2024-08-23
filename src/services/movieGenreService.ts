@@ -1,6 +1,8 @@
 import MovieGenre from "../models/MovieGenre";
 import Movie from "../models/Movie";
 import Genres from "../models/Genres";
+import { getGenreByCode } from "./genreService";
+import { any } from "joi";
 
 export const createMovieGenre = async (data: any) => {
   try {
@@ -40,7 +42,8 @@ export const createMovieGenre = async (data: any) => {
     const newMovieGenre = await MovieGenre.create({
       movieGenreId: newId,
       movieGenreCode: newCode,
-      genreId: data.genreId,
+      movieCode: data.movieCode,
+      genreCode: data.genreCode,
     });
 
     return {
@@ -56,9 +59,11 @@ export const createMovieGenre = async (data: any) => {
   }
 };
 
-export const deleteMovieGenre = async (movieGenreId: number) => {
+export const deleteMovieGenre = async (movieGenreCode: string) => {
   try {
-    const movieGenre = await MovieGenre.findOne({ where: { movieGenreId } });
+    const movieGenre = await MovieGenre.findOne({
+      where: { movieGenreCode: movieGenreCode },
+    });
     if (!movieGenre) {
       return { errCode: 1, message: "MovieGenre not found" };
     } else {
@@ -89,20 +94,33 @@ export const getAllMovieGenres = async () => {
   }
 };
 
-export const getMovieGenreById = async (movieGenreId: number) => {
+export const getGenreForMovie = async (movieCode: string) => {
   try {
-    const movieGenre = await MovieGenre.findOne({ where: { movieGenreId } });
-    if (!movieGenre) {
+    const movieGenres = await MovieGenre.findAll({
+      where: { movieCode: movieCode },
+      attributes: ["movieCode", "genreCode"],
+      raw: true,
+    });
+
+    if (!movieGenres || movieGenres.length === 0) {
       return {
         errCode: 1,
         message: "MovieGenre not found",
       };
+    } else {
+      // Sử dụng Promise.all để đợi tất cả các lời gọi getGenreByCode hoàn thành
+      const genresMovie = await Promise.all(
+        movieGenres.map(async (movieGenre) => {
+          const genre = await getGenreByCode(movieGenre.genreCode);
+          return genre.genre;
+        })
+      );
+      return {
+        errCode: 0,
+        message: "Get movie genre success",
+        genresMovie,
+      };
     }
-    return {
-      errCode: 0,
-      message: "Get movie genre success",
-      movieGenre,
-    };
   } catch (error) {
     return {
       errCode: 3,

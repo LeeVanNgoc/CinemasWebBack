@@ -50,7 +50,9 @@ export const getRowAndColOfSeats = async (data: any) => {
 
       const seatData = seatsData.split(",");
       const rows = seatData.map((seat: string) => seat.trim()[0]);
-      const cols = seatData.map((seat: string) => parseInt(seat.trim()[1]));
+      const cols = seatData.map((seat: string) =>
+        parseInt(seat.trim().slice(1))
+      );
       return {
         planScreenMovieCode,
         rows,

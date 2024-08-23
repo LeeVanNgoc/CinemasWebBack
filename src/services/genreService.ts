@@ -133,7 +133,11 @@ export const getAllGenres = async () => {
 
 export const getGenreByCode = async (genreCode: string) => {
   try {
-    const genre = await Genre.findOne({ where: { genreCode } });
+    const genre = await Genre.findOne({
+      where: { genreCode },
+      attributes: ["name"],
+      raw: true,
+    });
     if (!genre) {
       return {
         errCode: 1,
