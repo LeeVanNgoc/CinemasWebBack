@@ -1,4 +1,4 @@
-import Otp from "../models/otp";
+import Otp from "../models/Otp";
 
 export const generateOtp = async (userEmail: string, otpCode: string) => {
   try {
