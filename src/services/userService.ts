@@ -5,6 +5,7 @@ import { Op } from "sequelize";
 import { createJWT } from "../middlewares/jwtAction";
 import { sendOTP } from "../middlewares/mailer";
 import { generateOtp, deleteOtp, getOtpByEmail } from "./otpService";
+import { getTheatersByCity } from "./theaterService";
 
 const salt = bcrypt.genSaltSync(10);
 
@@ -349,6 +350,8 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
 
       if (user) {
         const check = await bcrypt.compareSync(userPassword, user.password);
+        const theater = await getTheatersByCity(user.city);
+        const theaterCode = theater.theaters?.theaterCode;
 
         if (check) {
           // Xóa password để tránh bảo mật thông tin
@@ -359,6 +362,7 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
             userEmail: user.email,
             role: user.role,
             city: user.city,
+            theaterCode: theaterCode,
             expiresIn: process.env.JWT_EXPIRES_IN,
           };
           const token = await createJWT(payload);
@@ -368,6 +372,7 @@ export const loginUseJWT = async (userEmail: string, userPassword: string) => {
               userCode: user.userCode,
               role: user.role,
               city: user.city,
+              theaterCode: theaterCode,
             },
             errCode: 0,
             message: "Login success",

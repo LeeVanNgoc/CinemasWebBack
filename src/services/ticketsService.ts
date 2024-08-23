@@ -1,9 +1,9 @@
-import { Op } from 'sequelize';
+import { Op } from "sequelize";
 import Tickets from "../models/Tickets";
 import PlanScreenMovie from "../models/PlanScreenMovie";
-import Room from '../models/Room';
-import Movie from '../models/Movie';
-import Theater from '../models/Theater';
+import Room from "../models/Room";
+import Movie from "../models/Movie";
+import Theater from "../models/Theater";
 
 export const createTickets = async (data: any) => {
   try {
@@ -300,7 +300,9 @@ export const getRevenueByDate = async (startDate: string, endDate: string) => {
     },
   });
 
-  const planScreenMovieCodes = planScreenMovies.map((plan) => plan.planScreenMovieCode);
+  const planScreenMovieCodes = planScreenMovies.map(
+    (plan) => plan.planScreenMovieCode
+  );
 
   const tickets = await Tickets.findAll({
     where: {
@@ -310,40 +312,51 @@ export const getRevenueByDate = async (startDate: string, endDate: string) => {
     },
   });
 
-  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+  const totalRevenue = tickets.reduce(
+    (total, ticket) => total + ticket.totalPrice,
+    0
+  );
 
   return {
     totalRevenue,
     startDate,
     endDate,
   };
-}
+};
 
-export const getRevenueByTheaterAndDate = async (theaterCode: string, startDate: string, endDate: string) => {
+export const getRevenueByTheaterAndDate = async (
+  theaterCode: string,
+  startDate: string,
+  endDate: string
+) => {
   const theater = await Theater.findOne({
     where: { theaterCode },
   });
 
   if (!theater) {
-    throw new Error('theater not found');
+    throw new Error("theater not found");
   }
-  
+
   const planScreenMovies = await PlanScreenMovie.findAll({
     where: {
       dateScreen: {
         [Op.between]: [startDate, endDate],
       },
     },
-    include: [{
-      model: Room,
-      as: 'room',
-      where: {
-        theaterCode: theaterCode,
-      }
-    }]
+    include: [
+      {
+        model: Room,
+        as: "room",
+        where: {
+          theaterCode: theaterCode,
+        },
+      },
+    ],
   });
 
-  const planScreenMovieCodes = planScreenMovies.map(plan => plan.planScreenMovieCode);
+  const planScreenMovieCodes = planScreenMovies.map(
+    (plan) => plan.planScreenMovieCode
+  );
 
   const tickets = await Tickets.findAll({
     where: {
@@ -353,7 +366,10 @@ export const getRevenueByTheaterAndDate = async (theaterCode: string, startDate:
     },
   });
 
-  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+  const totalRevenue = tickets.reduce(
+    (total, ticket) => total + ticket.totalPrice,
+    0
+  );
 
   return {
     theaterName: theater.name,
@@ -363,13 +379,17 @@ export const getRevenueByTheaterAndDate = async (theaterCode: string, startDate:
   };
 };
 
-export const getRevenueByMovie = async (movieCode: string, startDate: string, endDate: string) => {
+export const getRevenueByMovie = async (
+  movieCode: string,
+  startDate: string,
+  endDate: string
+) => {
   const movie = await Movie.findOne({
     where: { movieCode },
   });
 
   if (!movie) {
-    throw new Error('Movie not found');
+    throw new Error("Movie not found");
   }
 
   const planScreenMovies = await PlanScreenMovie.findAll({
@@ -381,7 +401,9 @@ export const getRevenueByMovie = async (movieCode: string, startDate: string, en
     },
   });
 
-  const planScreenMovieCodes = planScreenMovies.map(plan => plan.planScreenMovieCode);
+  const planScreenMovieCodes = planScreenMovies.map(
+    (plan) => plan.planScreenMovieCode
+  );
 
   const tickets = await Tickets.findAll({
     where: {
@@ -391,7 +413,10 @@ export const getRevenueByMovie = async (movieCode: string, startDate: string, en
     },
   });
 
-  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+  const totalRevenue = tickets.reduce(
+    (total, ticket) => total + ticket.totalPrice,
+    0
+  );
 
   return {
     movieTitle: movie.title,
@@ -399,4 +424,90 @@ export const getRevenueByMovie = async (movieCode: string, startDate: string, en
     startDate,
     endDate,
   };
+};
+
+export const getRevenueForAllMovie = async (
+  startDate: string,
+  endDate: string
+) => {
+  try {
+    // Lấy tất cả các phim
+    const movies = await Movie.findAll({
+      attributes: ["movieCode", "title"],
+      raw: true,
+    });
+
+    if (!movies || movies.length === 0) {
+      throw new Error("Movies not found");
+    }
+
+    // Lấy tất cả các suất chiếu phim trong khoảng thời gian
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        dateScreen: {
+          [Op.between]: [startDate, endDate],
+        },
+      },
+      attributes: ["planScreenMovieCode", "movieCode"],
+      raw: true,
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      throw new Error("No screenings found in the given date range");
+    }
+
+    const planScreenMovieCodes = planScreenMovies.map(
+      (plan) => plan.planScreenMovieCode
+    );
+
+    // Lấy tất cả vé tương ứng với các suất chiếu trong khoảng thời gian
+    const tickets = await Tickets.findAll({
+      where: {
+        planScreenMovieCode: {
+          [Op.in]: planScreenMovieCodes,
+        },
+      },
+      attributes: ["planScreenMovieCode", "totalPrice"],
+      raw: true,
+    });
+
+    // Tạo một object để chứa tổng doanh thu cho từng phim
+    const revenueByMovie: Record<string, number> = {};
+
+    // Duyệt qua tất cả các suất chiếu và tổng hợp doanh thu cho từng phim
+    tickets.forEach((ticket) => {
+      const planScreenMovie = planScreenMovies.find(
+        (plan) => plan.planScreenMovieCode === ticket.planScreenMovieCode
+      );
+      if (planScreenMovie) {
+        const movieCode = planScreenMovie.movieCode;
+        if (!revenueByMovie[movieCode]) {
+          revenueByMovie[movieCode] = 0;
+        }
+        revenueByMovie[movieCode] += ticket.totalPrice;
+      }
+    });
+
+    // Tạo kết quả cuối cùng với thông tin tiêu đề phim và doanh thu
+    const result = movies.map((movie) => {
+      return {
+        movieCode: movie.movieCode,
+        movieTitle: movie.title,
+        totalRevenue: revenueByMovie[movie.movieCode] || 0, // Nếu chưa có doanh thu, set về 0
+      };
+    });
+
+    return {
+      errCode: 0,
+      message: "Get revenue for all movies success",
+      revenueData: result,
+      startDate,
+      endDate,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting revenue for all movies: ${error}`,
+    };
+  }
 };

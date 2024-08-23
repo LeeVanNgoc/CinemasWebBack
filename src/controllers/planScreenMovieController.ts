@@ -10,6 +10,7 @@ import {
   getListPlanScreenInformation,
   getMovieDetailsByDate,
   getMonthlyMovieStats,
+  getMovieByRoom,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -323,13 +324,14 @@ const handleGetListPlanScreenInformation = async (
 
 const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
   const dateScreen = req.query.dateScreen as string;
+  const theaterCode = req.query.theaterCode as string;
 
   if (!dateScreen) {
     return res.status(400).json({ message: "Invalid dateScreen" });
   }
 
   try {
-    const result = await getMovieDetailsByDate(dateScreen);
+    const result = await getMovieDetailsByDate(dateScreen, theaterCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -380,6 +382,32 @@ const handleGetMonthlyMovieStats = async (req: Request, res: Response) => {
   }
 };
 
+const handleGetMovieInRoom = async (req: Request, res: Response) => {
+  const theaterCode = req.query.theaterCode as string;
+  if (!theaterCode) {
+    return res.status(400).json({ message: "Invalid theaterCode" });
+  }
+  try {
+    const movies = await getMovieByRoom(theaterCode);
+    if (movies.errCode === 0) {
+      res.status(200).json({
+        errCode: movies.errCode,
+        message: movies.message,
+        movies: movies.movies,
+      });
+    } else {
+      res.status(404).json({
+        errCode: movies.errCode,
+        message: movies.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Something went wrong in getMovieInRoom: ${error}`,
+    });
+  }
+};
+
 export default {
   handleDeletePlanScreenMovie,
   handleEditPlanScreenMovie,
@@ -391,4 +419,5 @@ export default {
   handleGetListPlanScreenInformation,
   handleGetMovieDetailsByDate,
   handleGetMonthlyMovieStats,
+  handleGetMovieInRoom,
 };

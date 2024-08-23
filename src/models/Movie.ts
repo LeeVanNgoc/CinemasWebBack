@@ -80,9 +80,9 @@ Movie.init(
 // });
 
 Movie.belongsTo(Genres, {
-  foreignKey: 'genreCode',
-  targetKey: 'genreCode',
-  as: 'genre'
+  foreignKey: "genreCode",
+  targetKey: "genreCode",
+  as: "genre",
 });
 
 export default Movie;
