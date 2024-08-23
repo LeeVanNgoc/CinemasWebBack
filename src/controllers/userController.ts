@@ -3,7 +3,7 @@ import {
   createUser,
   deleteUser,
   editUser,
-  getUserById,
+  getUserByCode,
   getAllUsers,
   loginAPI,
   loginUseJWT,
@@ -87,7 +87,7 @@ const handleGetUserById = async (req: Request, res: Response) => {
     if (!userCode) {
       res.status(400).json({ error: "Pleate complete user id" });
     }
-    const user = await getUserById(userCode);
+    const user = await getUserByCode(userCode);
     if (user.errCode === 0) {
       res.status(200).json({
         errCode: user.errCode,

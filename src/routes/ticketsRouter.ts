@@ -18,6 +18,10 @@ const ticketRoutes = (app: Application) => {
     "/get-ticket-details",
     ticketsController.handleGetTicketDetailsByCode
   );
+  router.get(
+    "/sending-bill-details",
+    ticketsController.handleGetTicketDetailsByCode
+  );
   router.get("/get-revenue-by-date", ticketsController.handleGetRevenueByDate);
   router.get(
     "/get-revenue-by-theater-and-date",
