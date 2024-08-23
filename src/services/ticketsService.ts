@@ -356,8 +356,8 @@ export const getRevenueByTheaterAndDate = async (theaterCode: string, startDate:
   const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
 
   return {
-    totalRevenue,
     theaterName: theater.name,
+    totalRevenue,
     startDate,
     endDate,
   };
