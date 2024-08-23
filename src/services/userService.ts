@@ -175,7 +175,7 @@ export const editUser = async (data: any) => {
   }
 };
 
-export const getUserById = async (userCode: string) => {
+export const getUserByCode = async (userCode: string) => {
   let users: any = "";
   try {
     users = await User.findOne({
