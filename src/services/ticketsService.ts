@@ -432,8 +432,8 @@ export const getRevenueByTheaterAndDate = async (
   );
 
   return {
-    totalRevenue,
     theaterName: theater.name,
+    totalRevenue,
     startDate,
     endDate,
   };

@@ -194,7 +194,7 @@ const handleGSendingBill = async (req: Request, res: Response) => {
   }
 };
 
-export async function handleGetRevenueByDate(req: Request, res: Response) {
+const handleGetRevenueByDate = async(req: Request, res: Response) => {
   const { startDate, endDate } = req.query;
 
   try {
@@ -211,10 +211,8 @@ export async function handleGetRevenueByDate(req: Request, res: Response) {
   }
 }
 
-export async function handleGetRevenueByTheaterAndDate(
-  req: Request,
-  res: Response
-) {
+
+const handleGetRevenueByTheaterAndDate = async(req: Request, res: Response) => {
   const { theaterCode, startDate, endDate } = req.query;
 
   try {
@@ -232,7 +230,7 @@ export async function handleGetRevenueByTheaterAndDate(
   }
 }
 
-export async function handleGetRevenueByMovie(req: Request, res: Response) {
+const handleGetRevenueByMovie = async(req: Request, res: Response) => {
   const { movieCode, startDate, endDate } = req.query;
 
   try {
