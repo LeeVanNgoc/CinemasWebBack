@@ -24,11 +24,12 @@ PlanScreenMovie.init(
     planScreenMovieId: {
       type: DataTypes.INTEGER,
       autoIncrement: false,
-      primaryKey: true,
+      // primaryKey: true,
       allowNull: false,
     },
     planScreenMovieCode: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     roomCode: {
