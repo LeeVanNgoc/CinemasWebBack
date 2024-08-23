@@ -182,6 +182,7 @@ const handleGetRevenueByDate = async(req: Request, res: Response) => {
   }
 }
 
+
 const handleGetRevenueByTheaterAndDate = async(req: Request, res: Response) => {
   const { theaterCode, startDate, endDate } = req.query;
 
