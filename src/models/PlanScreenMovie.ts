@@ -74,4 +74,10 @@ PlanScreenMovie.belongsTo(Movie, {
   as: 'movie'
 });
 
+PlanScreenMovie.belongsTo(Room, {
+  foreignKey: 'roomCode',
+  targetKey: 'roomCode',
+  as: 'room',
+});
+
 export default PlanScreenMovie;
