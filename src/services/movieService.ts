@@ -156,6 +156,29 @@ export const getMovieByCode = async (movieCode: string) => {
   }
 };
 
+export const getMovieByRoom = async (movieCode: string) => {
+  try {
+    const movie = await Movie.findOne({ where: { movieCode: movieCode } });
+    if (movie) {
+      return {
+        errCode: 0,
+        message: "Get movie success",
+        movie,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "Movie not found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting movie: ${error}`,
+    };
+  }
+};
+
 export const getMovieByTitle = async (title: string) => {
   try {
     const movie = await Movie.findOne({ where: { title: title } });

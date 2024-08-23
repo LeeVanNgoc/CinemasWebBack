@@ -32,6 +32,8 @@ const handleGetRowAndColOfSeats = async (req: Request, res: Response) => {
 
 const handleBookSeat = async (req: Request, res: Response) => {
   const data = req.query;
+  console.log(data);
+
   try {
     const newBookedSeat = await createNewBookedSeat(data);
     if (newBookedSeat.errCode === 0) {

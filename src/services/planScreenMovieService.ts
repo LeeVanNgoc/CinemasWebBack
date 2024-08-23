@@ -5,6 +5,10 @@ import { getMovieByCode } from "./movieService";
 import Movie from "../models/Movie";
 import Genres from "../models/Genres";
 import Sequelize from "sequelize";
+import e from "express";
+import { getRoomInTheater } from "./roomService";
+import { Theater } from "../models";
+import { any } from "joi";
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -578,10 +582,14 @@ export const getStartTime = async (data: any) => {
 //   }
 // };
 
-export const getMovieDetailsByDate = async (dateScreen: string) => {
+export const getMovieDetailsByDate = async (
+  dateScreen: string,
+  theaterCode: string
+) => {
   try {
+    const movies = await getMovieByRoom(theaterCode);
     const planScreenMovies = await PlanScreenMovie.findAll({
-      where: { dateScreen },
+      where: { dateScreen: dateScreen },
       attributes: ["planScreenMovieCode"],
       include: [
         {
@@ -669,6 +677,72 @@ export const getMovieDetailsByDate = async (dateScreen: string) => {
     return {
       errCode: 3,
       message: `Error retrieving movie details: ${error}`,
+    };
+  }
+};
+
+export const getMovieByRoom = async (theaterCode: string) => {
+  try {
+    const getRoom = await getRoomInTheater(theaterCode);
+    const roomsInTheater = getRoom.rooms;
+    let roomCodesInTheater: any = [];
+
+    roomCodesInTheater = roomsInTheater?.map((room) => room.roomCode);
+
+    if (roomCodesInTheater?.length > 0) {
+      // Dùng Promise.all để thực hiện nhiều truy vấn cùng lúc cho tất cả các roomCode
+      const moviesInRooms = await Promise.all(
+        roomCodesInTheater.map(async (roomCode: string) => {
+          const planScreenMovies = await PlanScreenMovie.findAll({
+            where: { roomCode: roomCode },
+            attributes: [],
+            include: [
+              {
+                model: Movie,
+                as: "movie",
+                attributes: [
+                  "movieCode",
+                  "title",
+                  "description",
+                  "releaseDate",
+                  "duration",
+                  "country",
+                  "image",
+                ],
+              },
+            ],
+          });
+          return planScreenMovies.map(
+            (planScreenMovie: any) => planScreenMovie.movie
+          );
+        })
+      );
+
+      // Kết hợp tất cả các kết quả lại thành một mảng duy nhất
+      const allMovies = moviesInRooms.flat();
+
+      if (allMovies.length > 0) {
+        return {
+          errCode: 0,
+          message: "Get movies by room success",
+          movies: allMovies,
+        };
+      } else {
+        return {
+          errCode: 1,
+          message: "No movies found in these rooms",
+        };
+      }
+    } else {
+      return {
+        errCode: 1,
+        message: "No rooms found in the theater",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error retrieving movie by room: ${error}`,
     };
   }
 };
