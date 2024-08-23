@@ -58,4 +58,9 @@ Room.hasMany(Seat, {
   as: "seats", // Alias for the association
 });
 
+Room.belongsTo(Theater, {
+  foreignKey: 'theaterCode',
+  targetKey: 'theaterCode',
+  as: 'theater',
+});
 export default Room;

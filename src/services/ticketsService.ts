@@ -1,5 +1,9 @@
+import { Op } from 'sequelize';
 import Tickets from "../models/Tickets";
 import PlanScreenMovie from "../models/PlanScreenMovie";
+import Room from '../models/Room';
+import Movie from '../models/Movie';
+import Theater from '../models/Theater';
 
 export const createTickets = async (data: any) => {
   try {
@@ -285,4 +289,114 @@ export const getTicketDetailsByCode = async (ticketCode: string) => {
       message: `Error retrieving ticket details: ${error}`,
     };
   }
+};
+
+export const getRevenueByDate = async (startDate: string, endDate: string) => {
+  const planScreenMovies = await PlanScreenMovie.findAll({
+    where: {
+      dateScreen: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+  });
+
+  const planScreenMovieCodes = planScreenMovies.map((plan) => plan.planScreenMovieCode);
+
+  const tickets = await Tickets.findAll({
+    where: {
+      planScreenMovieCode: {
+        [Op.in]: planScreenMovieCodes,
+      },
+    },
+  });
+
+  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+
+  return {
+    totalRevenue,
+    startDate,
+    endDate,
+  };
+}
+
+export const getRevenueByTheaterAndDate = async (theaterCode: string, startDate: string, endDate: string) => {
+  const theater = await Theater.findOne({
+    where: { theaterCode },
+  });
+
+  if (!theater) {
+    throw new Error('theater not found');
+  }
+  
+  const planScreenMovies = await PlanScreenMovie.findAll({
+    where: {
+      dateScreen: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+    include: [{
+      model: Room,
+      as: 'room',
+      where: {
+        theaterCode: theaterCode,
+      }
+    }]
+  });
+
+  const planScreenMovieCodes = planScreenMovies.map(plan => plan.planScreenMovieCode);
+
+  const tickets = await Tickets.findAll({
+    where: {
+      planScreenMovieCode: {
+        [Op.in]: planScreenMovieCodes,
+      },
+    },
+  });
+
+  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+
+  return {
+    totalRevenue,
+    theaterName: theater.name,
+    startDate,
+    endDate,
+  };
+};
+
+export const getRevenueByMovie = async (movieCode: string, startDate: string, endDate: string) => {
+  const movie = await Movie.findOne({
+    where: { movieCode },
+  });
+
+  if (!movie) {
+    throw new Error('Movie not found');
+  }
+
+  const planScreenMovies = await PlanScreenMovie.findAll({
+    where: {
+      movieCode,
+      dateScreen: {
+        [Op.between]: [startDate, endDate],
+      },
+    },
+  });
+
+  const planScreenMovieCodes = planScreenMovies.map(plan => plan.planScreenMovieCode);
+
+  const tickets = await Tickets.findAll({
+    where: {
+      planScreenMovieCode: {
+        [Op.in]: planScreenMovieCodes,
+      },
+    },
+  });
+
+  const totalRevenue = tickets.reduce((total, ticket) => total + ticket.totalPrice, 0);
+
+  return {
+    movieTitle: movie.title,
+    totalRevenue,
+    startDate,
+    endDate,
+  };
 };

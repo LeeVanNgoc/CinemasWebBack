@@ -7,6 +7,9 @@ import {
   getListTicket,
   getTicketByUserCode,
   getTicketDetailsByCode,
+  getRevenueByDate,
+  getRevenueByTheaterAndDate,
+  getRevenueByMovie
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -161,6 +164,41 @@ const handleGetTicketDetailsByCode = async (req: Request, res: Response) => {
   }
 };
 
+export async function handleGetRevenueByDate(req: Request, res: Response) {
+  const { startDate, endDate } = req.query;
+
+  try {
+    const revenueData = await getRevenueByDate(startDate as string, endDate as string);
+    res.status(200).json(revenueData);
+  } catch (error) {
+    console.error('Error fetching revenue data:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Failed to retrieve revenue data', details: error });
+  }
+}
+
+export async function handleGetRevenueByTheaterAndDate(req: Request, res: Response) {
+  const { theaterCode, startDate, endDate } = req.query;
+
+  try {
+    const revenueData = await getRevenueByTheaterAndDate(theaterCode as string, startDate as string, endDate as string);
+    res.status(200).json(revenueData);
+  } catch (error) {
+    console.error('Error fetching revenue data by theater and date:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Failed to retrieve revenue data', details: error });
+  }
+}
+
+export async function handleGetRevenueByMovie(req: Request, res: Response) {
+  const { movieCode, startDate, endDate } = req.query;
+
+  try {
+    const revenueData = await getRevenueByMovie(movieCode as string, startDate as string, endDate as string);
+    res.status(200).json(revenueData);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve revenue data', details: error });
+  }
+}
+
 export default {
   handleCreateTicket,
   handleDeleteTicket,
@@ -169,4 +207,7 @@ export default {
   handleGetListTicket,
   handleGetTicketByUserCode,
   handleGetTicketDetailsByCode,
+  handleGetRevenueByDate,
+  handleGetRevenueByTheaterAndDate,
+  handleGetRevenueByMovie
 };
