@@ -42,6 +42,10 @@ const planScreenMovieRoutes = (app: Application) => {
     "/get-monthly-movie-stats",
     planScreenMovieController.handleGetMonthlyMovieStats
   );
+  router.get(
+    "/get-movie-in-room",
+    planScreenMovieController.handleGetMovieInRoom
+  );
   return app.use("/api/plan-screen-movie", router);
 };
 export default planScreenMovieRoutes;

@@ -6,7 +6,7 @@ import Movie from "./Movie";
 class MovieGenre extends Model {
   public movieGenreId!: number;
   public movieGenreCode!: string;
-  public genreId!: number;
+  public genreCode!: string;
 }
 
 MovieGenre.init(
@@ -23,12 +23,20 @@ MovieGenre.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
-    genreId: {
-      type: DataTypes.INTEGER,
+    movieCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      references: {
+        model: Movie,
+        key: "movieCode",
+      },
+    },
+    genreCode: {
+      type: DataTypes.STRING,
       primaryKey: true,
       references: {
         model: Genres,
-        key: "genreId",
+        key: "genreCode",
       },
     },
   },

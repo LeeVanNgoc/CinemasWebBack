@@ -12,11 +12,11 @@ module.exports = {
       movieGenreCode: {
         type: Sequelize.STRING,
       },
-      genreId: {
-        allowNull: false,
-        autoIncrement: false,
-        primaryKey: false,
-        type: Sequelize.INTEGER,
+      movieCode: {
+        type: Sequelize.STRING,
+      },
+      genreCode: {
+        type: Sequelize.STRING,
       },
     });
   },
