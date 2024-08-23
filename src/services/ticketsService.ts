@@ -4,6 +4,8 @@ import PlanScreenMovie from "../models/PlanScreenMovie";
 import Room from "../models/Room";
 import Movie from "../models/Movie";
 import Theater from "../models/Theater";
+import { getUserByCode } from "./userService";
+import { sendingBill } from "../middlewares/mailer";
 
 export const createTickets = async (data: any) => {
   try {
@@ -269,6 +271,7 @@ export const getTicketDetailsByCode = async (ticketCode: string) => {
           ],
         },
       ],
+      raw: true,
     });
 
     if (!ticket) {
@@ -277,6 +280,63 @@ export const getTicketDetailsByCode = async (ticketCode: string) => {
         message: "Ticket not found",
       };
     }
+    // const userCode = ticket.userCode;
+    // const user = await getUserByCode(userCode);
+    // const userEmail = user.users?.email;
+
+    // await sendingBill(userEmail, ticketCode);
+    return {
+      ticket,
+      errCode: 0,
+      message: "Get ticket details successfully",
+    };
+  } catch (error) {
+    console.error("Error in getTicketDetailsById:", error);
+    return {
+      errCode: 3,
+      message: `Error retrieving ticket details: ${error}`,
+    };
+  }
+};
+
+export const sendingBillForUser = async (ticketCode: string) => {
+  try {
+    const ticket = await Tickets.findOne({
+      where: { ticketCode },
+      attributes: [
+        "ticketCode",
+        "userCode",
+        "seats",
+        "bank",
+        "totalPrice",
+        "planScreenMovieCode",
+      ],
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [
+            "roomCode",
+            "movieCode",
+            "startTime",
+            "endTime",
+            "dateScreen",
+          ],
+        },
+      ],
+    });
+
+    if (!ticket) {
+      return {
+        errCode: 1,
+        message: "Ticket not found",
+      };
+    }
+    const userCode = ticket.userCode;
+    const user = await getUserByCode(userCode);
+    const userEmail = user.users?.email;
+
+    await sendingBill(userEmail, ticketCode);
     return {
       ticket,
       errCode: 0,

@@ -11,6 +11,7 @@ import {
   getRevenueByTheaterAndDate,
   getRevenueByMovie,
   getRevenueForAllMovie,
+  sendingBillForUser,
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -145,7 +146,35 @@ const handleGetTicketDetailsByCode = async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await getTicketDetailsByCode(ticketCode);
+    const result = await sendingBillForUser(ticketCode);
+    if (result.errCode === 0) {
+      res.status(200).json({
+        errCode: result.errCode,
+        message: result.message,
+        ticket: result.ticket,
+      });
+    } else {
+      res.status(404).json({
+        errCode: result.errCode,
+        message: result.message,
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Something went wrong in getting ticket details: ${error}`,
+    });
+  }
+};
+
+const handleGSendingBill = async (req: Request, res: Response) => {
+  const ticketCode = req.query.ticketCode as string;
+
+  if (!ticketCode) {
+    return res.status(400).json({ message: "Invalid ticket Code" });
+  }
+
+  try {
+    const result = await sendingBillForUser(ticketCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -247,4 +276,5 @@ export default {
   handleGetRevenueByTheaterAndDate,
   handleGetRevenueByMovie,
   handleGetRevenueForAllMovie,
+  handleGSendingBill,
 };
