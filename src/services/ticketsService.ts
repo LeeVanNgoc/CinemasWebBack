@@ -291,7 +291,7 @@ export const getTicketDetailsByCode = async (ticketCode: string) => {
       message: "Get ticket details successfully",
     };
   } catch (error) {
-    console.error("Error in getTicketDetailsById:", error);
+    console.error("Error in getTicketDetailsByCode:", error);
     return {
       errCode: 3,
       message: `Error retrieving ticket details: ${error}`,

@@ -1,6 +1,8 @@
 import nodemailer from "nodemailer";
 import crypto from "crypto";
 import { getTicketDetailsByCode } from "../services/ticketsService";
+import PlanScreenMovie from "../models/PlanScreenMovie";
+import { Tickets } from "../models";
 
 export const sendOTP = async (userEmail: string) => {
   const otp = crypto.randomInt(100000, 999999); // Tạo một mã OTP 6 chữ số
@@ -42,12 +44,16 @@ export const sendingBill = async (userEmail: string, ticketCode: string) => {
       };
     }
 
-    const ticket = ticketDetails.ticket;
-    console.log(ticket);
+    const ticket = ticketDetails.ticket as Tickets & {
+      "planScreenMovie.movieCode": string;
+      "planScreenMovie.roomCode": string;
+      "planScreenMovie.dateScreen": string;
+      "planScreenMovie.startTime": string;
+      "planScreenMovie.endTime": string;
+    };
 
-    if (ticket) {
-      const planScreen = ticket;
-
+    // Kiểm tra xem vé và thông tin lịch chiếu có tồn tại không
+    if (ticket && ticket["planScreenMovie.roomCode"]) {
       // Tạo nội dung bill
       const billContent = `
       Thank you for purchasing tickets from us!
@@ -60,15 +66,17 @@ export const sendingBill = async (userEmail: string, ticketCode: string) => {
       Bank: ${ticket.bank}
       Total Price: $${ticket.totalPrice}
 
+      Screening Details:
+      ------------------
+      Movie Code: ${ticket["planScreenMovie.movieCode"]}
+      Room Code: ${ticket["planScreenMovie.roomCode"]}
+      Date: ${ticket["planScreenMovie.dateScreen"]}
+      Start Time: ${ticket["planScreenMovie.startTime"]}
+      End Time: ${ticket["planScreenMovie.endTime"]}
+
       We hope you enjoy your experience!
     `;
-      // Screening Details:
-      // ------------------
-      // Movie Code: ${planScreen.movieCode}
-      // Room Code: ${planScreen.roomCode}
-      // Date: ${planScreen.dateScreen}
-      // Start Time: ${planScreen.startTime}
-      // End Time: ${planScreen.endTime}
+
       // Cấu hình transporter với nodemailer
       const transporter = nodemailer.createTransport({
         service: "gmail",
@@ -96,7 +104,7 @@ export const sendingBill = async (userEmail: string, ticketCode: string) => {
     } else {
       return {
         errCode: 2,
-        message: "Ticket not found",
+        message: "Ticket or associated screening information not found",
       };
     }
   } catch (error) {
