@@ -10,11 +10,27 @@ const ticketRoutes = (app: Application) => {
   router.put("/edit-ticket", ticketsController.handleEditTicket);
   router.get("/get-tickets", ticketsController.handleGetTicketByCode);
   router.get("/get-list-tickets", ticketsController.handleGetListTicket);
-  router.get("/get-ticket-by-user-code",ticketsController.handleGetTicketByUserCode);
-  router.get("/get-ticket-details", ticketsController.handleGetTicketDetailsByCode);
-  router.get('/get-revenue-by-date', ticketsController.handleGetRevenueByDate);
-  router.get('/get-revenue-by-theater-and-date', ticketsController.handleGetRevenueByTheaterAndDate);
-  router.get('/get-revenue-by-movie', ticketsController.handleGetRevenueByMovie);
+  router.get(
+    "/get-ticket-by-user-code",
+    ticketsController.handleGetTicketByUserCode
+  );
+  router.get(
+    "/get-ticket-details",
+    ticketsController.handleGetTicketDetailsByCode
+  );
+  router.get("/get-revenue-by-date", ticketsController.handleGetRevenueByDate);
+  router.get(
+    "/get-revenue-by-theater-and-date",
+    ticketsController.handleGetRevenueByTheaterAndDate
+  );
+  router.get(
+    "/get-revenue-by-movie",
+    ticketsController.handleGetRevenueByMovie
+  );
+  router.get(
+    "/get-revenue-for-all-movie",
+    ticketsController.handleGetRevenueForAllMovie
+  );
 
   return app.use("/api/ticket", router);
 };
