@@ -23,6 +23,7 @@ import seatRouter from "./routes/seatsRouter";
 import seatTicketRouter from "./routes/seatTicketRouter";
 import priceRouter from "./routes/priceRouter";
 import bookedSeatRouter from "./routes/bookedSeatRoutes";
+import movieTheaterRoutes from "./routes/movieTheaterRoutes";
 
 dotenv.config();
 
@@ -67,6 +68,7 @@ seatRouter(app);
 seatTicketRouter(app);
 priceRouter(app);
 bookedSeatRouter(app);
+movieTheaterRoutes(app);
 
 // Error handling middleware
 app.use(errorHandler);
