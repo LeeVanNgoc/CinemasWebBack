@@ -4,6 +4,7 @@ import PlanScreenMovie from "../models/PlanScreenMovie";
 import Room from "../models/Room";
 import Movie from "../models/Movie";
 import Theater from "../models/Theater";
+import User from "../models/User";
 import { getUserByCode } from "./userService";
 import { sendingBill } from "../middlewares/mailer";
 
@@ -568,6 +569,64 @@ export const getRevenueForAllMovie = async (
     return {
       errCode: 3,
       message: `Error getting revenue for all movies: ${error}`,
+    };
+  }
+};
+
+export const getAverageAgeOfUsers = async () => {
+  try {
+    // Lấy tất cả các userCode từ bảng Tickets
+    const tickets = await Tickets.findAll({
+      attributes: ["userCode"],
+      group: ["userCode"],
+      raw: true,
+    });
+
+    if (!tickets || tickets.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with tickets",
+      };
+    }
+
+    const userCodes = tickets.map((ticket) => ticket.userCode);
+
+    // Lấy thông tin người dùng từ bảng User dựa trên userCode
+    const users = await User.findAll({
+      where: {
+        userCode: {
+          [Op.in]: userCodes,
+        },
+      },
+      attributes: ["birthYear"],
+      raw: true,
+    });
+
+    if (!users || users.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with the given user codes",
+      };
+    }
+
+    // Tính toán độ tuổi trung bình
+    const currentYear = new Date().getFullYear();
+    const totalAge = users.reduce((sum, user) => {
+      const age = currentYear - user.birthYear;
+      return sum + age;
+    }, 0);
+
+    const averageAge = totalAge / users.length;
+
+    return {
+      errCode: 0,
+      message: "Average age calculated successfully",
+      averageAge,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error calculating average age: ${error}`,
     };
   }
 };
