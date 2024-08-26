@@ -4,11 +4,13 @@ import PlanScreenMovie from "../models/PlanScreenMovie";
 import { getMovieByCode } from "./movieService";
 import Movie from "../models/Movie";
 import Genres from "../models/Genres";
+import Room from "../models/Room";
 import Sequelize from "sequelize";
 import e from "express";
 import { getRoomInTheater } from "./roomService";
-import { Theater } from "../models";
+import {Theater } from "../models";
 import { any } from "joi";
+
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -797,6 +799,62 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
     return {
       errCode: 3,
       message: `Error retrieving movie stats: ${error}`,
+    };
+  }
+};
+
+export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, dateScreen: string) => {
+  try {
+    const schedule = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { theaterCode: theaterCode },
+          attributes: ['roomCode', 'type'],
+        },
+        {
+          model: Movie,
+          as: 'movie',
+          attributes: ['movieCode', 'title', 'duration', 'image'],
+        },
+      ],
+      where: {
+        dateScreen: dateScreen,
+      },
+      attributes: ['planScreenMovieCode', 'startTime', 'endTime'],
+      order: [['startTime', 'ASC']],
+    });
+
+    if (schedule.length === 0) {
+      return {
+        errCode: 1,
+        message: "No screenings found for the given theater and date",
+      };
+    }
+
+    const formattedSchedule = schedule.map((screening: any) => ({
+      planScreenMovieCode: screening.planScreenMovieCode,
+      roomCode: screening.room.roomCode,
+      roomType: screening.room.type,
+      movieCode: screening.movie.movieCode,
+      movieTitle: screening.movie.title,
+      movieDuration: screening.movie.duration,
+      movieImage: screening.movie.image,
+      startTime: screening.startTime,
+      endTime: screening.endTime,
+    }));
+
+    return {
+      errCode: 0,
+      message: "Get screening schedule successfully",
+      schedule: formattedSchedule,
+    };
+  } catch (error) {
+    console.error("Error in getScreeningScheduleByTheaterAndDate:", error);
+    return {
+      errCode: 3,
+      message: `Error retrieving screening schedule: ${error}`,
     };
   }
 };
