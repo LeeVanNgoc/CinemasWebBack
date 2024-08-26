@@ -1,4 +1,4 @@
-import { Model, DataTypes } from "sequelize";
+import { Model, DataTypes, Association } from "sequelize";
 import sequelize from "../config/connectDB";
 import User from "./User";
 import PlanScreenMovie from "./PlanScreenMovie";
@@ -12,6 +12,11 @@ class Tickets extends Model {
   public bank!: string;
   public totalPrice!: number;
   public TicketsDate!: Date;
+
+  public static associations: {
+    user: Association<Tickets, User>;
+  };
+  user: any;
 }
 
 Tickets.init(
@@ -72,4 +77,8 @@ Tickets.belongsTo(PlanScreenMovie, {
   as: "planScreenMovie",
 });
 
+// Tickets.belongsTo(User, {
+//   foreignKey: "userCode",
+//   as: "user",
+// });
 export default Tickets;
