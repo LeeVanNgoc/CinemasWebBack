@@ -46,6 +46,11 @@ const planScreenMovieRoutes = (app: Application) => {
     "/get-movie-in-room",
     planScreenMovieController.handleGetMovieInRoom
   );
+  router.get(
+    "/get-screening-schedule",
+    planScreenMovieController.handleGetScreeningSchedule
+  );
+
   return app.use("/api/plan-screen-movie", router);
 };
 export default planScreenMovieRoutes;
