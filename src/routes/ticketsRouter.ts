@@ -40,6 +40,9 @@ const ticketRoutes = (app: Application) => {
     "/get-average-age-of-user",
     ticketsController.handleGetAverageAgeOfUsers
   );
+
+  router.get("/average-age-by-theater", ticketsController.handleGetAverageAgeByTheater);
+
   return app.use("/api/ticket", router);
 };
 

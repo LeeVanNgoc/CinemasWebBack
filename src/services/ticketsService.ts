@@ -7,6 +7,7 @@ import Theater from "../models/Theater";
 import User from "../models/User";
 import { getUserByCode } from "./userService";
 import { sendingBill } from "../middlewares/mailer";
+import sequelize from "../config/connectDB";
 
 export const createTickets = async (data: any) => {
   try {
@@ -575,7 +576,6 @@ export const getRevenueForAllMovie = async (
 
 export const getAverageAgeOfUsers = async () => {
   try {
-    // Lấy tất cả các userCode từ bảng Tickets
     const tickets = await Tickets.findAll({
       attributes: ["userCode"],
       group: ["userCode"],
@@ -591,7 +591,6 @@ export const getAverageAgeOfUsers = async () => {
 
     const userCodes = tickets.map((ticket) => ticket.userCode);
 
-    // Lấy thông tin người dùng từ bảng User dựa trên userCode
     const users = await User.findAll({
       where: {
         userCode: {
@@ -609,7 +608,78 @@ export const getAverageAgeOfUsers = async () => {
       };
     }
 
-    // Tính toán độ tuổi trung bình
+    const currentYear = new Date().getFullYear();
+    const totalAge = users.reduce((sum, user) => {
+      const age = currentYear - user.birthYear;
+      return sum + age;
+    }, 0);
+
+    const averageAge = totalAge / users.length;
+
+    return {
+      errCode: 0,
+      message: "Average age calculated successfully",
+      averageAge,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error calculating average age: ${error}`,
+    };
+  }
+};
+
+export const getAverageAgeByTheater = async (theaterCode: string) => {
+  try {
+    // Lấy tất cả các tickets liên quan đến theaterCode
+    const tickets = await Tickets.findAll({
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [],
+          include: [
+            {
+              model: Room,
+              as: "room",
+              attributes: [],
+              where: { theaterCode }, // Lọc theo theaterCode trong Room
+            },
+          ],
+        },
+      ],
+      attributes: ["userCode"],
+      group: ["userCode"], // Group theo userCode để đảm bảo không bị trùng lặp
+      raw: true,
+    });
+
+    if (!tickets || tickets.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with tickets in this theater",
+      };
+    }
+
+    const userCodes = tickets.map((ticket) => ticket.userCode);
+
+    // Lấy danh sách người dùng dựa trên userCodes
+    const users = await User.findAll({
+      where: {
+        userCode: {
+          [Op.in]: userCodes, // Lọc chỉ những user có userCode trong theaterCode cụ thể
+        },
+      },
+      attributes: ["birthYear"],
+      raw: true,
+    });
+
+    if (!users || users.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with the given user codes",
+      };
+    }
+
     const currentYear = new Date().getFullYear();
     const totalAge = users.reduce((sum, user) => {
       const age = currentYear - user.birthYear;
