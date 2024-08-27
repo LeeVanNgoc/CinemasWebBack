@@ -631,42 +631,56 @@ export const getAverageAgeOfUsers = async () => {
 
 export const getAverageAgeByTheater = async (theaterCode: string) => {
   try {
-    // Lấy tất cả các tickets liên quan đến theaterCode
-    const tickets = await Tickets.findAll({
-      include: [
-        {
-          model: PlanScreenMovie,
-          as: "planScreenMovie",
-          attributes: [],
-          include: [
-            {
-              model: Room,
-              as: "room",
-              attributes: [],
-              where: { theaterCode }, // Lọc theo theaterCode trong Room
-            },
-          ],
+    // Bước 1: Lấy danh sách các mã `planScreenMovieCode` của các phim chiếu ở rạp được chỉ định
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        roomCode: {
+          [Op.in]: sequelize.literal(
+            `(SELECT roomCode FROM rooms WHERE theaterCode = '${theaterCode}')`
+          ),
         },
-      ],
+      },
+      attributes: ["planScreenMovieCode"],
+      raw: true,
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      return {
+        errCode: 1,
+        message: "No movies found in the specified theater",
+      };
+    }
+
+    const planScreenMovieCodes = planScreenMovies.map(
+      (plan) => plan.planScreenMovieCode
+    );
+
+    // Bước 2: Lấy danh sách các mã `userCode` từ các vé dựa trên mã `planScreenMovieCode`
+    const tickets = await Tickets.findAll({
+      where: {
+        planScreenMovieCode: {
+          [Op.in]: planScreenMovieCodes,
+        },
+      },
       attributes: ["userCode"],
-      group: ["userCode"], // Group theo userCode để đảm bảo không bị trùng lặp
+      group: ["userCode"],
       raw: true,
     });
 
     if (!tickets || tickets.length === 0) {
       return {
         errCode: 1,
-        message: "No users found with tickets in this theater",
+        message: "No users found with tickets for the specified theater",
       };
     }
 
     const userCodes = tickets.map((ticket) => ticket.userCode);
 
-    // Lấy danh sách người dùng dựa trên userCodes
+    // Bước 3: Lấy thông tin người dùng dựa trên mã `userCode`
     const users = await User.findAll({
       where: {
         userCode: {
-          [Op.in]: userCodes, // Lọc chỉ những user có userCode trong theaterCode cụ thể
+          [Op.in]: userCodes,
         },
       },
       attributes: ["birthYear"],
@@ -680,6 +694,7 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
       };
     }
 
+    // Bước 4: Tính độ tuổi trung bình
     const currentYear = new Date().getFullYear();
     const totalAge = users.reduce((sum, user) => {
       const age = currentYear - user.birthYear;
