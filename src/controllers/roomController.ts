@@ -247,7 +247,7 @@ const handleGetAllRoomCodes = async (req: Request, res: Response) => {
 const handleGetAllRoomCodesInTheater = async (req: Request, res: Response) => {
   const theaterCode = req.query.theaterCode as string;
   try {
-    if (theaterCode === "undefined") {
+    if (theaterCode === undefined) {
       const result = await getAllRoomCodes();
       if (result.errCode !== 0) {
         return res
