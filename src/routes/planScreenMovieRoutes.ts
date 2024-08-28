@@ -50,6 +50,10 @@ const planScreenMovieRoutes = (app: Application) => {
     "/get-screening-schedule",
     planScreenMovieController.handleGetScreeningSchedule
   );
+  router.get(
+    "/get-list-plan-information-by-theater-code",
+    planScreenMovieController.handleGetListPlanScreenInformationByTheaterCode
+  );
 
   return app.use("/api/plan-screen-movie", router);
 };

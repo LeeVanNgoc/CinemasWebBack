@@ -11,7 +11,8 @@ import {
   getMovieDetailsByDate,
   getMonthlyMovieStats,
   getMovieByRoom,
-  getScreeningSchedule
+  getScreeningSchedule,
+  getListPlanScreenInformationByTheaterCode,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -212,7 +213,10 @@ const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetplanScreenMovieCodeForCreateTicket = async (req: Request, res: Response) => {
+const handleGetplanScreenMovieCodeForCreateTicket = async (
+  req: Request,
+  res: Response
+) => {
   const data = {
     roomCode: req.query.roomCode as string,
     movieCode: req.query.movieCode as string,
@@ -291,7 +295,49 @@ const handleGetListPlanScreenInformation = async (
     });
   }
 };
-
+const handleGetListPlanScreenInformationByTheaterCode = async (
+  req: Request,
+  res: Response
+) => {
+  const theaterCode = String(req.query.theaterCode);
+  try {
+    if (theaterCode === "undefined") {
+      const planScreenMovies = await getListPlanScreenInformation();
+      if (planScreenMovies.errCode === 0) {
+        res.status(200).json({
+          errCode: planScreenMovies.errCode,
+          message: planScreenMovies.message,
+          planScreenMovies: planScreenMovies.data,
+        });
+      } else {
+        res.status(400).json({
+          errCode: planScreenMovies.errCode,
+          message: planScreenMovies.message,
+        });
+      }
+    } else {
+      const planScreenMovies = await getListPlanScreenInformationByTheaterCode(
+        theaterCode
+      );
+      if (planScreenMovies.errCode === 0) {
+        res.status(200).json({
+          errCode: planScreenMovies.errCode,
+          message: planScreenMovies.message,
+          planScreenMovies: planScreenMovies.data,
+        });
+      } else {
+        res.status(400).json({
+          errCode: planScreenMovies.errCode,
+          message: planScreenMovies.message,
+        });
+      }
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: `Error in handle get list plan screen information: ${error}`,
+    });
+  }
+};
 // const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
 //   const dateScreen = req.query.dateScreen as string;
 
@@ -367,7 +413,11 @@ const handleGetMonthlyMovieStats = async (req: Request, res: Response) => {
     const monthNumber = parseInt(month as string);
     const yearNumber = parseInt(year as string);
 
-    const result = await getMonthlyMovieStats(monthNumber, yearNumber, theaterCode as string);
+    const result = await getMonthlyMovieStats(
+      monthNumber,
+      yearNumber,
+      theaterCode as string
+    );
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
@@ -417,11 +467,10 @@ const handleGetScreeningSchedule = async (req: Request, res: Response) => {
   const theaterCode = req.query.theaterCode as string;
   const dateScreen = req.query.dateScreen as string;
 
-  if (!theaterCode) {
-    return res.status(400).json({ message: "Missing theaterCode" });
-  }
-  if (!dateScreen) {
-    return res.status(400).json({ message: "Missing dateScreen" });
+  if (!theaterCode || !dateScreen) {
+    return res
+      .status(400)
+      .json({ message: "Missing theaterCode or dateScreen" });
   }
 
   try {
@@ -457,5 +506,6 @@ export default {
   handleGetMovieDetailsByDate,
   handleGetMonthlyMovieStats,
   handleGetMovieInRoom,
-  handleGetScreeningSchedule
+  handleGetScreeningSchedule,
+  handleGetListPlanScreenInformationByTheaterCode,
 };

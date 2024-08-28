@@ -6,11 +6,9 @@ import Movie from "../models/Movie";
 import Genres from "../models/Genres";
 import Room from "../models/Room";
 import Sequelize from "sequelize";
-import e from "express";
 import { getRoomInTheater } from "./roomService";
 import { Theater } from "../models";
 import { any } from "joi";
-
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -135,6 +133,71 @@ export const getAllPlanScreenMovies = async () => {
 export const getListPlanScreenInformation = async () => {
   try {
     const planScreenMovies = await PlanScreenMovie.findAll({
+      attributes: [
+        "planScreenMovieCode",
+        "roomCode",
+        "movieCode",
+        "startTime",
+        "endTime",
+        "dateScreen",
+      ],
+    });
+
+    const planScreenMovieData = await Promise.all(
+      planScreenMovies.map(async (planScreenMovie) => {
+        const movie = await getMovieByCode(planScreenMovie.movieCode);
+        return {
+          planScreenMovieCode: planScreenMovie.planScreenMovieCode,
+          roomCode: planScreenMovie.roomCode,
+          movieCode: planScreenMovie.movieCode,
+          movieTitle: movie.movie?.title,
+          startTime: planScreenMovie.startTime,
+          endTime: planScreenMovie.endTime,
+          dateScreen: planScreenMovie.dateScreen,
+        };
+      })
+    );
+
+    if (!planScreenMovies) {
+      return {
+        errCode: 1,
+        message: "No PlanScreenMovie found",
+      };
+    } else {
+      return {
+        errCode: 0,
+        message: "Get all PlanScreenMovies success",
+        data: planScreenMovieData,
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 1,
+      message: `Error getting PlanScreenMovies: ${error}`,
+    };
+  }
+};
+
+export const getListPlanScreenInformationByTheaterCode = async (
+  theaterCode: string
+) => {
+  try {
+    const rooms = await getRoomInTheater(theaterCode);
+    const roomCodes = rooms.rooms?.map((room) => room.roomCode);
+
+    if (!roomCodes || roomCodes.length === 0) {
+      return {
+        errCode: 1,
+        message: "No rooms found in this theater",
+      };
+    }
+
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        roomCode: {
+          [Op.in]: roomCodes,
+        },
+      },
       attributes: [
         "planScreenMovieCode",
         "roomCode",
@@ -453,7 +516,7 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
       include: [
         {
           model: Room,
-          as: 'room',
+          as: "room",
           where: { theaterCode: data.theaterCode },
           attributes: [],
         },
@@ -501,7 +564,7 @@ export const getStartTime = async (data: any) => {
       include: [
         {
           model: Room,
-          as: 'room',
+          as: "room",
           where: { theaterCode: data.theaterCode },
           attributes: [],
         },
@@ -665,8 +728,9 @@ export const getMovieDetailsByDate = async (
     planScreenMovies.forEach((psm) => {
       const movie = psm.movie;
       if (movie) {
-        const key = `${movie.title}-${movie.description}-${movie.duration}-${movie.country
-          }-${movie.image}-${movie.genre ? movie.genre.name : null}`;
+        const key = `${movie.title}-${movie.description}-${movie.duration}-${
+          movie.country
+        }-${movie.image}-${movie.genre ? movie.genre.name : null}`;
 
         if (!movieDetailsMap[key]) {
           movieDetailsMap[key] = {
@@ -770,7 +834,11 @@ export const getMovieByRoom = async (theaterCode: string) => {
   }
 };
 
-export const getMonthlyMovieStats = async (month: number, year: number, theaterCode: string) => {
+export const getMonthlyMovieStats = async (
+  month: number,
+  year: number,
+  theaterCode: string
+) => {
   try {
     const startDate = new Date(year, month - 1, 1); // Bắt đầu từ ngày đầu tiên của tháng
     const endDate = new Date(year, month, 0); // Ngày cuối cùng của tháng
@@ -782,7 +850,7 @@ export const getMonthlyMovieStats = async (month: number, year: number, theaterC
     };
 
     if (theaterCode) {
-      whereConditions['$room.theaterCode$'] = theaterCode;
+      whereConditions["$room.theaterCode$"] = theaterCode;
     }
 
     const stats = await PlanScreenMovie.findAll({
@@ -835,7 +903,10 @@ export const getMonthlyMovieStats = async (month: number, year: number, theaterC
   }
 };
 
-export const getScreeningSchedule = async (theaterCode: string, dateScreen: string) => {
+export const getScreeningSchedule = async (
+  theaterCode: string,
+  dateScreen: string
+) => {
   try {
     const whereConditions: any = { dateScreen };
 
@@ -843,19 +914,27 @@ export const getScreeningSchedule = async (theaterCode: string, dateScreen: stri
       include: [
         {
           model: Room,
-          as: 'room',
+          as: "room",
           where: { theaterCode: theaterCode },
-          attributes: ['roomCode', 'type'],
+          attributes: ["roomCode", "type"],
         },
         {
           model: Movie,
-          as: 'movie',
-          attributes: ['movieCode', 'title', 'duration', 'image', 'country', 'description', 'releaseDate'],
+          as: "movie",
+          attributes: [
+            "movieCode",
+            "title",
+            "duration",
+            "image",
+            "country",
+            "description",
+            "releaseDate",
+          ],
         },
       ],
       where: whereConditions,
-      attributes: ['planScreenMovieCode', 'startTime', 'endTime'],
-      order: [['startTime', 'ASC']],
+      attributes: ["planScreenMovieCode", "startTime", "endTime"],
+      order: [["startTime", "ASC"]],
     });
 
     if (schedule.length === 0) {

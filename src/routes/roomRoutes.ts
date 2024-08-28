@@ -20,8 +20,11 @@ const roomRoutes = (app: Application) => {
     roomController.handleGetListRoomInformation
   );
   router.get("/get-all-room-codes", roomController.handleGetAllRoomCodes);
+  router.get(
+    "/get-all-room-codes-in-theater",
+    roomController.handleGetAllRoomCodesInTheater
+  );
   return app.use("/api/room", router);
-
 };
 
 export default roomRoutes;
