@@ -9,6 +9,7 @@ import { getUserByCode } from "./userService";
 import { sendingBill } from "../middlewares/mailer";
 import { triggerAsyncId } from "async_hooks";
 import sequelize from "../config/connectDB";
+import { getMovieByCode } from "./movieService";
 
 export const createTickets = async (data: any) => {
   try {
@@ -577,7 +578,7 @@ export const getRevenueForAllMovie = async (
 
 export const getAllTicketForUser = async (userCode: string) => {
   try {
-    const allTicket = await Tickets.findAll({
+    const allTicket: any = await Tickets.findAll({
       where: { userCode: userCode },
       attributes: [
         "ticketCode",
@@ -600,13 +601,37 @@ export const getAllTicketForUser = async (userCode: string) => {
           ],
         },
       ],
-      raw: true,
     });
-    if (allTicket) {
+
+    if (allTicket && allTicket.length > 0) {
+      const ticketDataPromises = allTicket.map(async (ticket: any) => {
+        const movie = await getMovieByCode(ticket.planScreenMovie.movieCode);
+        const movieTitle = movie?.movie?.title || "Unknown Title";
+        const user = await getUserByCode(ticket.userCode);
+        const userName: string = user?.users?.userName || "Unknown User";
+
+        return {
+          ticketCode: ticket.ticketCode,
+          userName: userName,
+          seats: ticket.seats,
+          bank: ticket.bank,
+          totalPrice: ticket.totalPrice,
+          planMovieCode: ticket.planScreenMovieCode,
+          room: ticket.planScreenMovie.roomCode,
+          movieTitle: movieTitle,
+          startTime: ticket.planScreenMovie.startTime,
+          endTime: ticket.planScreenMovie.endTime,
+          dateScreen: ticket.planScreenMovie.dateScreen,
+        };
+      });
+
+      // Đợi tất cả các Promise hoàn thành
+      const ticketData = await Promise.all(ticketDataPromises);
+
       return {
         errCode: 0,
         message: "Get all ticket success",
-        ticketData: allTicket,
+        ticketData: ticketData,
       };
     } else {
       return {
