@@ -498,6 +498,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
 export const getStartTime = async (data: any) => {
   try {
     const startTimePlan = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         movieCode: data.movieCode,
         dateScreen: data.dateScreen,
