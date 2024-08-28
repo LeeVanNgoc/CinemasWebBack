@@ -106,6 +106,8 @@ const handleGetTheaterByCode = async (req: Request, res: Response) => {
 
 const handleGetTheaterByCity = async (req: Request, res: Response) => {
   const city = String(req.query.city);
+  console.log(city);
+
   try {
     const result = await getTheatersByCity(city);
     if (result.errCode === 0) {

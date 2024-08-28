@@ -12,8 +12,9 @@ import {
   getRevenueByMovie,
   getRevenueForAllMovie,
   sendingBillForUser,
+  getAllTicketForUser,
   getAverageAgeOfUsers,
-  getAverageAgeByTheater
+  getAverageAgeByTheater,
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -196,7 +197,7 @@ const handleGSendingBill = async (req: Request, res: Response) => {
   }
 };
 
-const handleGetRevenueByDate = async(req: Request, res: Response) => {
+const handleGetRevenueByDate = async (req: Request, res: Response) => {
   const { startDate, endDate } = req.query;
 
   try {
@@ -211,10 +212,12 @@ const handleGetRevenueByDate = async(req: Request, res: Response) => {
       .status(500)
       .json({ error: "Failed to retrieve revenue data", details: error });
   }
-}
+};
 
-
-const handleGetRevenueByTheaterAndDate = async(req: Request, res: Response) => {
+const handleGetRevenueByTheaterAndDate = async (
+  req: Request,
+  res: Response
+) => {
   const { theaterCode, startDate, endDate } = req.query;
 
   try {
@@ -230,9 +233,9 @@ const handleGetRevenueByTheaterAndDate = async(req: Request, res: Response) => {
       .status(500)
       .json({ error: "Failed to retrieve revenue data", details: error });
   }
-}
+};
 
-const handleGetRevenueByMovie = async(req: Request, res: Response) => {
+const handleGetRevenueByMovie = async (req: Request, res: Response) => {
   const { movieCode, startDate, endDate } = req.query;
 
   try {
@@ -247,7 +250,7 @@ const handleGetRevenueByMovie = async(req: Request, res: Response) => {
       .status(500)
       .json({ error: "Failed to retrieve revenue data", details: error });
   }
-}
+};
 export async function handleGetRevenueForAllMovie(req: Request, res: Response) {
   const { startDate, endDate } = req.query;
 
@@ -264,6 +267,28 @@ export async function handleGetRevenueForAllMovie(req: Request, res: Response) {
   }
 }
 
+const handleGetAllTicketForUser = async (req: Request, res: Response) => {
+  const userCode = String(req.query.userCode);
+  try {
+    const allTicket = await getAllTicketForUser(userCode);
+    if (allTicket) {
+      res.status(200).json({
+        errCode: 0,
+        message: "Ticket list retrieved successfully",
+        tickets: allTicket,
+      });
+    } else {
+      res.status(404).json({
+        errCode: 1,
+        message: "No ticket found for the given user",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Error in getting ticket list: ${error}`,
+    });
+  }
+};
 const handleGetAverageAgeOfUsers = async (req: Request, res: Response) => {
   try {
     const averageAge = await getAverageAgeOfUsers();
@@ -296,7 +321,6 @@ const handleGetAverageAgeByTheater = async (req: Request, res: Response) => {
   }
 };
 
-
 export default {
   handleCreateTicket,
   handleDeleteTicket,
@@ -310,6 +334,7 @@ export default {
   handleGetRevenueByMovie,
   handleGetRevenueForAllMovie,
   handleGSendingBill,
+  handleGetAllTicketForUser,
   handleGetAverageAgeOfUsers,
-  handleGetAverageAgeByTheater
+  handleGetAverageAgeByTheater,
 };
