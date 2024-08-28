@@ -11,7 +11,8 @@ import {
   getMovieDetailsByDate,
   getMonthlyMovieStats,
   getMovieByRoom,
-  getScreeningScheduleByTheaterAndDate,
+  getScreeningSchedule,
+  getListPlanScreenInformationByTheaterCode,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -473,10 +474,7 @@ const handleGetScreeningSchedule = async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await getScreeningScheduleByTheaterAndDate(
-      theaterCode,
-      dateScreen
-    );
+    const result = await getScreeningSchedule(theaterCode, dateScreen);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,

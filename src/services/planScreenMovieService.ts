@@ -903,7 +903,7 @@ export const getMonthlyMovieStats = async (
   }
 };
 
-export const getScreeningScheduleByTheaterAndDate = async (
+export const getScreeningSchedule = async (
   theaterCode: string,
   dateScreen: string
 ) => {
@@ -921,12 +921,18 @@ export const getScreeningScheduleByTheaterAndDate = async (
         {
           model: Movie,
           as: "movie",
-          attributes: ["movieCode", "title", "duration", "image"],
+          attributes: [
+            "movieCode",
+            "title",
+            "duration",
+            "image",
+            "country",
+            "description",
+            "releaseDate",
+          ],
         },
       ],
-      where: {
-        dateScreen: dateScreen,
-      },
+      where: whereConditions,
       attributes: ["planScreenMovieCode", "startTime", "endTime"],
       order: [["startTime", "ASC"]],
     });
