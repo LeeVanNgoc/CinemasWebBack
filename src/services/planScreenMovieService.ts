@@ -8,7 +8,7 @@ import Room from "../models/Room";
 import Sequelize from "sequelize";
 import e from "express";
 import { getRoomInTheater } from "./roomService";
-import {Theater } from "../models";
+import { Theater } from "../models";
 import { any } from "joi";
 
 
@@ -665,9 +665,8 @@ export const getMovieDetailsByDate = async (
     planScreenMovies.forEach((psm) => {
       const movie = psm.movie;
       if (movie) {
-        const key = `${movie.title}-${movie.description}-${movie.duration}-${
-          movie.country
-        }-${movie.image}-${movie.genre ? movie.genre.name : null}`;
+        const key = `${movie.title}-${movie.description}-${movie.duration}-${movie.country
+          }-${movie.image}-${movie.genre ? movie.genre.name : null}`;
 
         if (!movieDetailsMap[key]) {
           movieDetailsMap[key] = {
@@ -825,12 +824,9 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
   }
 };
 
-export const getScreeningSchedule = async (theaterCode: string, dateScreen: string, movieCode?: string) => {
+export const getScreeningSchedule = async (theaterCode: string, dateScreen: string) => {
   try {
     const whereConditions: any = { dateScreen };
-    if (movieCode) {
-      whereConditions.movieCode = movieCode;
-    }
 
     const schedule = await PlanScreenMovie.findAll({
       include: [
@@ -843,7 +839,7 @@ export const getScreeningSchedule = async (theaterCode: string, dateScreen: stri
         {
           model: Movie,
           as: 'movie',
-          attributes: ['movieCode', 'title', 'duration', 'image', 'country', 'description', 'releaseDate'],  // Thêm các trường mới
+          attributes: ['movieCode', 'title', 'duration', 'image', 'country', 'description', 'releaseDate'],
         },
       ],
       where: whereConditions,
@@ -858,20 +854,31 @@ export const getScreeningSchedule = async (theaterCode: string, dateScreen: stri
       };
     }
 
-    const formattedSchedule = schedule.map((screening: any) => ({
-      planScreenMovieCode: screening.planScreenMovieCode,
-      roomCode: screening.room.roomCode,
-      roomType: screening.room.type,
-      movieCode: screening.movie.movieCode,
-      movieTitle: screening.movie.title,
-      movieDuration: screening.movie.duration,
-      movieImage: screening.movie.image,
-      movieCountry: screening.movie.country,          // Trả về country
-      movieDescription: screening.movie.description,  // Trả về description
-      movieReleaseDate: screening.movie.releaseDate,  // Trả về releaseDate
-      startTime: screening.startTime,
-      endTime: screening.endTime,
-    }));
+    const groupedSchedule = schedule.reduce((acc: any, screening: any) => {
+      const movie = screening.movie;
+      if (!acc[movie.movieCode]) {
+        acc[movie.movieCode] = {
+          movieCode: movie.movieCode,
+          movieTitle: movie.title,
+          movieDuration: movie.duration,
+          movieImage: movie.image,
+          movieCountry: movie.country,
+          movieDescription: movie.description,
+          movieReleaseDate: movie.releaseDate,
+          screenings: [],
+        };
+      }
+      acc[movie.movieCode].screenings.push({
+        planScreenMovieCode: screening.planScreenMovieCode,
+        roomCode: screening.room.roomCode,
+        roomType: screening.room.type,
+        startTime: screening.startTime,
+        endTime: screening.endTime,
+      });
+      return acc;
+    }, {});
+
+    const formattedSchedule = Object.values(groupedSchedule);
 
     return {
       errCode: 0,
