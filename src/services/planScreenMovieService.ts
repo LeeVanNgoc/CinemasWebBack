@@ -437,6 +437,12 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
         message: "Missing dateScreen parameter",
       };
     }
+    if (!data.theaterCode) {
+      return {
+        errCode: 2,
+        message: "Missing theaterCode parameter",
+      };
+    }
 
     // Convert dateScreen to Date object
     const dateScreen = new Date(data.dateScreen);
@@ -444,6 +450,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
     dateScreen.setUTCHours(0, 0, 0, 0);
 
     const planScreenMovies = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         roomCode: data.roomCode,
         movieCode: data.movieCode,
@@ -473,7 +487,7 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieCodeForCreateTicket:", error);
+    console.error("Error in getPlanScreenMovieCodeForCreateTicket:", error);
     return {
       errCode: 3,
       message: `Error getting planScreenMovieCode: ${error}`,
