@@ -7,6 +7,8 @@ import Theater from "../models/Theater";
 import User from "../models/User";
 import { getUserByCode } from "./userService";
 import { sendingBill } from "../middlewares/mailer";
+import { triggerAsyncId } from "async_hooks";
+import sequelize from "../config/connectDB";
 
 export const createTickets = async (data: any) => {
   try {
@@ -569,6 +571,180 @@ export const getRevenueForAllMovie = async (
     return {
       errCode: 3,
       message: `Error getting revenue for all movies: ${error}`,
+    };
+  }
+};
+
+export const getAllTicketForUser = async (userCode: string) => {
+  try {
+    const allTicket = await Tickets.findAll({
+      where: { userCode: userCode },
+      attributes: [
+        "ticketCode",
+        "userCode",
+        "seats",
+        "bank",
+        "totalPrice",
+        "planScreenMovieCode",
+      ],
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [
+            "roomCode",
+            "movieCode",
+            "startTime",
+            "endTime",
+            "dateScreen",
+          ],
+        },
+      ],
+      raw: true,
+    });
+    if (allTicket) {
+      return {
+        errCode: 0,
+        message: "Get all ticket success",
+        ticketData: allTicket,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "Ticket not found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error retrieving ticket details: ${error}`,
+    };
+  }
+};
+
+export const getAverageAgeOfUsers = async () => {
+  try {
+    const tickets = await Tickets.findAll({
+      attributes: ["userCode"],
+      group: ["userCode"],
+      raw: true,
+    });
+
+    if (!tickets || tickets.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with tickets",
+      };
+    }
+
+    const userCodes = tickets.map((ticket) => ticket.userCode);
+
+    const users = await User.findAll({
+      where: {
+        userCode: {
+          [Op.in]: userCodes,
+        },
+      },
+      attributes: ["birthYear"],
+      raw: true,
+    });
+
+    if (!users || users.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with the given user codes",
+      };
+    }
+
+    const currentYear = new Date().getFullYear();
+    const totalAge = users.reduce((sum, user) => {
+      const age = currentYear - user.birthYear;
+      return sum + age;
+    }, 0);
+
+    const averageAge = totalAge / users.length;
+
+    return {
+      errCode: 0,
+      message: "Average age calculated successfully",
+      averageAge,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error calculating average age: ${error}`,
+    };
+  }
+};
+
+export const getAverageAgeByTheater = async (theaterCode: string) => {
+  try {
+    // Lấy tất cả các tickets liên quan đến theaterCode
+    const tickets = await Tickets.findAll({
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [],
+          include: [
+            {
+              model: Room,
+              as: "room",
+              attributes: [],
+              where: { theaterCode }, // Lọc theo theaterCode trong Room
+            },
+          ],
+        },
+      ],
+      attributes: ["userCode"],
+      group: ["userCode"], // Group theo userCode để đảm bảo không bị trùng lặp
+      raw: true,
+    });
+
+    if (!tickets || tickets.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with tickets in this theater",
+      };
+    }
+
+    const userCodes = tickets.map((ticket) => ticket.userCode);
+
+    // Lấy danh sách người dùng dựa trên userCodes
+    const users = await User.findAll({
+      where: {
+        userCode: {
+          [Op.in]: userCodes, // Lọc chỉ những user có userCode trong theaterCode cụ thể
+        },
+      },
+      attributes: ["birthYear"],
+      raw: true,
+    });
+
+    if (!users || users.length === 0) {
+      return {
+        errCode: 1,
+        message: "No users found with the given user codes",
+      };
+    }
+
+    const currentYear = new Date().getFullYear();
+    const totalAge = users.reduce((sum, user) => {
+      const age = currentYear - user.birthYear;
+      return sum + age;
+    }, 0);
+
+    const averageAge = totalAge / users.length;
+
+    return {
+      errCode: 0,
+      message: "Average age calculated successfully",
+      averageAge,
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error calculating average age: ${error}`,
     };
   }
 };
