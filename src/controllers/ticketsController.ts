@@ -13,6 +13,8 @@ import {
   getRevenueForAllMovie,
   sendingBillForUser,
   getAllTicketForUser,
+  getAverageAgeOfUsers,
+  getAverageAgeByTheater,
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -287,6 +289,40 @@ const handleGetAllTicketForUser = async (req: Request, res: Response) => {
     });
   }
 };
+const handleGetAverageAgeOfUsers = async (req: Request, res: Response) => {
+  try {
+    const averageAge = await getAverageAgeOfUsers();
+    res.status(200).json({
+      errCode: 0,
+      message: "Get average age of users successfully",
+      averageAge: averageAge,
+    });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 1,
+      message: `Failed to get average age of users: ${error}`,
+    });
+  }
+};
+
+const handleGetAverageAgeByTheater = async (req: Request, res: Response) => {
+  const { theaterCode } = req.query;
+
+  try {
+    const averageAge = await getAverageAgeByTheater(theaterCode as string);
+
+    if (averageAge) {
+      res.status(200).json({ averageAge });
+    } else {
+      res.status(404).json({ message: "No data found" });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: `Failed to retrieve average age: ${error}`,
+    });
+  }
+};
+
 export default {
   handleCreateTicket,
   handleDeleteTicket,
@@ -301,4 +337,6 @@ export default {
   handleGetRevenueForAllMovie,
   handleGSendingBill,
   handleGetAllTicketForUser,
+  handleGetAverageAgeOfUsers,
+  handleGetAverageAgeByTheater,
 };
