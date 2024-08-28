@@ -8,7 +8,8 @@ import {
   getRoomInTheater,
   updateNumberSeatInRoom,
   getListRoomInformation,
-  getAllRoomCodes
+  getAllRoomCodes,
+  getAllRoomCodesInTheater,
 } from "../services/roomService";
 
 const handleCreateRoom = async (req: Request, res: Response) => {
@@ -50,7 +51,7 @@ const handleCreateRoom = async (req: Request, res: Response) => {
 
 const handleDeleteRoom = async (req: Request, res: Response) => {
   const roomCode = req.query.roomCode as string;
-  if (!(roomCode)) {
+  if (!roomCode) {
     return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
   try {
@@ -71,7 +72,7 @@ const handleDeleteRoom = async (req: Request, res: Response) => {
 
 const handleEditRoom = async (req: Request, res: Response) => {
   const roomCode = req.query.roomCode as string;
-  if (!(roomCode)) {
+  if (!roomCode) {
     return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
 
@@ -127,8 +128,8 @@ const handleGetAllRooms = async (req: Request, res: Response) => {
 };
 
 const handleGetRoomByCode = async (req: Request, res: Response) => {
-  const roomCode = (req.query.roomCode as string);
-  if (!(roomCode)) {
+  const roomCode = req.query.roomCode as string;
+  if (!roomCode) {
     return res.status(400).json({ errCode: 2, error: "Invalid roomCode" });
   }
   try {
@@ -219,20 +220,58 @@ const handleGetListRoomInformation = async (req: Request, res: Response) => {
       errCode: result.errCode,
       message: result.message,
     });
-  } catch (error) { }
+  } catch (error) {}
 };
 
 const handleGetAllRoomCodes = async (req: Request, res: Response) => {
   try {
     const result = await getAllRoomCodes();
     if (result.errCode !== 0) {
-      return res.status(400).json({ errCode: result.errCode, error: result.message });
+      return res
+        .status(400)
+        .json({ errCode: result.errCode, error: result.message });
     }
     res.status(200).json({
       errCode: result.errCode,
       message: result.message,
       roomCodes: result.roomCodes,
     });
+  } catch (error) {
+    res.status(500).json({
+      errCode: 3,
+      error: `Something went wrong in getting room codes: ${error}`,
+    });
+  }
+};
+
+const handleGetAllRoomCodesInTheater = async (req: Request, res: Response) => {
+  const theaterCode = req.query.theaterCode as string;
+  try {
+    if (theaterCode === "undefined") {
+      const result = await getAllRoomCodes();
+      if (result.errCode !== 0) {
+        return res
+          .status(400)
+          .json({ errCode: result.errCode, error: result.message });
+      }
+      res.status(200).json({
+        errCode: result.errCode,
+        message: result.message,
+        roomCodes: result.roomCodes,
+      });
+    } else {
+      const result = await getAllRoomCodesInTheater(theaterCode);
+      if (result.errCode !== 0) {
+        return res
+          .status(400)
+          .json({ errCode: result.errCode, error: result.message });
+      }
+      res.status(200).json({
+        errCode: result.errCode,
+        message: result.message,
+        roomCodes: result.roomCodes,
+      });
+    }
   } catch (error) {
     res.status(500).json({
       errCode: 3,
@@ -250,5 +289,6 @@ export default {
   handleGetRoomInTheater,
   handleUpdateNumberSeatInRoom,
   handleGetListRoomInformation,
-  handleGetAllRoomCodes
+  handleGetAllRoomCodes,
+  handleGetAllRoomCodesInTheater,
 };
