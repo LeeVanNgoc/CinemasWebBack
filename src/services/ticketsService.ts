@@ -690,13 +690,22 @@ export const getAverageAgeOfUsers = async () => {
 
 export const getAverageAgeByTheater = async (theaterCode: string) => {
   try {
-    // Bước 1: Lấy danh sách các mã `planScreenMovieCode` của các phim chiếu ở rạp được chỉ định
+    const rooms = await Room.findAll({
+      where: { theaterCode },
+      attributes: ["roomCode"],
+      raw: true,
+    });
+
+    if (!rooms || rooms.length === 0) {
+      throw new Error("No rooms found for the specified theater");
+    }
+
+    const roomCodes = rooms.map((room) => room.roomCode);
+
     const planScreenMovies = await PlanScreenMovie.findAll({
       where: {
         roomCode: {
-          [Op.in]: sequelize.literal(
-            `(SELECT roomCode FROM rooms WHERE theaterCode = '${theaterCode}')`
-          ),
+          [Op.in]: roomCodes,
         },
       },
       attributes: ["planScreenMovieCode"],
@@ -704,17 +713,13 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     });
 
     if (!planScreenMovies || planScreenMovies.length === 0) {
-      return {
-        errCode: 1,
-        message: "No movies found in the specified theater",
-      };
+      throw new Error("No screenings found for the specified theater");
     }
 
     const planScreenMovieCodes = planScreenMovies.map(
       (plan) => plan.planScreenMovieCode
     );
 
-    // Bước 2: Lấy danh sách các mã `userCode` từ các vé dựa trên mã `planScreenMovieCode`
     const tickets = await Tickets.findAll({
       where: {
         planScreenMovieCode: {
@@ -727,15 +732,11 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     });
 
     if (!tickets || tickets.length === 0) {
-      return {
-        errCode: 1,
-        message: "No users found with tickets for the specified theater",
-      };
+      throw new Error("No users found with tickets for the specified theater");
     }
 
     const userCodes = tickets.map((ticket) => ticket.userCode);
 
-    // Bước 3: Lấy thông tin người dùng dựa trên mã `userCode`
     const users = await User.findAll({
       where: {
         userCode: {
@@ -747,13 +748,9 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     });
 
     if (!users || users.length === 0) {
-      return {
-        errCode: 1,
-        message: "No users found with the given user codes",
-      };
+      throw new Error("No users found with the given user codes");
     }
 
-    // Bước 4: Tính độ tuổi trung bình
     const currentYear = new Date().getFullYear();
     const totalAge = users.reduce((sum, user) => {
       const age = currentYear - user.birthYear;
@@ -777,22 +774,42 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
 
 export const getListTicketByTheaterCode = async (theaterCode: string) => {
   try {
-    const tickets = await Tickets.findAll({
-      include: [
-        {
-          model: PlanScreenMovie,
-          as: "planScreenMovie",
-          include: [
-            {
-              model: Room,
-              as: "room",
-              where: { theaterCode: theaterCode }, // Filter by theaterCode
-              attributes: [],
-            },
-          ],
-          attributes: [], // Exclude PlanScreenMovie fields
+    const rooms = await Room.findAll({
+      where: { theaterCode },
+      attributes: ["roomCode"],
+      raw: true,
+    });
+
+    if (!rooms || rooms.length === 0) {
+      throw new Error("No rooms found for the specified theater");
+    }
+
+    const roomCodes = rooms.map((room) => room.roomCode);
+
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        roomCode: {
+          [Op.in]: roomCodes,
         },
-      ],
+      },
+      attributes: ["planScreenMovieCode", "roomCode"],
+      raw: true,
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      throw new Error("No screenings found for the specified theater");
+    }
+
+    const planScreenMovieCodes = planScreenMovies.map(
+      (plan) => plan.planScreenMovieCode
+    );
+
+    const tickets = await Tickets.findAll({
+      where: {
+        planScreenMovieCode: {
+          [Op.in]: planScreenMovieCodes,
+        },
+      },
       attributes: [
         "ticketCode",
         "userCode",
@@ -805,7 +822,7 @@ export const getListTicketByTheaterCode = async (theaterCode: string) => {
       raw: true,
     });
 
-    if (tickets.length === 0) {
+    if (!tickets || tickets.length === 0) {
       return {
         tickets: [],
         errCode: 1,
