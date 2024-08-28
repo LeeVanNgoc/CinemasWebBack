@@ -293,9 +293,7 @@ const handleGetAverageAgeOfUsers = async (req: Request, res: Response) => {
   try {
     const averageAge = await getAverageAgeOfUsers();
     res.status(200).json({
-      errCode: 0,
-      message: "Get average age of users successfully",
-      averageAge: averageAge,
+      averageAge,
     });
   } catch (error) {
     res.status(500).json({

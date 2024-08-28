@@ -14,11 +14,12 @@ Theater.init(
     theaterId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      // primaryKey: true,
     },
     theaterCode: {
       type: DataTypes.STRING,
       allowNull: false,
+      primaryKey: true,
     },
     name: {
       type: DataTypes.STRING,

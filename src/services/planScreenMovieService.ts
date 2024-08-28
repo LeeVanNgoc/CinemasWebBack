@@ -437,6 +437,12 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
         message: "Missing dateScreen parameter",
       };
     }
+    if (!data.theaterCode) {
+      return {
+        errCode: 2,
+        message: "Missing theaterCode parameter",
+      };
+    }
 
     // Convert dateScreen to Date object
     const dateScreen = new Date(data.dateScreen);
@@ -444,6 +450,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
     dateScreen.setUTCHours(0, 0, 0, 0);
 
     const planScreenMovies = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         roomCode: data.roomCode,
         movieCode: data.movieCode,
@@ -473,7 +487,7 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieCodeForCreateTicket:", error);
+    console.error("Error in getPlanScreenMovieCodeForCreateTicket:", error);
     return {
       errCode: 3,
       message: `Error getting planScreenMovieCode: ${error}`,
@@ -484,6 +498,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
 export const getStartTime = async (data: any) => {
   try {
     const startTimePlan = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: 'room',
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         movieCode: data.movieCode,
         dateScreen: data.dateScreen,
@@ -803,8 +825,13 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
   }
 };
 
-export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, dateScreen: string) => {
+export const getScreeningSchedule = async (theaterCode: string, dateScreen: string, movieCode?: string) => {
   try {
+    const whereConditions: any = { dateScreen };
+    if (movieCode) {
+      whereConditions.movieCode = movieCode;
+    }
+
     const schedule = await PlanScreenMovie.findAll({
       include: [
         {
@@ -816,12 +843,10 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
         {
           model: Movie,
           as: 'movie',
-          attributes: ['movieCode', 'title', 'duration', 'image'],
+          attributes: ['movieCode', 'title', 'duration', 'image', 'country', 'description', 'releaseDate'],  // Thêm các trường mới
         },
       ],
-      where: {
-        dateScreen: dateScreen,
-      },
+      where: whereConditions,
       attributes: ['planScreenMovieCode', 'startTime', 'endTime'],
       order: [['startTime', 'ASC']],
     });
@@ -829,7 +854,7 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
     if (schedule.length === 0) {
       return {
         errCode: 1,
-        message: "No screenings found for the given theater and date",
+        message: "No screenings found for the given theater, date, and movie",
       };
     }
 
@@ -841,6 +866,9 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
       movieTitle: screening.movie.title,
       movieDuration: screening.movie.duration,
       movieImage: screening.movie.image,
+      movieCountry: screening.movie.country,          // Trả về country
+      movieDescription: screening.movie.description,  // Trả về description
+      movieReleaseDate: screening.movie.releaseDate,  // Trả về releaseDate
       startTime: screening.startTime,
       endTime: screening.endTime,
     }));
