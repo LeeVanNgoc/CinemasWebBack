@@ -35,6 +35,10 @@ const ticketRoutes = (app: Application) => {
     "/get-revenue-for-all-movie",
     ticketsController.handleGetRevenueForAllMovie
   );
+  router.get(
+    "/get-all-ticket-for-all-user",
+    ticketsController.handleGetAllTicketForUser
+  );
 
   router.get(
     "/get-average-age-of-user",

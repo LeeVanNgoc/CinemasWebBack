@@ -128,3 +128,40 @@ export const getMovieFromThearter = async (theaterCode: string) => {
     };
   }
 };
+
+export const getMovieFromThearterOnDetailsDate = async (
+  theaterCode: string
+) => {
+  try {
+    const movieTheaters = await MovieTheater.findAll({
+      where: { theaterCode: theaterCode },
+      attributes: ["theaterCode", "movieCode"],
+      raw: true,
+    });
+
+    if (!movieTheaters || movieTheaters.length === 0) {
+      return {
+        errCode: 1,
+        message: "MovieGenre not found",
+      };
+    } else {
+      // Sử dụng Promise.all để đợi tất cả các lời gọi getGenreByCode hoàn thành
+      const allMovieTheaters = await Promise.all(
+        movieTheaters.map(async (movieTheater) => {
+          const movie = await getMovieByCode(movieTheater.movieCode);
+          return movie.movie;
+        })
+      );
+      return {
+        errCode: 0,
+        message: "Get movie genre success",
+        allMovieTheaters,
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error getting movie genre: ${error}`,
+    };
+  }
+};
