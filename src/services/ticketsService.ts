@@ -6,6 +6,7 @@ import Movie from "../models/Movie";
 import Theater from "../models/Theater";
 import { getUserByCode } from "./userService";
 import { sendingBill } from "../middlewares/mailer";
+import { triggerAsyncId } from "async_hooks";
 
 export const createTickets = async (data: any) => {
   try {
@@ -568,6 +569,53 @@ export const getRevenueForAllMovie = async (
     return {
       errCode: 3,
       message: `Error getting revenue for all movies: ${error}`,
+    };
+  }
+};
+
+export const getAllTicketForUser = async (userCode: string) => {
+  try {
+    const allTicket = await Tickets.findAll({
+      where: { userCode: userCode },
+      attributes: [
+        "ticketCode",
+        "userCode",
+        "seats",
+        "bank",
+        "totalPrice",
+        "planScreenMovieCode",
+      ],
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          attributes: [
+            "roomCode",
+            "movieCode",
+            "startTime",
+            "endTime",
+            "dateScreen",
+          ],
+        },
+      ],
+      raw: true,
+    });
+    if (allTicket) {
+      return {
+        errCode: 0,
+        message: "Get all ticket success",
+        ticketData: allTicket,
+      };
+    } else {
+      return {
+        errCode: 1,
+        message: "Ticket not found",
+      };
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error retrieving ticket details: ${error}`,
     };
   }
 };

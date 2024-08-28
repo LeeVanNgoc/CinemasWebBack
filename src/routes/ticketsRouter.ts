@@ -35,6 +35,10 @@ const ticketRoutes = (app: Application) => {
     "/get-revenue-for-all-movie",
     ticketsController.handleGetRevenueForAllMovie
   );
+  router.get(
+    "/get-all-ticket-for-all-user",
+    ticketsController.handleGetAllTicketForUser
+  );
 
   return app.use("/api/ticket", router);
 };
