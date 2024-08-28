@@ -350,17 +350,24 @@ const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
 };
 
 const handleGetMonthlyMovieStats = async (req: Request, res: Response) => {
-  const { month, year } = req.query;
+  const { month, year, theaterCode } = req.query;
 
-  if (!month || !year) {
-    return res.status(400).json({ message: "Invalid month or year" });
+  if (!month) {
+    return res.status(400).json({ message: "Invalid month" });
+  }
+  if (!year) {
+    return res.status(400).json({ message: "Invalid year" });
+  }
+
+  if (!theaterCode) {
+    return res.status(400).json({ message: "Missing theaterCode" });
   }
 
   try {
     const monthNumber = parseInt(month as string);
     const yearNumber = parseInt(year as string);
 
-    const result = await getMonthlyMovieStats(monthNumber, yearNumber);
+    const result = await getMonthlyMovieStats(monthNumber, yearNumber, theaterCode as string);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,

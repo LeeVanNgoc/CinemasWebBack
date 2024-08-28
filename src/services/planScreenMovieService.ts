@@ -770,22 +770,34 @@ export const getMovieByRoom = async (theaterCode: string) => {
   }
 };
 
-export const getMonthlyMovieStats = async (month: number, year: number) => {
+export const getMonthlyMovieStats = async (month: number, year: number, theaterCode: string) => {
   try {
     const startDate = new Date(year, month - 1, 1); // Bắt đầu từ ngày đầu tiên của tháng
     const endDate = new Date(year, month, 0); // Ngày cuối cùng của tháng
 
-    const stats = await PlanScreenMovie.findAll({
-      where: {
-        dateScreen: {
-          [Op.between]: [startDate, endDate],
-        },
+    const whereConditions: any = {
+      dateScreen: {
+        [Op.between]: [startDate, endDate],
       },
+    };
+
+    if (theaterCode) {
+      whereConditions['$room.theaterCode$'] = theaterCode;
+    }
+
+    const stats = await PlanScreenMovie.findAll({
+      where: whereConditions,
       include: [
         {
           model: Movie,
           as: "movie",
           attributes: ["title"],
+        },
+        {
+          model: Room,
+          as: "room",
+          attributes: [],
+          where: { theaterCode: theaterCode },
         },
       ],
       attributes: [
@@ -800,11 +812,10 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
     if (!stats || stats.length === 0) {
       return {
         errCode: 1,
-        message: "No screening stats found for the given month",
+        message: "No screening stats found for the given month and theater",
       };
     }
 
-    // Chuyển đổi kết quả và xử lý trường hợp undefined
     const transformedResult = stats.map((stat: any) => ({
       movieTitle: stat.movie ? stat.movie.title : "Unknown Movie",
       screeningCount: stat.get("screeningCount"),
