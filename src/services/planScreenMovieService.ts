@@ -803,8 +803,13 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
   }
 };
 
-export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, dateScreen: string) => {
+export const getScreeningSchedule = async (theaterCode: string, dateScreen: string, movieCode?: string) => {
   try {
+    const whereConditions: any = { dateScreen };
+    if (movieCode) {
+      whereConditions.movieCode = movieCode;
+    }
+
     const schedule = await PlanScreenMovie.findAll({
       include: [
         {
@@ -816,12 +821,10 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
         {
           model: Movie,
           as: 'movie',
-          attributes: ['movieCode', 'title', 'duration', 'image'],
+          attributes: ['movieCode', 'title', 'duration', 'image', 'country', 'description', 'releaseDate'],  // Thêm các trường mới
         },
       ],
-      where: {
-        dateScreen: dateScreen,
-      },
+      where: whereConditions,
       attributes: ['planScreenMovieCode', 'startTime', 'endTime'],
       order: [['startTime', 'ASC']],
     });
@@ -829,7 +832,7 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
     if (schedule.length === 0) {
       return {
         errCode: 1,
-        message: "No screenings found for the given theater and date",
+        message: "No screenings found for the given theater, date, and movie",
       };
     }
 
@@ -841,6 +844,9 @@ export const getScreeningScheduleByTheaterAndDate = async (theaterCode: string, 
       movieTitle: screening.movie.title,
       movieDuration: screening.movie.duration,
       movieImage: screening.movie.image,
+      movieCountry: screening.movie.country,          // Trả về country
+      movieDescription: screening.movie.description,  // Trả về description
+      movieReleaseDate: screening.movie.releaseDate,  // Trả về releaseDate
       startTime: screening.startTime,
       endTime: screening.endTime,
     }));

@@ -11,7 +11,7 @@ import {
   getMovieDetailsByDate,
   getMonthlyMovieStats,
   getMovieByRoom,
-  getScreeningScheduleByTheaterAndDate
+  getScreeningSchedule
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -413,13 +413,20 @@ const handleGetMovieInRoom = async (req: Request, res: Response) => {
 const handleGetScreeningSchedule = async (req: Request, res: Response) => {
   const theaterCode = req.query.theaterCode as string;
   const dateScreen = req.query.dateScreen as string;
+  const movieCode = req.query.movieCode as string;
 
-  if (!theaterCode || !dateScreen) {
-    return res.status(400).json({ message: "Missing theaterCode or dateScreen" });
+  if (!theaterCode) {
+    return res.status(400).json({ message: "Missing theaterCode" });
+  }
+  if (!dateScreen) {
+    return res.status(400).json({ message: "Missing dateScreen" });
+  }
+  if (!movieCode) {
+    return res.status(400).json({ message: "Missing movieCode" });
   }
 
   try {
-    const result = await getScreeningScheduleByTheaterAndDate(theaterCode, dateScreen);
+    const result = await getScreeningSchedule(theaterCode, dateScreen, movieCode);
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,
