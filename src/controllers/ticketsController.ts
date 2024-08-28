@@ -15,6 +15,7 @@ import {
   getAllTicketForUser,
   getAverageAgeOfUsers,
   getAverageAgeByTheater,
+  getListTicketByTheaterCode
 } from "../services/ticketsService";
 
 const handleCreateTicket = async (req: Request, res: Response) => {
@@ -236,13 +237,14 @@ const handleGetRevenueByTheaterAndDate = async (
 };
 
 const handleGetRevenueByMovie = async (req: Request, res: Response) => {
-  const { movieCode, startDate, endDate } = req.query;
+  const { movieCode, startDate, endDate, theaterCode } = req.query;
 
   try {
     const revenueData = await getRevenueByMovie(
       movieCode as string,
       startDate as string,
-      endDate as string
+      endDate as string,
+      theaterCode as string
     );
     res.status(200).json(revenueData);
   } catch (error) {
@@ -251,6 +253,7 @@ const handleGetRevenueByMovie = async (req: Request, res: Response) => {
       .json({ error: "Failed to retrieve revenue data", details: error });
   }
 };
+
 export async function handleGetRevenueForAllMovie(req: Request, res: Response) {
   const { startDate, endDate } = req.query;
 
@@ -321,6 +324,35 @@ const handleGetAverageAgeByTheater = async (req: Request, res: Response) => {
   }
 };
 
+const handleGetListTicketByTheaterCode = async (req: Request, res: Response) => {
+  const theaterCode = req.query.theaterCode as string;
+
+  if (!theaterCode) {
+    return res.status(400).json({ message: "Missing theaterCode" });
+  }
+
+  try {
+    const results: any = await getListTicketByTheaterCode(theaterCode);
+    if (results.errCode === 0) {
+      res.status(200).json({
+        errCode: results.errCode,
+        message: results.message,
+        tickets: results.tickets,
+      });
+    } else {
+      res.status(404).json({
+        errCode: results.errCode,
+        message: results.message,
+      });
+    }
+  } catch (error) {
+    res
+      .status(500)
+      .json({ error: `Something went wrong in getting tickets by theater: ${error}` });
+  }
+};
+
+
 export default {
   handleCreateTicket,
   handleDeleteTicket,
@@ -337,4 +369,5 @@ export default {
   handleGetAllTicketForUser,
   handleGetAverageAgeOfUsers,
   handleGetAverageAgeByTheater,
+  handleGetListTicketByTheaterCode
 };

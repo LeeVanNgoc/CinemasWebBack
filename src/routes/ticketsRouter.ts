@@ -39,14 +39,15 @@ const ticketRoutes = (app: Application) => {
     "/get-all-ticket-for-all-user",
     ticketsController.handleGetAllTicketForUser
   );
-
   router.get(
     "/get-average-age-of-user",
     ticketsController.handleGetAverageAgeOfUsers
   );
-
   router.get("/average-age-by-theater", ticketsController.handleGetAverageAgeByTheater);
-
+  router.get(
+    "/get-list-tickets-by-theater",
+    ticketsController.handleGetListTicketByTheaterCode
+  );
   return app.use("/api/ticket", router);
 };
 

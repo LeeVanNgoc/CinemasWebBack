@@ -445,7 +445,8 @@ export const getRevenueByTheaterAndDate = async (
 export const getRevenueByMovie = async (
   movieCode: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  theaterCode: string
 ) => {
   const movie = await Movie.findOne({
     where: { movieCode },
@@ -461,7 +462,16 @@ export const getRevenueByMovie = async (
       dateScreen: {
         [Op.between]: [startDate, endDate],
       },
+      // Add theaterCode filter
+      '$room.theaterCode$': theaterCode,
     },
+    include: [
+      {
+        model: Room,
+        as: 'room',
+        attributes: [],
+      },
+    ],
   });
 
   const planScreenMovieCodes = planScreenMovies.map(
@@ -486,6 +496,7 @@ export const getRevenueByMovie = async (
     totalRevenue,
     startDate,
     endDate,
+    theaterCode,
   };
 };
 
@@ -760,6 +771,57 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     return {
       errCode: 3,
       message: `Error calculating average age: ${error}`,
+    };
+  }
+};
+
+export const getListTicketByTheaterCode = async (theaterCode: string) => {
+  try {
+    const tickets = await Tickets.findAll({
+      include: [
+        {
+          model: PlanScreenMovie,
+          as: "planScreenMovie",
+          include: [
+            {
+              model: Room,
+              as: "room",
+              where: { theaterCode: theaterCode }, // Filter by theaterCode
+              attributes: [],
+            },
+          ],
+          attributes: [], // Exclude PlanScreenMovie fields
+        },
+      ],
+      attributes: [
+        "ticketCode",
+        "userCode",
+        "planScreenMovieCode",
+        "seats",
+        "bank",
+        "totalPrice",
+        "ticketsDate",
+      ],
+      raw: true,
+    });
+
+    if (tickets.length === 0) {
+      return {
+        tickets: [],
+        errCode: 1,
+        message: "No tickets found for the specified theater",
+      };
+    }
+
+    return {
+      tickets,
+      errCode: 0,
+      message: "Tickets fetched successfully",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error fetching tickets: ${error}`,
     };
   }
 };
