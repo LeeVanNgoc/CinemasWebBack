@@ -12,7 +12,6 @@ import {
   getMonthlyMovieStats,
   getMovieByRoom,
   getScreeningScheduleByTheaterAndDate,
-  getListPlanScreenInformationByTheaterCode,
 } from "../services/planScreenMovieService";
 
 const handleDeletePlanScreenMovie = async (req: Request, res: Response) => {
@@ -157,11 +156,10 @@ const handleGetPlanScreenMovieByCode = async (req: Request, res: Response) => {
 const handleCreatePlanScreenMovie = async (req: Request, res: Response) => {
   const roomCode = req.query.roomCode as string;
   const movieCode = req.query.movieCode as string;
-
   const dateScreen = req.query.dateScreen as string;
   const startTime = req.query.startTime as string;
   const endTime = req.query.endTime as string;
-  if (!roomCode || !movieCode || !dateScreen || !startTime || !endTime) {
+  if (!roomCode) {
     return res
       .status(400)
       .json({ errCode: 2, message: "Missing roomCode parameter" });
@@ -223,6 +221,7 @@ const handleGetplanScreenMovieCodeForCreateTicket = async (
     movieCode: req.query.movieCode as string,
     startTime: req.query.startTime as string,
     dateScreen: req.query.dateScreen as string,
+    theaterCode: req.query.theaterCode as string,
   };
 
   try {
@@ -396,17 +395,28 @@ const handleGetMovieDetailsByDate = async (req: Request, res: Response) => {
 };
 
 const handleGetMonthlyMovieStats = async (req: Request, res: Response) => {
-  const { month, year } = req.query;
+  const { month, year, theaterCode } = req.query;
 
-  if (!month || !year) {
-    return res.status(400).json({ message: "Invalid month or year" });
+  if (!month) {
+    return res.status(400).json({ message: "Invalid month" });
+  }
+  if (!year) {
+    return res.status(400).json({ message: "Invalid year" });
+  }
+
+  if (!theaterCode) {
+    return res.status(400).json({ message: "Missing theaterCode" });
   }
 
   try {
     const monthNumber = parseInt(month as string);
     const yearNumber = parseInt(year as string);
 
-    const result = await getMonthlyMovieStats(monthNumber, yearNumber);
+    const result = await getMonthlyMovieStats(
+      monthNumber,
+      yearNumber,
+      theaterCode as string
+    );
     if (result.errCode === 0) {
       res.status(200).json({
         errCode: result.errCode,

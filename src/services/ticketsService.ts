@@ -446,7 +446,8 @@ export const getRevenueByTheaterAndDate = async (
 export const getRevenueByMovie = async (
   movieCode: string,
   startDate: string,
-  endDate: string
+  endDate: string,
+  theaterCode: string
 ) => {
   const movie = await Movie.findOne({
     where: { movieCode },
@@ -462,7 +463,16 @@ export const getRevenueByMovie = async (
       dateScreen: {
         [Op.between]: [startDate, endDate],
       },
+      // Add theaterCode filter
+      '$room.theaterCode$': theaterCode,
     },
+    include: [
+      {
+        model: Room,
+        as: 'room',
+        attributes: [],
+      },
+    ],
   });
 
   const planScreenMovieCodes = planScreenMovies.map(
@@ -487,6 +497,7 @@ export const getRevenueByMovie = async (
     totalRevenue,
     startDate,
     endDate,
+    theaterCode,
   };
 };
 
@@ -704,42 +715,57 @@ export const getAverageAgeOfUsers = async () => {
 
 export const getAverageAgeByTheater = async (theaterCode: string) => {
   try {
-    // Lấy tất cả các tickets liên quan đến theaterCode
-    const tickets = await Tickets.findAll({
-      include: [
-        {
-          model: PlanScreenMovie,
-          as: "planScreenMovie",
-          attributes: [],
-          include: [
-            {
-              model: Room,
-              as: "room",
-              attributes: [],
-              where: { theaterCode }, // Lọc theo theaterCode trong Room
-            },
-          ],
+    const rooms = await Room.findAll({
+      where: { theaterCode },
+      attributes: ["roomCode"],
+      raw: true,
+    });
+
+    if (!rooms || rooms.length === 0) {
+      throw new Error("No rooms found for the specified theater");
+    }
+
+    const roomCodes = rooms.map((room) => room.roomCode);
+
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        roomCode: {
+          [Op.in]: roomCodes,
         },
-      ],
+      },
+      attributes: ["planScreenMovieCode"],
+      raw: true,
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      throw new Error("No screenings found for the specified theater");
+    }
+
+    const planScreenMovieCodes = planScreenMovies.map(
+      (plan) => plan.planScreenMovieCode
+    );
+
+    const tickets = await Tickets.findAll({
+      where: {
+        planScreenMovieCode: {
+          [Op.in]: planScreenMovieCodes,
+        },
+      },
       attributes: ["userCode"],
-      group: ["userCode"], // Group theo userCode để đảm bảo không bị trùng lặp
+      group: ["userCode"],
       raw: true,
     });
 
     if (!tickets || tickets.length === 0) {
-      return {
-        errCode: 1,
-        message: "No users found with tickets in this theater",
-      };
+      throw new Error("No users found with tickets for the specified theater");
     }
 
     const userCodes = tickets.map((ticket) => ticket.userCode);
 
-    // Lấy danh sách người dùng dựa trên userCodes
     const users = await User.findAll({
       where: {
         userCode: {
-          [Op.in]: userCodes, // Lọc chỉ những user có userCode trong theaterCode cụ thể
+          [Op.in]: userCodes,
         },
       },
       attributes: ["birthYear"],
@@ -747,10 +773,7 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     });
 
     if (!users || users.length === 0) {
-      return {
-        errCode: 1,
-        message: "No users found with the given user codes",
-      };
+      throw new Error("No users found with the given user codes");
     }
 
     const currentYear = new Date().getFullYear();
@@ -770,6 +793,77 @@ export const getAverageAgeByTheater = async (theaterCode: string) => {
     return {
       errCode: 3,
       message: `Error calculating average age: ${error}`,
+    };
+  }
+};
+
+export const getListTicketByTheaterCode = async (theaterCode: string) => {
+  try {
+    const rooms = await Room.findAll({
+      where: { theaterCode },
+      attributes: ["roomCode"],
+      raw: true,
+    });
+
+    if (!rooms || rooms.length === 0) {
+      throw new Error("No rooms found for the specified theater");
+    }
+
+    const roomCodes = rooms.map((room) => room.roomCode);
+
+    const planScreenMovies = await PlanScreenMovie.findAll({
+      where: {
+        roomCode: {
+          [Op.in]: roomCodes,
+        },
+      },
+      attributes: ["planScreenMovieCode", "roomCode"],
+      raw: true,
+    });
+
+    if (!planScreenMovies || planScreenMovies.length === 0) {
+      throw new Error("No screenings found for the specified theater");
+    }
+
+    const planScreenMovieCodes = planScreenMovies.map(
+      (plan) => plan.planScreenMovieCode
+    );
+
+    const tickets = await Tickets.findAll({
+      where: {
+        planScreenMovieCode: {
+          [Op.in]: planScreenMovieCodes,
+        },
+      },
+      attributes: [
+        "ticketCode",
+        "userCode",
+        "planScreenMovieCode",
+        "seats",
+        "bank",
+        "totalPrice",
+        "ticketsDate",
+      ],
+      raw: true,
+    });
+
+    if (!tickets || tickets.length === 0) {
+      return {
+        tickets: [],
+        errCode: 1,
+        message: "No tickets found for the specified theater",
+      };
+    }
+
+    return {
+      tickets,
+      errCode: 0,
+      message: "Tickets fetched successfully",
+    };
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error fetching tickets: ${error}`,
     };
   }
 };

@@ -24,11 +24,12 @@ Tickets.init(
     ticketId: {
       type: DataTypes.INTEGER,
       autoIncrement: true,
-      primaryKey: true,
+      // primaryKey: true,
       allowNull: false,
     },
     ticketCode: {
       type: DataTypes.STRING,
+      primaryKey: true,
       allowNull: false,
     },
     userCode: {

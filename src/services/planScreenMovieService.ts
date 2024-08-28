@@ -7,6 +7,8 @@ import Genres from "../models/Genres";
 import Room from "../models/Room";
 import Sequelize from "sequelize";
 import { getRoomInTheater } from "./roomService";
+import { Theater } from "../models";
+import { any } from "joi";
 
 export const checkplanScreenMovieCode = async (planScreenMovieCode: string) => {
   try {
@@ -498,6 +500,12 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
         message: "Missing dateScreen parameter",
       };
     }
+    if (!data.theaterCode) {
+      return {
+        errCode: 2,
+        message: "Missing theaterCode parameter",
+      };
+    }
 
     // Convert dateScreen to Date object
     const dateScreen = new Date(data.dateScreen);
@@ -505,6 +513,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
     dateScreen.setUTCHours(0, 0, 0, 0);
 
     const planScreenMovies = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: "room",
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         roomCode: data.roomCode,
         movieCode: data.movieCode,
@@ -534,7 +550,7 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
       };
     }
   } catch (error) {
-    console.error("Error in getplanScreenMovieCodeForCreateTicket:", error);
+    console.error("Error in getPlanScreenMovieCodeForCreateTicket:", error);
     return {
       errCode: 3,
       message: `Error getting planScreenMovieCode: ${error}`,
@@ -545,6 +561,14 @@ export const getPlanScreenMovieCodeForCreateTicket = async (data: any) => {
 export const getStartTime = async (data: any) => {
   try {
     const startTimePlan = await PlanScreenMovie.findAll({
+      include: [
+        {
+          model: Room,
+          as: "room",
+          where: { theaterCode: data.theaterCode },
+          attributes: [],
+        },
+      ],
       where: {
         movieCode: data.movieCode,
         dateScreen: data.dateScreen,
@@ -810,22 +834,38 @@ export const getMovieByRoom = async (theaterCode: string) => {
   }
 };
 
-export const getMonthlyMovieStats = async (month: number, year: number) => {
+export const getMonthlyMovieStats = async (
+  month: number,
+  year: number,
+  theaterCode: string
+) => {
   try {
     const startDate = new Date(year, month - 1, 1); // Bắt đầu từ ngày đầu tiên của tháng
     const endDate = new Date(year, month, 0); // Ngày cuối cùng của tháng
 
-    const stats = await PlanScreenMovie.findAll({
-      where: {
-        dateScreen: {
-          [Op.between]: [startDate, endDate],
-        },
+    const whereConditions: any = {
+      dateScreen: {
+        [Op.between]: [startDate, endDate],
       },
+    };
+
+    if (theaterCode) {
+      whereConditions["$room.theaterCode$"] = theaterCode;
+    }
+
+    const stats = await PlanScreenMovie.findAll({
+      where: whereConditions,
       include: [
         {
           model: Movie,
           as: "movie",
           attributes: ["title"],
+        },
+        {
+          model: Room,
+          as: "room",
+          attributes: [],
+          where: { theaterCode: theaterCode },
         },
       ],
       attributes: [
@@ -840,11 +880,10 @@ export const getMonthlyMovieStats = async (month: number, year: number) => {
     if (!stats || stats.length === 0) {
       return {
         errCode: 1,
-        message: "No screening stats found for the given month",
+        message: "No screening stats found for the given month and theater",
       };
     }
 
-    // Chuyển đổi kết quả và xử lý trường hợp undefined
     const transformedResult = stats.map((stat: any) => ({
       movieTitle: stat.movie ? stat.movie.title : "Unknown Movie",
       screeningCount: stat.get("screeningCount"),
@@ -869,6 +908,8 @@ export const getScreeningScheduleByTheaterAndDate = async (
   dateScreen: string
 ) => {
   try {
+    const whereConditions: any = { dateScreen };
+
     const schedule = await PlanScreenMovie.findAll({
       include: [
         {
@@ -893,21 +934,35 @@ export const getScreeningScheduleByTheaterAndDate = async (
     if (schedule.length === 0) {
       return {
         errCode: 1,
-        message: "No screenings found for the given theater and date",
+        message: "No screenings found for the given theater, date, and movie",
       };
     }
 
-    const formattedSchedule = schedule.map((screening: any) => ({
-      planScreenMovieCode: screening.planScreenMovieCode,
-      roomCode: screening.room.roomCode,
-      roomType: screening.room.type,
-      movieCode: screening.movie.movieCode,
-      movieTitle: screening.movie.title,
-      movieDuration: screening.movie.duration,
-      movieImage: screening.movie.image,
-      startTime: screening.startTime,
-      endTime: screening.endTime,
-    }));
+    const groupedSchedule = schedule.reduce((acc: any, screening: any) => {
+      const movie = screening.movie;
+      if (!acc[movie.movieCode]) {
+        acc[movie.movieCode] = {
+          movieCode: movie.movieCode,
+          movieTitle: movie.title,
+          movieDuration: movie.duration,
+          movieImage: movie.image,
+          movieCountry: movie.country,
+          movieDescription: movie.description,
+          movieReleaseDate: movie.releaseDate,
+          screenings: [],
+        };
+      }
+      acc[movie.movieCode].screenings.push({
+        planScreenMovieCode: screening.planScreenMovieCode,
+        roomCode: screening.room.roomCode,
+        roomType: screening.room.type,
+        startTime: screening.startTime,
+        endTime: screening.endTime,
+      });
+      return acc;
+    }, {});
+
+    const formattedSchedule = Object.values(groupedSchedule);
 
     return {
       errCode: 0,
