@@ -496,3 +496,58 @@ export const requestPasswords = async (userEmail: string, otpCode: string) => {
     };
   }
 };
+
+// Hàm đổi mật khẩu
+export const changePasswords = async (userEmail: string, otpCode: string) => {
+  try {
+    const userData: any = {};
+    const isExists = await checkUserEmail(userEmail);
+
+    if (isExists) {
+      const user = await User.findOne({
+        where: { email: userEmail },
+        attributes: ["email", "password", "role", "userCode", "city"],
+        raw: true,
+      });
+      if (user) {
+        const otpGmail = await getOtpByEmail(userEmail);
+        const otpGmailCheck = String(otpGmail.data?.otpCode);
+
+        if (otpGmailCheck === otpCode) {
+          // Xóa password để tránh bảo mật thông tin
+          delete userData.password;
+          userData.user = user;
+          let payload = {
+            userCode: user.userCode,
+            userEmail: user.email,
+            role: user.role,
+            city: user.city,
+            expiresIn: process.env.JWT_EXPIRES_IN,
+          };
+          const token = await createJWT(payload);
+          await deleteOtp(userEmail);
+          return {
+            token: token,
+            data: {
+              userCode: user.userCode,
+              role: user.role,
+              city: user.city,
+            },
+            errCode: 0,
+            message: "Login success",
+          };
+        } else {
+          return {
+            errCode: 4,
+            message: "OTP is incorrect",
+          };
+        }
+      }
+    }
+  } catch (error) {
+    return {
+      errCode: 3,
+      message: `Error login: ${error}`,
+    };
+  }
+};
